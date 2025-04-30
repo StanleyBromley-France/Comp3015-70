@@ -14,6 +14,7 @@
 #include "src/global_settings/lights/spotlight/spotlight.h"
 #include "src/global_settings/global_settings_ubo/global_settings_ubo.h"
 
+#include "src/ui/menu/menu.h"
 
 class SceneBasic_Uniform : public Scene
 {
@@ -40,6 +41,10 @@ class SceneBasic_Uniform : public Scene
     bool toon_shading_ = false;
     bool hdr_mode_ = true;
     bool normal_mode_ = true;
+
+    // ui
+
+    Menu menu;
 
 public:
     SceneBasic_Uniform();

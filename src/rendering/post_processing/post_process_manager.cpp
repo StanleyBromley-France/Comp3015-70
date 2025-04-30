@@ -18,8 +18,8 @@ post_processor& post_processor::get_instance() {
     return instance;
 }
 
-post_processor::post_processor() : fs_quad_(0), hdr_fbo_(0), blur_fbo_(0), hdr_tex_(0), tex1_(0),
-		tex2_(0), linear_sampler_(0), nearest_sampler_(0), width_(800), height_(600)
+post_processor::post_processor() : fs_quad_(0), hdr_fbo_(0), blur_fbo_(0), log_lum_fbo_(0), hdr_tex_(0), tex1_(0),
+		tex2_(0), log_lum_tex_(0), linear_sampler_(0), nearest_sampler_(0), width_(800), height_(600)
 {
 	compile_shaders();
 	setup_fbo();
@@ -43,6 +43,8 @@ post_processor::~post_processor() {
     glDeleteTextures(1, &tex1_);
     glDeleteTextures(1, &tex2_);
     glDeleteVertexArrays(1, &fs_quad_);
+	glDeleteFramebuffers(1, &log_lum_fbo_);
+	glDeleteTextures(1, &log_lum_tex_);
 }
 
 void post_processor::resize(int screen_width, int screen_height) {
@@ -109,6 +111,23 @@ void post_processor::setup_fbo() {
 	glDrawBuffers(1, drawBuffers);
 	// Unbind the framebuffer, and revert to default framebuffer
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	// Create texture for log luminance
+	glGenTextures(1, &log_lum_tex_);
+	glActiveTexture(GL_TEXTURE3); // Assuming 3 is unused
+	glBindTexture(GL_TEXTURE_2D, log_lum_tex_);
+	glTexStorage2D(GL_TEXTURE_2D, static_cast<GLint>(std::log2(std::max(width_, height_))) + 1, GL_R32F, width_, height_);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	// Create framebuffer for Pass 1
+	glGenFramebuffers(1, &log_lum_fbo_);
+	glBindFramebuffer(GL_FRAMEBUFFER, log_lum_fbo_);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, log_lum_tex_, 0);
+	glDrawBuffers(1, drawBuffers); // reuse previous drawBuffers
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 }
 
 void post_processor::setup_quad() {
@@ -205,6 +224,32 @@ void post_processor::begin_scene_capture() const
 	glEnable(GL_DEPTH_TEST);
 }
 
+void post_processor::compute_log_ave_luminance() {
+	post_prog_.setUniform("Pass", 1);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, log_lum_fbo_);
+	glViewport(0, 0, width_, height_);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glDisable(GL_DEPTH_TEST);
+
+	glBindVertexArray(fs_quad_);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+
+	// generate mipmaps
+	// this creates an average of all pixel log-luminance values
+	glBindTexture(GL_TEXTURE_2D, log_lum_tex_);
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+	float ave_log_lum = 0.0f;
+	int mip_level = static_cast<int>(std::log2(std::max(width_, height_)));
+	glBindTexture(GL_TEXTURE_2D, log_lum_tex_);
+	glGetTexImage(GL_TEXTURE_2D, mip_level, GL_RED, GL_FLOAT, &ave_log_lum);
+
+	float ave_lum = expf(ave_log_lum);
+	post_prog_.use();
+	post_prog_.setUniform("AveLum", ave_lum);
+}
+
 void post_processor::pass2_brightness_threshold()
 {
 	post_prog_.setUniform("Pass", 2);
@@ -254,29 +299,15 @@ void post_processor::pass5_tone_mapping() {
 	glBindSampler(1, nearest_sampler_);
 }
 
-void post_processor::compute_log_ave_luminance() {
-    const int size = width_ * height_;
-    std::vector<GLfloat> tex_data(size * 3);
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, hdr_tex_);
-    glGetTexImage(GL_TEXTURE_2D, 0, GL_RGB, GL_FLOAT, tex_data.data());
-    float sum = 0.0f;
-    for (int i = 0; i < size; i++)
-    {
-        const float lum = dot(vec3(tex_data[i * 3 + 0], tex_data[i * 3 + 1], tex_data[i * 3 + 2]), vec3(0.2126f, 0.7152f, 0.0722f));
-        sum += logf(lum + 0.00001f);
-    }
-    post_prog_.setUniform("AveLum", expf(sum / size));
-}
-
 void post_processor::apply_post_render() {
     
     post_prog_.use();
     
-    // Compute average luminance from the rendered HDR texture.
+    // compute average luminance from the rendered HDR texture.
     compute_log_ave_luminance();
-    
-    // Execute the post-processing passes.
+   
+
+    // execute the post-processing passes.
     pass2_brightness_threshold();
     pass3_vertical_blur();
     pass4_horizontal_blur();

@@ -163,6 +163,19 @@
     <ClCompile Include="src\rendering\post_processing\post_process_manager.cpp" />
     <ClCompile Include="src\scene_management\scene_switcher.cpp" />
     <ClCompile Include="src\shader_management\shader_include\shader_include.cpp" />
+    <ClCompile Include="src\ui\imgui_wrapper\imgui\imgui.cpp" />
+    <ClCompile Include="src\ui\imgui_wrapper\imgui\imgui_demo.cpp" />
+    <ClCompile Include="src\ui\imgui_wrapper\imgui\imgui_draw.cpp" />
+    <ClCompile Include="src\ui\imgui_wrapper\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="src\ui\imgui_wrapper\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="src\ui\imgui_wrapper\imgui\imgui_tables.cpp" />
+    <ClCompile Include="src\ui\imgui_wrapper\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="src\ui\imgui_wrapper\imgui_core.cpp" />
+    <ClCompile Include="src\ui\imgui_wrapper\imgui_utils.cpp" />
+    <ClCompile Include="src\ui\imgui_wrapper\imgui_custom_widgets.cpp" />
+    <ClCompile Include="src\ui\imgui_wrapper\imgui_windows.cpp" />
+    <ClCompile Include="src\ui\menu\menu.cpp" />
+    <ClCompile Include="src\window\window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shader\basic_uniform.frag" />
@@ -174,6 +187,7 @@
     <None Include="shader\post_processing\post_process.vert" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\CarGame\_core\ui_system\ui_element.h" />
     <ClInclude Include="camControls.h" />
     <ClInclude Include="helper\aabb.h" />
     <ClInclude Include="helper\drawable.h" />
@@ -198,6 +212,22 @@
     <ClInclude Include="src\rendering\post_processing\post_process_manager.h" />
     <ClInclude Include="src\scene_management\scene_switcher.h" />
     <ClInclude Include="src\shader_management\shader_include\shader_include.h" />
+    <ClInclude Include="src\ui\imgui_wrapper\imgui\imconfig.h" />
+    <ClInclude Include="src\ui\imgui_wrapper\imgui\imgui.h" />
+    <ClInclude Include="src\ui\imgui_wrapper\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="src\ui\imgui_wrapper\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="src\ui\imgui_wrapper\imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="src\ui\imgui_wrapper\imgui\imgui_internal.h" />
+    <ClInclude Include="src\ui\imgui_wrapper\imgui\imstb_rectpack.h" />
+    <ClInclude Include="src\ui\imgui_wrapper\imgui\imstb_textedit.h" />
+    <ClInclude Include="src\ui\imgui_wrapper\imgui\imstb_truetype.h" />
+    <ClInclude Include="src\ui\imgui_wrapper\imgui_core.h" />
+    <ClInclude Include="src\ui\imgui_wrapper\imgui_utils.h" />
+    <ClInclude Include="src\ui\imgui_wrapper\imgui_custom_widgets.h" />
+    <ClInclude Include="src\ui\imgui_wrapper\imgui_windows.h" />
+    <ClInclude Include="src\ui\menu\menu.h" />
+    <ClInclude Include="src\ui\ui_element.h" />
+    <ClInclude Include="src\window\window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

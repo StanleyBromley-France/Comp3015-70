@@ -45,8 +45,8 @@ private:
 
     // FBO & texture handles
     GLuint fs_quad_;
-    GLuint hdr_fbo_, blur_fbo_;
-    GLuint hdr_tex_, tex1_, tex2_;
+    GLuint hdr_fbo_, blur_fbo_, log_lum_fbo_;
+    GLuint hdr_tex_, tex1_, tex2_, log_lum_tex_;
     GLuint linear_sampler_, nearest_sampler_;
     int bloom_buf_width_, bloom_buf_height_;
     int width_, height_;

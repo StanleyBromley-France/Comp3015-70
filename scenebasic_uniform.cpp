@@ -12,6 +12,10 @@
 #include "camControls.h"
 #include "src/rendering/post_processing/post_process_manager.h"
 #include "src/shader_management/shader_include/shader_include.h"
+#include "src/ui/imgui_wrapper/imgui_core.h"
+
+#include "src/window/window.h"
+
 
 using glm::vec3;
 using glm::vec4;
@@ -50,6 +54,16 @@ void SceneBasic_Uniform::initScene()
 	//prog_.setUniform("IsToonLighting", toon_shading_);
 
 	showcase_car_.init(prog2_);
+
+	ImGuiCore::Init(glfwGetCurrentContext());
+
+	ImGuiCore::BeginFrame();
+
+	menu.init();
+
+	ImGuiCore::EndFrame();
+
+	post_processor::get_instance().resize(2560, 1440);
 }
 
 
@@ -130,6 +144,9 @@ void SceneBasic_Uniform::update(float t)
 	spotlight_.upload(globalSettings);
 	globalSettings.updateGPU();
 
+	menu.update();
+
+	Window::updateKeyState();
 }
 
 void SceneBasic_Uniform::render()
@@ -145,6 +162,11 @@ void SceneBasic_Uniform::render()
 	draw_scene();
 
 	post_processor::get_instance().apply_post_render();
+
+	ImGuiCore::BeginFrame();
+	menu.render();
+	ImGuiCore::EndFrame();
+
 }
 
 void SceneBasic_Uniform::draw_scene() {

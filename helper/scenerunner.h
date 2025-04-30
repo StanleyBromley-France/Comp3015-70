@@ -12,6 +12,7 @@
 #include <iostream>
 
 #include "../src/scene_management/scene_switcher.h"
+#include "src/ui/imgui_wrapper/imgui_core.h"
 
 class SceneRunner {
 private:
@@ -43,7 +44,7 @@ public:
         }
 
         // Open the window
-        window = glfwCreateWindow( WIN_WIDTH, WIN_HEIGHT, windowTitle.c_str(), NULL, NULL );
+        window = glfwCreateWindow(width, height, windowTitle.c_str(), NULL, NULL );
         if( ! window ) {
 			std::cerr << "Unable to create OpenGL context." << std::endl;
             glfwTerminate();
@@ -123,6 +124,8 @@ private:
         
         SceneSwitcher::Instance().SwitchScene(scene);
         SceneSwitcher::Instance().MarkSceneInitialised();
+
+        //ImGuiCore::Init(window);
 
         while( ! glfwWindowShouldClose(window) && !glfwGetKey(window, GLFW_KEY_ESCAPE) ) {
             GLUtils::checkForOpenGLError(__FILE__,__LINE__);
