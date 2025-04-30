@@ -1,0 +1,171 @@
+#version 460
+
+in vec3 Position;
+in vec3 Normal;
+in vec2 TexCoord;
+in vec3 Tangent;
+in vec3 Bitangent;
+in vec3 VecPos;
+
+//------------ DATA ------------//
+
+struct SpotLightInfo{
+    vec3 Position;
+    vec3 La;
+    vec3 L;
+    vec3 Direction;
+    float Exponent;
+    float Cutoff;
+};
+
+struct MaterialInfo {
+    vec3 Kd;
+    vec3 Ka;
+    vec3 Ks;
+    float Shininess;
+};
+
+struct SpotlightParams {
+    vec3 s;
+    float cosAng;
+    float spotScale;
+};
+
+//------------ UNIFORMS ------------//
+
+uniform MaterialInfo Material;
+
+layout(std140, binding = 0) uniform GlobalSettings {
+    SpotLightInfo Spotlight;
+
+    int   lightingMode;
+    vec3  pad6;
+} globalSettings;
+
+//------------ TOON SHADING VARS ------------//
+
+const int levels = 3;
+const float scaleFactor = 1.0 / levels;
+
+//------------ HELPER METHODS ------------//
+
+vec3 calculateAmbient(vec3 ambientBase)
+{
+    return globalSettings.Spotlight.La * ambientBase;
+}
+
+SpotlightParams computeSpotlightParams(vec3 pos) {
+    SpotlightParams params;
+    params.s = normalize(globalSettings.Spotlight.Position - pos);
+    params.cosAng = dot(-params.s, normalize(globalSettings.Spotlight.Direction));
+    params.spotScale = 0.0;
+    
+    if (params.cosAng > 0.0 && acos(params.cosAng) < globalSettings.Spotlight.Cutoff) {
+        params.spotScale = pow(params.cosAng, globalSettings.Spotlight.Exponent);
+    }
+    
+    return params;
+}
+
+vec3 calculateSpecular(vec3 pos, vec3 s, vec3 n) {
+    vec3 v = normalize(-pos);
+    vec3 h = normalize(v + s);
+    float hDotN = dot(h, n);
+    return Material.Ks * pow(max(hDotN, 0.0), Material.Shininess);
+}
+
+vec3 computeFinalColor(vec3 ambient, float spotScale, vec3 diffuse, vec3 spec) {
+    return ambient + spotScale * (diffuse + spec) * globalSettings.Spotlight.L;
+}
+
+//------------ MAIN METHODS ------------//
+
+// normal lighting
+vec3 BlinnPhong_LightingNormal(
+    vec3 pos, 
+    vec3 n, 
+    vec3 ambientBase, 
+    vec3 diffuseBase 
+) {
+    vec3 ambient = calculateAmbient(ambientBase);
+    SpotlightParams params = computeSpotlightParams(pos);
+
+    if (params.spotScale > 0.0) {
+        float sDotN = max(dot(params.s, n), 0.0);
+        vec3 diffuse = diffuseBase * sDotN;
+        vec3 spec = (sDotN > 0.0) ? calculateSpecular(pos, params.s, n) : vec3(0.0);
+        return computeFinalColor(ambient, params.spotScale, diffuse, spec);
+    }
+    
+    return ambient;
+}
+
+// toon lighting
+vec3 BlinnPhong_LightingToon(
+    vec3 pos, 
+    vec3 n, 
+    vec3 ambientBase, 
+    vec3 diffuseBase
+) {
+    vec3 ambient = calculateAmbient(ambientBase);
+    SpotlightParams params = computeSpotlightParams(pos);
+
+    if (params.spotScale > 0.0) {
+        float sDotN = max(dot(params.s, n), 0.0);
+        float band = floor(sDotN * levels);
+        vec3 diffuse = diffuseBase * band * scaleFactor;
+        vec3 spec = (sDotN > 0.0) ? calculateSpecular(pos, params.s, n) : vec3(0.0);
+        return computeFinalColor(ambient, params.spotScale, diffuse, spec);
+    }
+    
+    return ambient;
+}
+
+// applies lighting based on global var
+vec3 applyLighting(vec3 pos, vec3 n, vec3 ambientBase, vec3 diffuseBase) 
+{
+    if (globalSettings.lightingMode == 0) {
+        return BlinnPhong_LightingNormal(pos, n, ambientBase, diffuseBase);
+    } else {
+        return BlinnPhong_LightingToon(pos, n, ambientBase, diffuseBase);
+    }
+}
+
+layout (binding = 3) uniform sampler2D Tex1;
+layout (binding = 4) uniform sampler2D Tex2;
+layout (binding = 5) uniform sampler2D NormalTex;
+
+layout (location = 0) out vec4 FragColor;
+
+//------------ UTILITY FUNCTIONS ------------//
+
+vec3 calculateColour()
+{
+
+    vec4 texColor1 =  texture(Tex1, TexCoord);
+    vec4 texColor2 =  texture(Tex2, TexCoord);
+
+    vec3 texColor = mix(texColor1.rgb, texColor2.rgb, 0.5);
+    return texColor;
+}
+
+
+
+void main() {
+    // calculates the TBN matrix
+    vec3 T = normalize(Tangent);
+    vec3 B = normalize(Bitangent);
+    vec3 N = normalize(Normal);
+    mat3 TBN = mat3(T, B, N);
+
+    // samples the normal map and transform to world space
+    vec3 normalMap = texture(NormalTex, TexCoord).rgb;
+    normalMap = normalize(normalMap * 2.0 - 1.0); // converts from [0,1] to [-1,1]
+    
+    vec3 worldNormal = normalize(TBN * normalMap);
+
+    vec3 finalTexColour = calculateColour();
+    vec3 color = applyLighting(Position, Normal, finalTexColour, finalTexColour);
+
+    FragColor = vec4(color, 1.0);
+}
