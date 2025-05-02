@@ -3,15 +3,13 @@
 in vec3 Position;
 in vec3 Normal;
 in vec2 TexCoord;
-in vec3 Tangent;
-in vec3 Bitangent;
-in vec3 VecPos;
+
 
 #include "shader/includes/lighting_common.frag"
 
-layout (binding = 3) uniform sampler2D Tex1;
-layout (binding = 4) uniform sampler2D Tex2;
-layout (binding = 5) uniform sampler2D NormalTex;
+uniform sampler2D Tex1;
+uniform sampler2D Tex2;
+uniform sampler2D NormalTex;
 
 layout (location = 0) out vec4 FragColor;
 
@@ -19,7 +17,6 @@ layout (location = 0) out vec4 FragColor;
 
 vec3 calculateColour()
 {
-
     vec4 texColor1 =  texture(Tex1, TexCoord);
     vec4 texColor2 =  texture(Tex2, TexCoord);
 
@@ -27,23 +24,42 @@ vec3 calculateColour()
     return texColor;
 }
 
+mat3 CalculateTBN()
+{
+    // gets screen-space derivatives
+    vec3 dPosX = dFdx(Position);
+    vec3 dPosY = dFdy(Position);
+    vec2 dUVX = dFdx(TexCoord);
+    vec2 dUVY = dFdy(TexCoord);
 
+    // solves for TBN matrix
+    mat3 M = mat3(dPosX, dPosY, cross(dPosX, dPosY));
+    mat3 inverseUV = inverse(mat3(vec3(dUVX, 0), vec3(dUVY, 0), vec3(0, 0, 1)));
+    mat3 TBN = M * inverseUV;
+
+    // ensures orthogonality with normal
+    vec3 N = normalize(Normal);
+    vec3 T = normalize(TBN[0] - N * dot(N, TBN[0]));
+    vec3 B = normalize(cross(N, T));
+
+    return mat3(T, B, N);
+}
 
 void main() {
-    // calculates the TBN matrix
-    vec3 T = normalize(Tangent);
-    vec3 B = normalize(Bitangent);
-    vec3 N = normalize(Normal);
-    mat3 TBN = mat3(T, B, N);
-
-    // samples the normal map and transform to world space
-    vec3 normalMap = texture(NormalTex, TexCoord).rgb;
-    normalMap = normalize(normalMap * 2.0 - 1.0); // converts from [0,1] to [-1,1]
+    // calculates TBN matrix
+    mat3 TBN = CalculateTBN();
     
-    vec3 worldNormal = normalize(TBN * normalMap);
-
-    vec3 finalTexColour = calculateColour();
-    vec3 color = applyLighting(Position, Normal, finalTexColour, finalTexColour);
-
+    // samples normal map and transform from [0,1] to [-1,1]
+    vec3 tangentNormal = texture(NormalTex, TexCoord).rgb;
+    tangentNormal = normalize(tangentNormal * 2.0 - 1.0);
+    
+    // converts normal from tangent space to VIEW space
+    vec3 viewNormal = normalize(TBN * tangentNormal);
+    
+    vec3 finalTexColor = calculateColour();
+    vec3 color = applyLighting(Position, viewNormal, finalTexColor, finalTexColor);
+    
     FragColor = vec4(color, 1.0);
+
+
 }

@@ -303,6 +303,15 @@ void post_processor::apply_post_render() {
     
     post_prog_.use();
     
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, hdr_tex_);
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, tex1_);
+
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, tex2_);
+
     // compute average luminance from the rendered HDR texture.
     compute_log_ave_luminance();
    

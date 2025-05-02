@@ -106,10 +106,7 @@ vec4 pass1() {
     normalMap = normalize(normalMap * 2.0 - 1.0);
     vec3 worldNormal;
 
-    if (DoNormalMap)
-        worldNormal = normalize(TBN * normalMap);
-    else
-        worldNormal = Normal;
+    worldNormal = Normal;
 
     if (IsTextured)
         return vec4(BlinnPhongModel(Position, worldNormal), 1.0);

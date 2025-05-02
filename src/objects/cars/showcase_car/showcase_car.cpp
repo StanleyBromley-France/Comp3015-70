@@ -104,19 +104,25 @@ void showcase_car::handle_texture_selection()
 
 void showcase_car::render(const mat4& view, const mat4& projection)
 {
-    prog_->use();
+   // prog_->use();
 
-    glActiveTexture(GL_TEXTURE3);
+    glActiveTexture(GL_TEXTURE0); // Unit 0 for Tex1
     glBindTexture(GL_TEXTURE_2D, diffuseColours[selectedColour1]);
-    glActiveTexture(GL_TEXTURE4);
+
+    glActiveTexture(GL_TEXTURE1); // Unit 1 for Tex2
     glBindTexture(GL_TEXTURE_2D, diffuseColours[selectedColour2]);
-    glActiveTexture(GL_TEXTURE5);
+
+    glActiveTexture(GL_TEXTURE2); // Unit 2 for NormalTex
     glBindTexture(GL_TEXTURE_2D, normal_);
+
 
     prog_->setUniform("Material.Kd", vec3(0.7f, 0.7f, 0.7f));
     prog_->setUniform("Material.Ks", vec3(0.9f, 0.9f, 0.9f));
     prog_->setUniform("Material.Ka", vec3(0.2f, 0.2f, 0.2f));
     prog_->setUniform("Material.Shininess", 25.f);
+
+    prog_->setUniform("TextureScaleX", 1.0f);
+    prog_->setUniform("TextureScaleY", 1.0f);
 
     // set up model matrix
     model_ = mat4(1.0f);

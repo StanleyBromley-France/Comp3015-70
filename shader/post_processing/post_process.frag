@@ -2,9 +2,9 @@
 
 in vec2 TexCoord;
 
-layout (binding = 0) uniform sampler2D HdrTex;
-layout (binding = 1) uniform sampler2D BlurTex1;
-layout (binding = 2) uniform sampler2D BlurTex2;
+uniform sampler2D HdrTex;
+uniform sampler2D BlurTex1;
+uniform sampler2D BlurTex2;
 
 
 layout (location = 0) out vec4 FragColor;
