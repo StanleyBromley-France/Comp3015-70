@@ -17,13 +17,13 @@
 #include "src/global_settings/global_settings_ubo/global_settings_ubo.h"
 
 #include "src/ui/menu/menu.h"
+#include "src/objects/skybox/scene_skybox.h"
 
 class SceneBasic_Uniform : public Scene
 {
-    Plane platform_;
     Floor floor_;
     showcase_car showcase_car_;
-    SkyBox skybox_;
+    SceneSkybox skybox_;
 
     GlobalSettingsUBO globalSettings;
     spotlight spotlight_;

@@ -2,7 +2,7 @@
 
 in vec3 VecPos;
 
-layout (binding = 6) uniform samplerCube SkyBoxTex;
+uniform samplerCube SkyBoxTex;
 
 layout (location = 0) out vec4 FragColor;
 

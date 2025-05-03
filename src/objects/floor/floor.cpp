@@ -3,7 +3,7 @@
 #include <glm/ext/matrix_transform.hpp>
 #include <iostream>
 
-Floor::Floor() : plane_(10.0f, 1, 5.0f), plane2_(500.0f, 500.0f, 1, 1) {}
+Floor::Floor() : plane_(100.0f, 1, 5.0f) {}
 
 void Floor::init(GLSLProgram& prog)
 {
@@ -13,7 +13,6 @@ void Floor::init(GLSLProgram& prog)
 	normal_ = Texture::loadTexture("media/texture/floor/normal.jpg");
 
 	model_ = glm::mat4(1.0f);
-	model_ = glm::scale(model_, glm::vec3(20.f));
 
 	model_ = glm::translate(model_, glm::vec3(0.0f, 0.0f, 0.0f));
 

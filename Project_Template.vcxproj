@@ -162,6 +162,7 @@
     <ClCompile Include="src\mesh\tileable_plane.cpp" />
     <ClCompile Include="src\objects\cars\showcase_car\showcase_car.cpp" />
     <ClCompile Include="src\objects\floor\floor.cpp" />
+    <ClCompile Include="src\objects\skybox\scene_skybox.cpp" />
     <ClCompile Include="src\rendering\post_processing\post_process_manager.cpp" />
     <ClCompile Include="src\scene_management\scene_switcher.cpp" />
     <ClCompile Include="src\shader_management\shader_include\shader_include.cpp" />
@@ -182,8 +183,8 @@
   <ItemGroup>
     <None Include="shader\basic_uniform.frag" />
     <None Include="shader\basic_uniform.vert" />
-    <None Include="shader\car\car.frag" />
-    <None Include="shader\car\car.vert" />
+    <None Include="shader\complex\complex.frag" />
+    <None Include="shader\complex\complex.vert" />
     <None Include="shader\includes\lighting_common.frag" />
     <None Include="shader\post_processing\post_process.frag" />
     <None Include="shader\post_processing\post_process.vert" />
@@ -214,7 +215,7 @@
     <ClInclude Include="src\objects\cars\showcase_car\showcase_car.h" />
     <ClInclude Include="src\objects\floor\floor.h" />
     <ClInclude Include="src\objects\object.h" />
-    <ClInclude Include="src\objects\skybox\skybox.h" />
+    <ClInclude Include="src\objects\skybox\scene_skybox.h" />
     <ClInclude Include="src\rendering\post_processing\post_process_manager.h" />
     <ClInclude Include="src\scene_management\scene_switcher.h" />
     <ClInclude Include="src\shader_management\shader_include\shader_include.h" />

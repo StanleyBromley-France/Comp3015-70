@@ -5,9 +5,7 @@
 #include <array>
 #include <iostream>
 #include <GLFW/glfw3.h>
-
 #include "glm/gtc/matrix_transform.hpp"
-#include "helper/texture.h"
 #include "camControls.h"
 #include "src/rendering/post_processing/post_process_manager.h"
 #include "src/shader_management/shader_include/shader_include.h"
@@ -24,7 +22,7 @@ using glm::mat4;
 using std::string;
 using std::cerr;
 
-SceneBasic_Uniform::SceneBasic_Uniform(): platform_(500.0f, 500.0f, 1, 1), skybox_(100.0f),
+SceneBasic_Uniform::SceneBasic_Uniform():
 		t_prev_(0), angle_(0)
 {
 }
@@ -42,19 +40,19 @@ void SceneBasic_Uniform::initScene()
 	//globalSettings.setLightingMode(1);
 	globalSettings.updateGPU();
 
-	// skybox setup
-	skyboxProg_.use();
-	GLuint cubeTex = Texture::loadCubeMap("media/texture/yokohama/yokohama", ".jpg");
-	glActiveTexture(GL_TEXTURE6);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, cubeTex);
 
 	ImGuiCore::Init(glfwGetCurrentContext());
 	ImGuiCore::BeginFrame();
 	menu.init();
 	ImGuiCore::EndFrame();
 
-	prog2_.use();
 
+	// skybox setup
+	skyboxProg_.use();
+	prog2_.setUniform("SkyBoxTex", 0);
+	skybox_.init(skyboxProg_);
+
+	prog2_.use();
 	prog2_.setUniform("Tex1", 0);
 	prog2_.setUniform("Tex2", 1);
 	prog2_.setUniform("NormalTex", 2);
@@ -73,9 +71,9 @@ void SceneBasic_Uniform::compile()
 		prog_.link();
 		prog_.use();
 
-		ShaderInclude::process("shader/car/car.frag");
-		prog2_.compileShader("shader/car/car.vert");
-		prog2_.compileShader("shader/out/car.frag");
+		ShaderInclude::process("shader/complex/complex.frag");
+		prog2_.compileShader("shader/complex/complex.vert");
+		prog2_.compileShader("shader/out/complex.frag");
 		prog2_.link();
 		prog2_.use();
 
@@ -180,18 +178,13 @@ void SceneBasic_Uniform::draw_scene() {
 	// render skybox
 
 	skyboxProg_.use();
-	model = mat4(1.0f);
-	model = glm::translate(model, vec3(0.0f, 11.0f, 0.0f));
-	set_matrices(skyboxProg_);
-	skybox_.render();
+	skybox_.render(view, projection);
 
 	// render platform
 	
 	prog2_.use();
 	showcase_car_.render(view, projection);
-
 	floor_.render(view, projection);
-
 }
 
 void SceneBasic_Uniform::resize(int w, int h)

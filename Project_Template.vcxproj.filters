@@ -126,6 +126,9 @@
     <ClCompile Include="src\mesh\tileable_plane.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\objects\skybox\scene_skybox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shader\basic_uniform.frag">
@@ -137,8 +140,8 @@
     <None Include="shader\post_processing\post_process.frag" />
     <None Include="shader\post_processing\post_process.vert" />
     <None Include="shader\includes\lighting_common.frag" />
-    <None Include="shader\car\car.frag" />
-    <None Include="shader\car\car.vert" />
+    <None Include="shader\complex\complex.frag" />
+    <None Include="shader\complex\complex.vert" />
     <None Include="shader\skybox\skybox.frag" />
     <None Include="shader\tileable\tileable.vert" />
   </ItemGroup>
@@ -209,7 +212,7 @@
     <ClInclude Include="src\shader_management\shader_include\shader_include.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\objects\skybox\skybox.h">
+    <ClInclude Include="src\objects\skybox\scene_skybox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\objects\object.h">

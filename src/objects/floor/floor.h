@@ -19,5 +19,4 @@ private:
     glm::mat4 model_;
 
     TileablePlane plane_;
-    Plane plane2_;
 };
