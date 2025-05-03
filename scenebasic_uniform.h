@@ -11,6 +11,8 @@
 #include "helper/skybox.h"
 
 #include "src/objects/cars/showcase_car/showcase_car.h"
+#include "src/objects/floor/floor.h"
+
 #include "src/global_settings/lights/spotlight/spotlight.h"
 #include "src/global_settings/global_settings_ubo/global_settings_ubo.h"
 
@@ -19,6 +21,7 @@
 class SceneBasic_Uniform : public Scene
 {
     Plane platform_;
+    Floor floor_;
     showcase_car showcase_car_;
     SkyBox skybox_;
 
@@ -27,11 +30,12 @@ class SceneBasic_Uniform : public Scene
     
     GLSLProgram prog_;
     GLSLProgram prog2_;
+    GLSLProgram skyboxProg_;
 
     float t_prev_;
     float angle_;
 
-    void set_matrices();
+    void set_matrices(GLSLProgram& prog);
     void compile();
     
     void draw_scene();

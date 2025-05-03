@@ -6,9 +6,10 @@ spotlight::spotlight()
     data_.La = glm::vec3(0.2f);
     data_.L = glm::vec3(0.6f);
     data_.Exponent = 20.0f;
-    data_.Cutoff = glm::radians(15.0f);
+    data_.Cutoff = glm::radians(10.0f);
     data_.Position = glm::vec3(0.0f);
     data_.Direction = glm::vec3(0.0f, -1.0f, 0.0f);
+
 }
 
 void spotlight::upload(GlobalSettingsUBO& globalUbo) const {

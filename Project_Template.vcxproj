@@ -159,7 +159,9 @@
     <ClCompile Include="scenebasic_uniform.cpp" />
     <ClCompile Include="src\global_settings\global_settings_ubo\global_settings_ubo.cpp" />
     <ClCompile Include="src\global_settings\lights\spotlight\spotlight.cpp" />
+    <ClCompile Include="src\mesh\tileable_plane.cpp" />
     <ClCompile Include="src\objects\cars\showcase_car\showcase_car.cpp" />
+    <ClCompile Include="src\objects\floor\floor.cpp" />
     <ClCompile Include="src\rendering\post_processing\post_process_manager.cpp" />
     <ClCompile Include="src\scene_management\scene_switcher.cpp" />
     <ClCompile Include="src\shader_management\shader_include\shader_include.cpp" />
@@ -185,6 +187,8 @@
     <None Include="shader\includes\lighting_common.frag" />
     <None Include="shader\post_processing\post_process.frag" />
     <None Include="shader\post_processing\post_process.vert" />
+    <None Include="shader\skybox\skybox.frag" />
+    <None Include="shader\tileable\tileable.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\CarGame\_core\ui_system\ui_element.h" />
@@ -206,7 +210,9 @@
     <ClInclude Include="scenebasic_uniform.h" />
     <ClInclude Include="src\global_settings\global_settings_ubo\global_settings_ubo.h" />
     <ClInclude Include="src\global_settings\lights\spotlight\spotlight.h" />
+    <ClInclude Include="src\mesh\tileable_plane.h" />
     <ClInclude Include="src\objects\cars\showcase_car\showcase_car.h" />
+    <ClInclude Include="src\objects\floor\floor.h" />
     <ClInclude Include="src\objects\object.h" />
     <ClInclude Include="src\objects\skybox\skybox.h" />
     <ClInclude Include="src\rendering\post_processing\post_process_manager.h" />

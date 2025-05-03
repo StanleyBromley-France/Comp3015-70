@@ -1,10 +1,10 @@
 //------------ DATA ------------//
 
 struct SpotLightInfo{
-    vec3 Position;
-    vec3 La;
-    vec3 L;
-    vec3 Direction;
+    vec3 Position;  float pad0;
+    vec3 La;        float pad1;
+    vec3 L;         float pad2;
+    vec3 Direction; float pad3;
     float Exponent;
     float Cutoff;
 };

@@ -120,6 +120,12 @@
     <ClCompile Include="src\ui\imgui_wrapper\imgui\imgui_widgets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\objects\floor\floor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mesh\tileable_plane.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shader\basic_uniform.frag">
@@ -133,6 +139,8 @@
     <None Include="shader\includes\lighting_common.frag" />
     <None Include="shader\car\car.frag" />
     <None Include="shader\car\car.vert" />
+    <None Include="shader\skybox\skybox.frag" />
+    <None Include="shader\tileable\tileable.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="helper\scene.h">
@@ -256,6 +264,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ui\imgui_wrapper\imgui\imstb_truetype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\objects\floor\floor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mesh\tileable_plane.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

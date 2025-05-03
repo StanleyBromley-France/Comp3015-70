@@ -7,7 +7,6 @@
 #include <GLFW/glfw3.h>
 
 #include "glm/gtc/matrix_transform.hpp"
-#include "helper/glutils.h"
 #include "helper/texture.h"
 #include "camControls.h"
 #include "src/rendering/post_processing/post_process_manager.h"
@@ -39,31 +38,30 @@ void SceneBasic_Uniform::initScene()
 	projection = mat4(1.0f);
 
 	// light settings
-
 	spotlight_.upload(globalSettings);
 	//globalSettings.setLightingMode(1);
 	globalSettings.updateGPU();
 
-	// texture
-
+	// skybox setup
+	skyboxProg_.use();
 	GLuint cubeTex = Texture::loadCubeMap("media/texture/yokohama/yokohama", ".jpg");
-
 	glActiveTexture(GL_TEXTURE6);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, cubeTex);
 
-	//prog_.setUniform("IsToonLighting", toon_shading_);
+	ImGuiCore::Init(glfwGetCurrentContext());
+	ImGuiCore::BeginFrame();
+	menu.init();
+	ImGuiCore::EndFrame();
+
+	prog2_.use();
+
+	prog2_.setUniform("Tex1", 0);
+	prog2_.setUniform("Tex2", 1);
+	prog2_.setUniform("NormalTex", 2);
 
 	showcase_car_.init(prog2_);
 
-	ImGuiCore::Init(glfwGetCurrentContext());
-
-	ImGuiCore::BeginFrame();
-
-	menu.init();
-
-	ImGuiCore::EndFrame();
-
-	post_processor::get_instance().resize(2560, 1440);
+	floor_.init(prog2_);
 }
 
 
@@ -80,6 +78,15 @@ void SceneBasic_Uniform::compile()
 		prog2_.compileShader("shader/out/car.frag");
 		prog2_.link();
 		prog2_.use();
+
+		prog2_.setUniform("TextureScaleX", 1.0f);
+		prog2_.setUniform("TextureScaleY", 1.0f);
+
+
+		skyboxProg_.compileShader("shader/basic_uniform.vert");
+		skyboxProg_.compileShader("shader/skybox/skybox.frag");
+		skyboxProg_.link();
+		skyboxProg_.use();
 	}
 	catch (GLSLProgramException& e) {
 		cerr << e.what() << '\n';
@@ -172,29 +179,19 @@ void SceneBasic_Uniform::render()
 void SceneBasic_Uniform::draw_scene() {
 	// render skybox
 
-	prog_.setUniform("IsSkyBox", true);
+	skyboxProg_.use();
 	model = mat4(1.0f);
 	model = glm::translate(model, vec3(0.0f, 11.0f, 0.0f));
-	set_matrices();
+	set_matrices(skyboxProg_);
 	skybox_.render();
 
-
 	// render platform
-
-	prog_.setUniform("Material.Kd", vec3(0.7f, 0.7f, 0.7f));
-	prog_.setUniform("Material.Ks", vec3(0.9f, 0.9f, 0.9f));
-	prog_.setUniform("Material.Ka", vec3(0.2f, 0.2f, 0.2f));
-	prog_.setUniform("Material.Shininess", 25.f);
-	prog_.setUniform("IsTextured", false);
-	prog_.setUniform("IsSkyBox", false);
-
-	model = mat4(1.0f);
-	model = glm::translate(model, vec3(0.0f, 0.0f, 0.0f));
-	set_matrices();
-	platform_.render();
 	
-
+	prog2_.use();
 	showcase_car_.render(view, projection);
+
+	floor_.render(view, projection);
+
 }
 
 void SceneBasic_Uniform::resize(int w, int h)
@@ -203,13 +200,15 @@ void SceneBasic_Uniform::resize(int w, int h)
 	height = h;
 	glViewport(0, 0, w, h);
 	projection = glm::perspective(glm::radians(70.0f), static_cast<float>(w) / h, 0.3f, 100.0f);
+
+	post_processor::get_instance().resize(w, h);
 }
 
-void SceneBasic_Uniform::set_matrices() {
+void SceneBasic_Uniform::set_matrices(GLSLProgram& prog) {
 	mat4 mv = view * model;
-	prog_.setUniform("ModelViewMatrix", mv);
-	prog_.setUniform("NormalMatrix", glm::mat3(vec3(mv[0]), vec3(mv[1]), vec3(mv[2])));
-	prog_.setUniform("MVP", projection * mv);
+	prog.setUniform("ModelViewMatrix", mv);
+	prog.setUniform("NormalMatrix", glm::mat3(vec3(mv[0]), vec3(mv[1]), vec3(mv[2])));
+	prog.setUniform("MVP", projection * mv);
 }
 
 

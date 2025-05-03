@@ -22,6 +22,41 @@ GLuint Texture::loadTexture( const std::string & fName ) {
     return tex;
 }
 
+GLuint Texture::loadTextureTileable(const std::string& fName) {
+    int width, height;
+    unsigned char* data = Texture::loadPixels(fName, width, height);
+    if (!data) return 0;
+
+    GLuint tex = 0;
+    glGenTextures(1, &tex);
+    glBindTexture(GL_TEXTURE_2D, tex);
+
+    // 1) Set wrap so it tiles
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    // 2) Set filtering (use mipmaps)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    // 3) Upload the image into level 0
+    glTexImage2D(GL_TEXTURE_2D,
+        0,                // mip level
+        GL_RGBA,          // internal format
+        width,
+        height,
+        0,                // border
+        GL_RGBA,          // source format
+        GL_UNSIGNED_BYTE,
+        data);
+
+    // 4) Generate the rest of the mip chain
+    glGenerateMipmap(GL_TEXTURE_2D);
+
+    Texture::deletePixels(data);
+    return tex;
+}
+
 void Texture::deletePixels(unsigned char *data) {
     stbi_image_free(data);
 }

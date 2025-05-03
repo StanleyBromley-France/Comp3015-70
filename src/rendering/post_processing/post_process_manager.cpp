@@ -192,15 +192,15 @@ void post_processor::setup_samplers() {
 
 	glSamplerParameteri(nearest_sampler_, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glSamplerParameteri(nearest_sampler_, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glSamplerParameteri(nearest_sampler_, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-	glSamplerParameteri(nearest_sampler_, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-	glSamplerParameterfv(nearest_sampler_, GL_TEXTURE_BORDER_COLOR, border);
+	//glSamplerParameteri(nearest_sampler_, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+	//glSamplerParameteri(nearest_sampler_, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+	//glSamplerParameterfv(nearest_sampler_, GL_TEXTURE_BORDER_COLOR, border);
 
 	glSamplerParameteri(linear_sampler_, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glSamplerParameteri(linear_sampler_, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glSamplerParameteri(linear_sampler_, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-	glSamplerParameteri(linear_sampler_, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-	glSamplerParameterfv(linear_sampler_, GL_TEXTURE_BORDER_COLOR, border);
+	//glSamplerParameteri(linear_sampler_, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+	//glSamplerParameteri(linear_sampler_, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+	//glSamplerParameterfv(linear_sampler_, GL_TEXTURE_BORDER_COLOR, border);
 
 	glBindSampler(0, nearest_sampler_);
 	glBindSampler(1, nearest_sampler_);

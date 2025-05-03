@@ -52,7 +52,7 @@ float luminance(vec3 colour) {
 
 vec4 ComputeLogLuminance() {
     vec3 hdrColor = texture(HdrTex, TexCoord).rgb;
-    float lum = dot(hdrColor, vec3(0.2126, 0.7152, 0.0722));
+    float lum = 1.0; //dot(hdrColor, vec3(0.2126, 0.7152, 0.0722));
     return vec4(log(lum + 0.00001), 0.0, 0.0, 1.0);
 }
 
