@@ -16,6 +16,8 @@ private:
     GLSLProgram* prog_;
     GLuint normal_;
     GLuint diffuse_;
+
+
     glm::mat4 model_;
 
     TileablePlane plane_;

@@ -4,12 +4,16 @@ in vec3 Position;
 in vec3 Normal;
 in vec2 TexCoord;
 
+#include "shader/includes/global_data.frag"
 
-#include "shader/includes/lighting_common.frag"
+#include "shader/includes/blinnPhong_lighting.frag"
+
 
 uniform sampler2D Tex1;
 uniform sampler2D Tex2;
 uniform sampler2D NormalTex;
+
+
 
 layout (location = 0) out vec4 FragColor;
 
@@ -45,6 +49,17 @@ mat3 CalculateTBN()
     return mat3(T, B, N);
 }
 
+
+// applies lighting based on global var
+vec3 applyLighting(vec3 pos, vec3 n, vec3 ambientBase, vec3 diffuseBase) 
+{
+    if (globalSettings.lightingMode == 0) {
+        return BlinnPhong_LightingNormal(pos, n, ambientBase, diffuseBase);
+    } else {
+        return BlinnPhong_LightingToon(pos, n, ambientBase, diffuseBase);
+    }
+}
+
 void main() {
     // calculates TBN matrix
     mat3 TBN = CalculateTBN();
@@ -60,5 +75,4 @@ void main() {
     vec3 color = applyLighting(Position, viewNormal, finalTexColor, finalTexColor);
     
     FragColor = vec4(color, 1.0);
-    //FragColor = vec4(fract(TexCoord.x), fract(TexCoord.y), 0.0, 1.0);
 }

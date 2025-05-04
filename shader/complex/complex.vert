@@ -18,7 +18,7 @@ uniform float TextureScaleY;
 
 void main()
 {
-    TexCoord = VertexTexCoord;// * vec2(TextureScaleX, TextureScaleY);
+    TexCoord = VertexTexCoord;
     Normal = normalize(NormalMatrix * VertexNormal);
     Position = (ModelViewMatrix * vec4(VertexPosition, 1.0)).xyz;
     gl_Position = MVP * vec4(VertexPosition, 1.0);

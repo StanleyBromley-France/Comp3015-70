@@ -56,6 +56,9 @@ void SceneBasic_Uniform::initScene()
 	prog2_.setUniform("Tex1", 0);
 	prog2_.setUniform("Tex2", 1);
 	prog2_.setUniform("NormalTex", 2);
+	prog2_.setUniform("RoughnessTex", 3);
+	prog2_.setUniform("AOTex", 4);
+
 
 	showcase_car_.init(prog2_);
 

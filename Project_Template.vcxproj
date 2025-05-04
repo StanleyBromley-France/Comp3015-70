@@ -185,7 +185,9 @@
     <None Include="shader\basic_uniform.vert" />
     <None Include="shader\complex\complex.frag" />
     <None Include="shader\complex\complex.vert" />
-    <None Include="shader\includes\lighting_common.frag" />
+    <None Include="shader\includes\pbr_lighting.frag" />
+    <None Include="shader\includes\global_data.frag" />
+    <None Include="shader\includes\blinnPhong_lighting.frag" />
     <None Include="shader\post_processing\post_process.frag" />
     <None Include="shader\post_processing\post_process.vert" />
     <None Include="shader\skybox\skybox.frag" />

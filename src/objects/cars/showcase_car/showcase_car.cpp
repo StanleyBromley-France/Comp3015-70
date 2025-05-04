@@ -115,7 +115,6 @@ void showcase_car::render(const mat4& view, const mat4& projection)
     glActiveTexture(GL_TEXTURE2); // Unit 2 for NormalTex
     glBindTexture(GL_TEXTURE_2D, normal_);
 
-
     prog_->setUniform("Material.Kd", vec3(0.7f, 0.7f, 0.7f));
     prog_->setUniform("Material.Ks", vec3(0.9f, 0.9f, 0.9f));
     prog_->setUniform("Material.Ka", vec3(0.2f, 0.2f, 0.2f));
@@ -135,6 +134,9 @@ void showcase_car::render(const mat4& view, const mat4& projection)
     prog_->setUniform("ModelViewMatrix", mv);
     prog_->setUniform("NormalMatrix", mat3(vec3(mv[0]), vec3(mv[1]), vec3(mv[2])));
     prog_->setUniform("MVP", projection * mv);
+
+    prog_->setUniform("useSpecular", true);
+
 
     car_->render();
 }

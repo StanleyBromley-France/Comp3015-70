@@ -1,37 +1,10 @@
 //------------ DATA ------------//
 
-struct SpotLightInfo{
-    vec3 Position;  float pad0;
-    vec3 La;        float pad1;
-    vec3 L;         float pad2;
-    vec3 Direction; float pad3;
-    float Exponent;
-    float Cutoff;
-};
-
-struct MaterialInfo {
-    vec3 Kd;
-    vec3 Ka;
-    vec3 Ks;
-    float Shininess;
-};
-
 struct SpotlightParams {
     vec3 s;
     float cosAng;
     float spotScale;
 };
-
-//------------ UNIFORMS ------------//
-
-uniform MaterialInfo Material;
-
-layout(std140, binding = 0) uniform GlobalSettings {
-    SpotLightInfo Spotlight;
-
-    int   lightingMode;
-    vec3  pad6;
-} globalSettings;
 
 //------------ TOON SHADING VARS ------------//
 
@@ -57,6 +30,8 @@ SpotlightParams computeSpotlightParams(vec3 pos) {
     
     return params;
 }
+
+uniform bool useSpecular;
 
 vec3 calculateSpecular(vec3 pos, vec3 s, vec3 n) {
     vec3 v = normalize(-pos);
@@ -84,7 +59,7 @@ vec3 BlinnPhong_LightingNormal(
     if (params.spotScale > 0.0) {
         float sDotN = max(dot(params.s, n), 0.0);
         vec3 diffuse = diffuseBase * sDotN;
-        vec3 spec = (sDotN > 0.0) ? calculateSpecular(pos, params.s, n) : vec3(0.0);
+        vec3 spec = (useSpecular && sDotN > 0.0) ? calculateSpecular(pos, params.s, n) : vec3(0.0);
         return computeFinalColor(ambient, params.spotScale, diffuse, spec);
     }
     
@@ -110,14 +85,4 @@ vec3 BlinnPhong_LightingToon(
     }
     
     return ambient;
-}
-
-// applies lighting based on global var
-vec3 applyLighting(vec3 pos, vec3 n, vec3 ambientBase, vec3 diffuseBase) 
-{
-    if (globalSettings.lightingMode == 0) {
-        return BlinnPhong_LightingNormal(pos, n, ambientBase, diffuseBase);
-    } else {
-        return BlinnPhong_LightingToon(pos, n, ambientBase, diffuseBase);
-    }
 }

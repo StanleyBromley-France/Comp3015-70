@@ -19,13 +19,11 @@ private:
     void handle_texture_selection();
 
     // rot settings
-
     float rotation_speed;
     bool play_animation_ = true;
     bool space_key_pressed_ = false;
     bool is_negative_ = false;
     double last_frame_time_; 
-
 
     GLuint normal_;
 
