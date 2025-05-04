@@ -8,7 +8,6 @@ uniform sampler2D BlurTex2;
 
 
 layout (location = 0) out vec4 FragColor;
-layout (location = 1) out vec3 HdrColor;
 
 //------------ TONE MAPPING PARAMS ------------//
 
@@ -108,11 +107,12 @@ vec4 ApplyToneMapping() {
 
     // converts back to RGB
     vec3 toneMappedRGB = xyz2rgb * xyz;
-    vec4 toneMapColor = vec4(toneMappedRGB, 1.0);
+    vec4 toneMapColor = vec4(toneMappedRGB, hdrColor.a);
 
     // adds blurred bloom texture
     vec4 bloom = texture(BlurTex1, TexCoord);
-    return toneMapColor + bloom;
+    //return toneMapColor + bloom;
+    return vec4(toneMapColor.rgb + bloom.rgb, toneMapColor.a);
 }
 
 //------------ MAIN ------------//
@@ -132,7 +132,9 @@ void main() {
             FragColor = HorizontalBlur();
             break;
         case 5:
-            FragColor = vec4(pow(vec3(ApplyToneMapping()), vec3(1.0 / Gamma)), 1.0);
+            vec4 color = ApplyToneMapping();
+            color.rgb = pow(color.rgb, vec3(1.0 / Gamma));
+            FragColor = color;
             break;
         default:
             FragColor = vec4(0.0);

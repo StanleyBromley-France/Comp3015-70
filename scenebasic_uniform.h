@@ -3,12 +3,7 @@
 
 #include "helper/scene.h"
 
-#include <glad/glad.h>
 #include "helper/glslprogram.h"
-
-#include "helper/plane.h"
-#include "helper/objmesh.h"
-#include "helper/skybox.h"
 
 #include "src/objects/cars/showcase_car/showcase_car.h"
 #include "src/objects/floor/floor.h"
@@ -18,12 +13,17 @@
 
 #include "src/ui/menu/menu.h"
 #include "src/objects/skybox/scene_skybox.h"
+#include "src/global_settings/lights/particle_spawner/particle_spawner.h"
 
 class SceneBasic_Uniform : public Scene
 {
     Floor floor_;
     showcase_car showcase_car_;
     SceneSkybox skybox_;
+
+    GLuint particleTex_;
+    ParticleSpawner spawner_;
+    GLSLProgram spawnerProg_;
 
     GlobalSettingsUBO globalSettings;
     spotlight spotlight_;

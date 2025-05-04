@@ -158,6 +158,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="scenebasic_uniform.cpp" />
     <ClCompile Include="src\global_settings\global_settings_ubo\global_settings_ubo.cpp" />
+    <ClCompile Include="src\global_settings\lights\particle_spawner\particle_spawner.cpp" />
     <ClCompile Include="src\global_settings\lights\spotlight\spotlight.cpp" />
     <ClCompile Include="src\mesh\tileable_plane.cpp" />
     <ClCompile Include="src\objects\cars\showcase_car\showcase_car.cpp" />
@@ -185,7 +186,6 @@
     <None Include="shader\basic_uniform.vert" />
     <None Include="shader\complex\complex.frag" />
     <None Include="shader\complex\complex.vert" />
-    <None Include="shader\includes\pbr_lighting.frag" />
     <None Include="shader\includes\global_data.frag" />
     <None Include="shader\includes\blinnPhong_lighting.frag" />
     <None Include="shader\post_processing\post_process.frag" />
@@ -201,7 +201,9 @@
     <ClInclude Include="helper\glslprogram.h" />
     <ClInclude Include="helper\glutils.h" />
     <ClInclude Include="helper\objmesh.h" />
+    <ClInclude Include="helper\particleutils.h" />
     <ClInclude Include="helper\plane.h" />
+    <ClInclude Include="helper\random.h" />
     <ClInclude Include="helper\scene.h" />
     <ClInclude Include="helper\scenerunner.h" />
     <ClInclude Include="helper\skybox.h" />
@@ -212,6 +214,7 @@
     <ClInclude Include="helper\utils.h" />
     <ClInclude Include="scenebasic_uniform.h" />
     <ClInclude Include="src\global_settings\global_settings_ubo\global_settings_ubo.h" />
+    <ClInclude Include="src\global_settings\lights\particle_spawner\particle_spawner.h" />
     <ClInclude Include="src\global_settings\lights\spotlight\spotlight.h" />
     <ClInclude Include="src\mesh\tileable_plane.h" />
     <ClInclude Include="src\objects\cars\showcase_car\showcase_car.h" />

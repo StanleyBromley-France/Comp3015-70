@@ -77,7 +77,7 @@ void post_processor::setup_fbo() {
 	glGenTextures(1, &hdr_tex_);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, hdr_tex_);
-	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGB32F, width_, height_);
+	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA32F, width_, height_);
 	// Bind the texture to the FBO
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, hdr_tex_, 0);
 	// Create the depth buffer
@@ -101,11 +101,11 @@ void post_processor::setup_fbo() {
 	glGenTextures(1, &tex1_);
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, tex1_);
-	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGB32F, bloom_buf_width_, bloom_buf_height_);
+	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA32F, bloom_buf_width_, bloom_buf_height_);
 	glActiveTexture(GL_TEXTURE2);
 	glGenTextures(1, &tex2_);
 	glBindTexture(GL_TEXTURE_2D, tex2_);
-	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGB32F, bloom_buf_width_, bloom_buf_height_);
+	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA32F, bloom_buf_width_, bloom_buf_height_);
 	// Bind tex1 to the FBO
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, tex1_, 0);
 	glDrawBuffers(1, drawBuffers);
@@ -219,7 +219,7 @@ void post_processor::begin_scene_capture() const
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, hdr_fbo_);
 	glViewport(0, 0, width_, height_);
-	glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
 }

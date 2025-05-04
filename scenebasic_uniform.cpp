@@ -12,6 +12,7 @@
 #include "src/ui/imgui_wrapper/imgui_core.h"
 
 #include "src/window/window.h"
+#include "helper/texture.h"
 
 
 using glm::vec3;
@@ -63,6 +64,19 @@ void SceneBasic_Uniform::initScene()
 	showcase_car_.init(prog2_);
 
 	floor_.init(prog2_);
+
+	spawnerProg_.use();
+
+	particleTex_ = Texture::loadTexture("media/texture/particles/spark.png");
+
+	spawner_.init(spawnerProg_,
+		particleTex_,
+		500,
+		2,
+		vec3(0,0,0),
+		glm::vec3(0.f, 1.0f, 0.f),
+		1.f);
+
 }
 
 
@@ -80,14 +94,15 @@ void SceneBasic_Uniform::compile()
 		prog2_.link();
 		prog2_.use();
 
-		prog2_.setUniform("TextureScaleX", 1.0f);
-		prog2_.setUniform("TextureScaleY", 1.0f);
-
-
 		skyboxProg_.compileShader("shader/basic_uniform.vert");
 		skyboxProg_.compileShader("shader/skybox/skybox.frag");
 		skyboxProg_.link();
 		skyboxProg_.use();
+
+		spawnerProg_.compileShader("shader/particles/particle.frag");
+		spawnerProg_.compileShader("shader/particles/particle.vert");
+		spawnerProg_.link();
+		spawnerProg_.use();
 	}
 	catch (GLSLProgramException& e) {
 		cerr << e.what() << '\n';
@@ -154,6 +169,14 @@ void SceneBasic_Uniform::update(float t)
 
 	menu.update();
 
+
+	if (Window::isKeyPressedOnce(GLFW_KEY_W)) {
+		spawner_.fire(t);
+	}
+
+	// advance particle time
+	spawner_.update(t);
+
 	Window::updateKeyState();
 }
 
@@ -188,6 +211,10 @@ void SceneBasic_Uniform::draw_scene() {
 	prog2_.use();
 	showcase_car_.render(view, projection);
 	floor_.render(view, projection);
+
+	spawnerProg_.use();
+
+	spawner_.render(view, projection);
 }
 
 void SceneBasic_Uniform::resize(int w, int h)

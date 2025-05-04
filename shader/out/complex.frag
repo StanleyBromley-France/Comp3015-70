@@ -189,5 +189,4 @@ void main() {
     vec3 color = applyLighting(Position, viewNormal, finalTexColor, finalTexColor);
     
     FragColor = vec4(color, 1.0);
-    //FragColor = vec4(fract(TexCoord.x), fract(TexCoord.y), 0.0, 1.0);
 }

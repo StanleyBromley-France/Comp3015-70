@@ -129,6 +129,9 @@
     <ClCompile Include="src\objects\skybox\scene_skybox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\global_settings\lights\particle_spawner\particle_spawner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shader\basic_uniform.frag">
@@ -145,7 +148,6 @@
     <None Include="shader\skybox\skybox.frag" />
     <None Include="shader\tileable\tileable.vert" />
     <None Include="shader\includes\global_data.frag" />
-    <None Include="shader\includes\pbr_lighting.frag" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="helper\scene.h">
@@ -275,6 +277,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\mesh\tileable_plane.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\global_settings\lights\particle_spawner\particle_spawner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="helper\random.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="helper\particleutils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
