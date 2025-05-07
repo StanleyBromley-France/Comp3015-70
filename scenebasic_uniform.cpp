@@ -51,19 +51,13 @@ void SceneBasic_Uniform::initScene()
 	// skybox setup
 	skyboxProg_.use();
 	prog2_.setUniform("SkyBoxTex", 0);
-	skybox_.init(skyboxProg_);
+	skybox_.init();
 
 	prog2_.use();
-	prog2_.setUniform("Tex1", 0);
-	prog2_.setUniform("Tex2", 1);
-	prog2_.setUniform("NormalTex", 2);
-	prog2_.setUniform("RoughnessTex", 3);
-	prog2_.setUniform("AOTex", 4);
 
+	showcase_car_.init();
 
-	showcase_car_.init(prog2_);
-
-	floor_.init(prog2_);
+	floor_.init();
 
 	spawnerProg_.use();
 
@@ -204,13 +198,13 @@ void SceneBasic_Uniform::draw_scene() {
 	// render skybox
 
 	skyboxProg_.use();
-	skybox_.render(view, projection);
+	skybox_.render(view, projection, skyboxProg_);
 
 	// render platform
 	
 	prog2_.use();
-	showcase_car_.render(view, projection);
-	floor_.render(view, projection);
+	showcase_car_.render(view, projection, prog2_);
+	floor_.render(view, projection, prog2_);
 
 	spawnerProg_.use();
 

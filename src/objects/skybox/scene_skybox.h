@@ -7,12 +7,11 @@ class SceneSkybox : Object
 {
 public:
     SceneSkybox();
-    void init(GLSLProgram& prog) override;
+    void init() override;
     void update(float t) override;
-    void render(const glm::mat4& view, const glm::mat4& projection) override;
+    void render(const glm::mat4& view, const glm::mat4& projection, GLSLProgram& prog) override;
 private:
     GLSLProgram* prog_;
     SkyBox skybox_;
     GLuint tex_;
-    glm::mat4 model_;
 };

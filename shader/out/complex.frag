@@ -122,9 +122,10 @@ vec3 BlinnPhong_LightingToon(
     return ambient;
 }
 
+#define MAX_TEXTURES 5
+uniform sampler2D albedoArray[MAX_TEXTURES];
+uniform int numTextures;
 
-uniform sampler2D Tex1;
-uniform sampler2D Tex2;
 uniform sampler2D NormalTex;
 
 
@@ -135,11 +136,20 @@ layout (location = 0) out vec4 FragColor;
 
 vec3 calculateColour()
 {
-    vec4 texColor1 =  texture(Tex1, TexCoord);
-    vec4 texColor2 =  texture(Tex2, TexCoord);
-
-    vec3 texColor = mix(texColor1.rgb, texColor2.rgb, 0.5);
-    return texColor;
+    if (numTextures == 0) return vec3(0.0); // Handle empty case
+    
+    vec4 result = texture(albedoArray[0], TexCoord);
+    
+    for(int i = 1; i < numTextures; i++) {
+        // Ensure we don't exceed array bounds
+        if (i >= MAX_TEXTURES) break;
+        
+        vec4 next = texture(albedoArray[i], TexCoord);
+        float weight = 1.0 / float(i + 1);
+        result = mix(result, next, weight);
+    }
+    
+    return result.rgb;
 }
 
 mat3 CalculateTBN()

@@ -9,16 +9,9 @@ class Floor : Object
 {
 public:
     Floor();
-    void init(GLSLProgram& prog) override;
+    void init() override;
     void update(float t) override;
-    void render(const glm::mat4& view, const glm::mat4& projection) override;
+    void render(const glm::mat4& view, const glm::mat4& projection, GLSLProgram& prog) override;
 private:
-    GLSLProgram* prog_;
-    GLuint normal_;
-    GLuint diffuse_;
-
-
-    glm::mat4 model_;
-
     TileablePlane plane_;
 };

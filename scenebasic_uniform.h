@@ -18,7 +18,7 @@
 class SceneBasic_Uniform : public Scene
 {
     Floor floor_;
-    showcase_car showcase_car_;
+    ShowcaseCar showcase_car_;
     SceneSkybox skybox_;
 
     GLuint particleTex_;

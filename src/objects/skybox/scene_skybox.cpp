@@ -9,28 +9,24 @@ using glm::mat4;
 
 SceneSkybox::SceneSkybox() : skybox_(100.0f){}
 
-void SceneSkybox::init(GLSLProgram& prog)
+void SceneSkybox::init()
 {
-	prog_ = &prog;
 	tex_ = Texture::loadCubeMap("media/texture/yokohama/yokohama", ".jpg");
 
-	model_ = mat4(1.0f);
-	model_ = glm::translate(model_, vec3(0.0f, 11.0f, 0.0f));
+	modelMatrix_ = mat4(1.0f);
+	modelMatrix_ = glm::translate(modelMatrix_, vec3(0.0f, 11.0f, 0.0f));
 }
 
 void SceneSkybox::update(float t)
 {
 }
 
-void SceneSkybox::render(const glm::mat4& view, const glm::mat4& projection)
+void SceneSkybox::render(const glm::mat4& view, const glm::mat4& projection, GLSLProgram& prog)
 {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, tex_);
 
-	mat4 mv = view * model_;
-	prog_->setUniform("ModelViewMatrix", mv);
-	prog_->setUniform("NormalMatrix", glm::mat3(glm::vec3(mv[0]), glm::vec3(mv[1]), glm::vec3(mv[2])));
-	prog_->setUniform("MVP", projection * mv);
+	apply_model_matrix(prog, view, projection);
 
 	skybox_.render();
 }
