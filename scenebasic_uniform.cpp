@@ -26,39 +26,22 @@ using std::cerr;
 SceneBasic_Uniform::SceneBasic_Uniform():
 		t_prev_(0), angle_(0)
 {
+	model = mat4(1.0f);
+	view = CamControls::getViewMatrix();
+	projection = mat4(1.0f);
 }
 
 void SceneBasic_Uniform::initScene()
 {
-	compile();
-	glEnable(GL_DEPTH_TEST);
-	model = mat4(1.0f);
-	view = CamControls::getViewMatrix();
-	projection = mat4(1.0f);
+	compile_shaders();
+	init_ui();
 
-	// light settings
-	spotlight_.upload(globalSettings);
-	//globalSettings.setLightingMode(1);
-	globalSettings.updateGPU();
-
-
-	ImGuiCore::Init(glfwGetCurrentContext());
-	ImGuiCore::BeginFrame();
-	menu.init();
-	ImGuiCore::EndFrame();
-
-
-	// skybox setup
+	// skybox setup -------
 	skyboxProg_.use();
 	prog2_.setUniform("SkyBoxTex", 0);
 	skybox_.init();
 
-	prog2_.use();
-
-	showcase_car_.init();
-
-	floor_.init();
-
+	// spawner setup ---------
 	spawnerProg_.use();
 
 	particleTex_ = Texture::loadTexture("media/texture/particles/spark.png");
@@ -71,10 +54,18 @@ void SceneBasic_Uniform::initScene()
 		glm::vec3(0.f, 1.0f, 0.f),
 		1.f);
 
+
+	// object setup ---------------
+
+	objects_.emplace_back(new ShowcaseCar());
+	objects_.emplace_back(new Floor());
+
+	for (auto& obj : objects_)
+		obj->init();
 }
 
 
-void SceneBasic_Uniform::compile()
+void SceneBasic_Uniform::compile_shaders()
 {
 	try {
 		prog_.compileShader("shader/basic_uniform.vert");
@@ -104,6 +95,14 @@ void SceneBasic_Uniform::compile()
 	}
 }
 
+void SceneBasic_Uniform::init_ui()
+{
+	ImGuiCore::Init(glfwGetCurrentContext());
+	ImGuiCore::BeginFrame();
+	menu.init();
+	ImGuiCore::EndFrame();
+}
+
 void SceneBasic_Uniform::update(float t)
 {
 	// update light pos
@@ -116,34 +115,9 @@ void SceneBasic_Uniform::update(float t)
 	angle_ += rotationSpeed * deltaT;
 	if (angle_ > glm::two_pi<float>()) angle_ -= glm::two_pi<float>();
 	
-	// toon shading toggle
-	static bool tKeyPressed = false;
-	if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_T) == GLFW_PRESS) {
-		if (!tKeyPressed) {
-			toon_shading_ = !toon_shading_; // Toggle toonShading
-			tKeyPressed = true; // Mark key as pressed
-			prog_.setUniform("IsToonLighting", toon_shading_);
+	for (auto& obj : objects_)
+		obj->update(t);
 
-		}
-	}
-	else {
-		tKeyPressed = false;
-	}
-	
-	// normal map toggle
-	static bool nKeyPressed = false;
-	if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_N) == GLFW_PRESS) {
-		if (!nKeyPressed) {
-			nKeyPressed = true;
-			normal_mode_ = !normal_mode_;
-			prog_.setUniform("DoNormalMap", normal_mode_);
-		}
-	}
-	else {
-		nKeyPressed = false;
-	}
-
-	showcase_car_.update(t);
 
 	// Light position: Rotate diagonally around the origin
 
@@ -199,15 +173,13 @@ void SceneBasic_Uniform::draw_scene() {
 
 	skyboxProg_.use();
 	skybox_.render(view, projection, skyboxProg_);
-
-	// render platform
 	
 	prog2_.use();
-	showcase_car_.render(view, projection, prog2_);
-	floor_.render(view, projection, prog2_);
+	for (auto& obj : objects_)
+		obj->render(view, projection, prog2_);
 
+	// render spawner
 	spawnerProg_.use();
-
 	spawner_.render(view, projection);
 }
 

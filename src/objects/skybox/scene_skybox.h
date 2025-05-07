@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../object.h"
+#include "../scene_object.h"
 #include "../../../helper/skybox.h"
 
-class SceneSkybox : Object 
+class SceneSkybox : SceneObject 
 {
 public:
     SceneSkybox();

@@ -1,11 +1,11 @@
-#include "object.h"
+#include "scene_object.h"
 #include "../../helper/glslprogram.h"
 
-const int Object::MAX_TEXTURES = 5;
-const int Object::ALBEDO_START = 0;
-const int Object::NORMAL_START = ALBEDO_START + MAX_TEXTURES;
+const int SceneObject::MAX_TEXTURES = 5;
+const int SceneObject::ALBEDO_START = 0;
+const int SceneObject::NORMAL_START = ALBEDO_START + MAX_TEXTURES;
 
-void Object::applyMat(GLSLProgram& prog)
+void SceneObject::applyMat(GLSLProgram& prog)
 {
     prog.setUniform("Material.Kd", mat.Kd);
     prog.setUniform("Material.Ks", mat.Ks);
@@ -13,7 +13,7 @@ void Object::applyMat(GLSLProgram& prog)
     prog.setUniform("Material.Shininess", mat.Shininess);
 }
 
-void Object::apply_model_matrix(GLSLProgram& prog, const glm::mat4& view, const glm::mat4& projection)
+void SceneObject::apply_model_matrix(GLSLProgram& prog, const glm::mat4& view, const glm::mat4& projection)
 {
 
     glm::mat4 mv = view * modelMatrix_;
@@ -23,7 +23,7 @@ void Object::apply_model_matrix(GLSLProgram& prog, const glm::mat4& view, const 
     prog.setUniform("useSpecular", true);
 }
 
-void Object::apply_textures(GLSLProgram& prog)
+void SceneObject::apply_textures(GLSLProgram& prog)
 {
     int N = static_cast<int>(albedoTextures_.size());
 

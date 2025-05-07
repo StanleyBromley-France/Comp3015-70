@@ -163,7 +163,7 @@
     <ClCompile Include="src\mesh\tileable_plane.cpp" />
     <ClCompile Include="src\objects\cars\showcase_car\showcase_car.cpp" />
     <ClCompile Include="src\objects\floor\floor.cpp" />
-    <ClCompile Include="src\objects\object.cpp" />
+    <ClCompile Include="src\objects\scene_object.cpp" />
     <ClCompile Include="src\objects\skybox\scene_skybox.cpp" />
     <ClCompile Include="src\rendering\post_processing\post_process_manager.cpp" />
     <ClCompile Include="src\scene_management\scene_switcher.cpp" />
@@ -220,7 +220,8 @@
     <ClInclude Include="src\mesh\tileable_plane.h" />
     <ClInclude Include="src\objects\cars\showcase_car\showcase_car.h" />
     <ClInclude Include="src\objects\floor\floor.h" />
-    <ClInclude Include="src\objects\object.h" />
+    <ClInclude Include="src\objects\lights\spotlight_object.h" />
+    <ClInclude Include="src\objects\scene_object.h" />
     <ClInclude Include="src\objects\skybox\scene_skybox.h" />
     <ClInclude Include="src\rendering\post_processing\post_process_manager.h" />
     <ClInclude Include="src\scene_management\scene_switcher.h" />

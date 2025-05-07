@@ -14,40 +14,31 @@
 #include "src/ui/menu/menu.h"
 #include "src/objects/skybox/scene_skybox.h"
 #include "src/global_settings/lights/particle_spawner/particle_spawner.h"
+#include "src/objects/scene_object.h"
 
 class SceneBasic_Uniform : public Scene
 {
-    Floor floor_;
-    ShowcaseCar showcase_car_;
+    std::vector<std::unique_ptr<SceneObject>> objects_;
+
+    GLSLProgram prog_, prog2_, skyboxProg_, spawnerProg_;
     SceneSkybox skybox_;
 
     GLuint particleTex_;
     ParticleSpawner spawner_;
-    GLSLProgram spawnerProg_;
 
     GlobalSettingsUBO globalSettings;
     spotlight spotlight_;
     
-    GLSLProgram prog_;
-    GLSLProgram prog2_;
-    GLSLProgram skyboxProg_;
-
     float t_prev_;
     float angle_;
 
     void set_matrices(GLSLProgram& prog);
-    void compile();
-    
+    void compile_shaders();
+    void init_ui();
     void draw_scene();
 
-    // customisation settings
-
-    bool toon_shading_ = false;
-    bool hdr_mode_ = true;
-    bool normal_mode_ = true;
 
     // ui
-
     Menu menu;
 
 public:

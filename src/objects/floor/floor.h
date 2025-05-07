@@ -1,11 +1,11 @@
 #pragma once
-#include "../object.h"
+#include "../scene_object.h"
 
 #include "../../../helper/plane.h"
 #include "../../../helper/glslprogram.h"
 #include "../../mesh/tileable_plane.h"
 
-class Floor : Object 
+class Floor : public SceneObject
 {
 public:
     Floor();

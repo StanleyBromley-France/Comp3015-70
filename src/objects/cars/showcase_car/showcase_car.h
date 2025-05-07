@@ -1,8 +1,8 @@
 ﻿#pragma once
 #include "../../../../helper/objmesh.h"
 #include "../../../../helper/glslprogram.h"
-#include "../../object.h"
-class ShowcaseCar : Object
+#include "../../scene_object.h"
+class ShowcaseCar : public SceneObject
 {
 public:
     void init() override;
