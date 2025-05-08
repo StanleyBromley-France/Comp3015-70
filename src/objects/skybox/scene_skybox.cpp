@@ -30,3 +30,7 @@ void SceneSkybox::render(const glm::mat4& view, const glm::mat4& projection, GLS
 
 	skybox_.render();
 }
+
+void SceneSkybox::renderDepth(GLSLProgram& prog)
+{
+}

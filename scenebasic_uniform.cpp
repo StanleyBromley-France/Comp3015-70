@@ -2,7 +2,6 @@
 
 #include <cstdlib>
 #include <string>
-#include <array>
 #include <iostream>
 #include <GLFW/glfw3.h>
 #include "glm/gtc/matrix_transform.hpp"
@@ -12,7 +11,6 @@
 #include "src/ui/imgui_wrapper/imgui_core.h"
 
 #include "src/window/window.h"
-#include "helper/texture.h"
 #include "src/objects/decos/spotlight_point.h"
 #include "src/ui/menu/menu.h"
 #include "src/objects/floor/floor.h"
@@ -50,7 +48,6 @@ void SceneBasic_Uniform::initScene()
 	complexProg_.setUniform("SkyBoxTex", 0);
 	skybox_.init();
 
-
 	// common object setup
 	auto spotlight = std::make_shared<SpotlightPoint>();
 	auto particlePoint = std::make_shared<ParticlePoint>();
@@ -75,6 +72,9 @@ void SceneBasic_Uniform::initScene()
 
 	// light setup -------
 	lightObjs_.push_back(spotlight);
+
+	for (auto& obj : lightObjs_)
+		obj->initShadowMap();
 }
 
 
@@ -96,6 +96,10 @@ void SceneBasic_Uniform::compile_shaders()
 		particleProg_.compileShader("shader/particles/particle.vert");
 		particleProg_.link();
 		particleProg_.use();
+
+		depthProg_.compileShader("shader/depth/depth.vert");
+		depthProg_.compileShader("shader/depth/depth.frag");
+		depthProg_.link();
 	}
 	catch (GLSLProgramException& e) {
 		cerr << e.what() << '\n';
@@ -111,6 +115,39 @@ void SceneBasic_Uniform::init_ui()
 	for (auto& ui : uiElements_)
 		ui->init();
 	ImGuiCore::EndFrame();
+}
+
+void SceneBasic_Uniform::draw_shadow_maps()
+{
+	depthProg_.use();
+
+	for (auto& light : lightObjs_) {
+		light->calculate_light_space_matrix();
+
+		glEnable(GL_DEPTH_TEST);
+		glDisable(GL_CULL_FACE);
+		glDepthMask(GL_TRUE);
+		glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+		glBindFramebuffer(GL_FRAMEBUFFER, light->get_shadow_fbo());
+		glViewport(0, 0, light->get_shadow_res(), light->get_shadow_res());
+
+		glDrawBuffer(GL_NONE);
+		glReadBuffer(GL_NONE);
+		glClear(GL_DEPTH_BUFFER_BIT);
+
+		depthProg_.setUniform("lightSpaceMatrix", light->get_light_space_matrix());
+
+		for (auto& obj : complexObjs_) {
+			obj->renderDepth(depthProg_);
+		}
+
+		glFlush();
+		glFinish();
+	}
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glViewport(0, 0, width, height);
+	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 }
 
 void SceneBasic_Uniform::update(float t)
@@ -135,6 +172,8 @@ void SceneBasic_Uniform::update(float t)
 
 void SceneBasic_Uniform::render()
 {
+	draw_shadow_maps();
+
 	post_processor::get_instance().begin_scene_capture();
 
 	draw_scene();
@@ -148,7 +187,7 @@ void SceneBasic_Uniform::draw_scene() {
 
 	//render lights
 	for (auto& obj : lightObjs_)
-		obj->renderLight(view, projection);
+		obj->render_light(view, projection);
 
 	// render skybox
 	skyboxProg_.use();
@@ -156,6 +195,7 @@ void SceneBasic_Uniform::draw_scene() {
 	
 	// render complex
 	complexProg_.use();
+
 	for (auto& obj : complexObjs_)
 		obj->render(view, projection, complexProg_);
 
@@ -170,6 +210,14 @@ void SceneBasic_Uniform::draw_ui()
 	ImGuiCore::BeginFrame();
 	for (auto& ui : uiElements_)
 		ui->render();
+
+	GLuint shadow_rgba = converter.convert(lightObjs_[0]->get_shadow_tex());
+
+	ImGui::Begin("ShadowMap Debug");
+	ImGui::Text("Light 0");
+	ImGui::Image(shadow_rgba, ImVec2(256, 256), ImVec2(0, 1), ImVec2(1, 0));
+	ImGui::End();
+
 	ImGuiCore::EndFrame();
 }
 

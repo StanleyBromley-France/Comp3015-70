@@ -13,6 +13,7 @@ public:
 	void init() override;
 	void update(float t) override;
 	void render(const glm::mat4& view, const glm::mat4& projection, GLSLProgram& prog) override;
+	void renderDepth(GLSLProgram& depthProg) override;
 	void renderParticles(const glm::mat4& view, const glm::mat4& projection, GLSLProgram& prog) override;
 private:
 	GLuint particleTex_;

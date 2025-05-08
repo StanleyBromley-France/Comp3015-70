@@ -9,7 +9,6 @@ spotlight::spotlight()
     data_.Cutoff = glm::radians(10.0f);
     data_.Position = glm::vec3(0.0f);
     data_.Direction = glm::vec3(0.0f, -1.0f, 0.0f);
-
 }
 
 void spotlight::set_ambient(const glm::vec3& a) {

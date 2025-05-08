@@ -33,6 +33,8 @@ void ParticlePoint::render(const glm::mat4& view, const glm::mat4& projection, G
 {
 }
 
+void ParticlePoint::renderDepth(GLSLProgram& depthProg) {}
+
 void ParticlePoint::renderParticles(const glm::mat4& view, const glm::mat4& projection, GLSLProgram& prog)
 {
 	spawner_.render(view, projection, prog);

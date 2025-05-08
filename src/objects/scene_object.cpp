@@ -5,6 +5,7 @@
 const int SceneObject::MAX_TEXTURES = 5;
 const int SceneObject::ALBEDO_START = 0;
 const int SceneObject::NORMAL_START = ALBEDO_START + MAX_TEXTURES;
+const int SceneObject::LIGHT_UNIT = NORMAL_START + 1;
 
 void SceneObject::applyMat(GLSLProgram& prog)
 {
@@ -21,7 +22,6 @@ void SceneObject::apply_model_matrix(GLSLProgram& prog, const glm::mat4& view, c
     prog.setUniform("ModelViewMatrix", mv);
     prog.setUniform("NormalMatrix", glm::mat3(glm::vec3(mv[0]), glm::vec3(mv[1]), glm::vec3(mv[2])));
     prog.setUniform("MVP", projection * mv);
-    prog.setUniform("useSpecular", true);
 }
 
 void SceneObject::apply_textures(GLSLProgram& prog)

@@ -123,3 +123,9 @@ void ShowcaseCar::render(const mat4& view, const mat4& projection, GLSLProgram& 
     car_->render();
 }
 
+void ShowcaseCar::renderDepth(GLSLProgram& depthProg)
+{
+    depthProg.setUniform("model", modelMatrix_);
+    car_->render();
+}
+

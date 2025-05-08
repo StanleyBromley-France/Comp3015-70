@@ -1,16 +1,12 @@
-﻿// spotlight.h
-#pragma once
+﻿#pragma once
 
 #include "../../global_settings_ubo/global_settings_ubo.h"
 
-
-// Feeds only the Spotlight part of the global UBO
 class spotlight {
 public:
     spotlight();
     ~spotlight() = default;
 
-    // setters mutate local data + call upload()
     void set_ambient(const glm::vec3& a);
     void set_intensity(const glm::vec3& i);
     void set_exponent(float e);

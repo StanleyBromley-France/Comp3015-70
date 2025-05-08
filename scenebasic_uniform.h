@@ -18,6 +18,7 @@
 #include <memory>
 #include <vector>
 #include "src/objects/particle_object.h"
+#include "src/debug/gs_to_rgba_converter.h"
 
 class SceneBasic_Uniform : public Scene
 {
@@ -29,14 +30,17 @@ class SceneBasic_Uniform : public Scene
 
     std::vector<std::unique_ptr<UIElement>> uiElements_;
 
-    GLSLProgram complexProg_, skyboxProg_, particleProg_;
+    GLSLProgram complexProg_, skyboxProg_, particleProg_, depthProg_;
     SceneSkybox skybox_;
 
     GlobalSettingsUBO globalSettings;
 
+    GrayscaleToRGBAConverter converter;
+
     void set_matrices(GLSLProgram& prog);
     void compile_shaders();
     void init_ui();
+    void draw_shadow_maps();
     void draw_scene();
     void draw_ui();
 

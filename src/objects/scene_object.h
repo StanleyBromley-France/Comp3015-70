@@ -10,6 +10,10 @@ public:
     virtual void init() = 0;
     virtual void update(float t) = 0;
     virtual void render(const glm::mat4& view, const glm::mat4& projection, GLSLProgram& prog) = 0;
+    virtual void renderDepth(GLSLProgram& depthProg) = 0;
+
+    const static int LIGHT_UNIT;
+
 protected:
     std::unique_ptr<ObjMesh> mesh_;
     glm::mat4 modelMatrix_;
@@ -22,6 +26,7 @@ protected:
     const static int MAX_TEXTURES;
     const static int ALBEDO_START;
     const static int NORMAL_START;
+
 
     void applyMat(GLSLProgram& prog);
     void apply_model_matrix(GLSLProgram& prog, const glm::mat4& view, const glm::mat4& projection);

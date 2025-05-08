@@ -16,15 +16,19 @@ public:
 	void init() override;
 	void update(float t) override;
 	void render(const glm::mat4& view, const glm::mat4& projection, GLSLProgram& prog) override;
-	void renderLight(const glm::mat4& view, const glm::mat4& projectiong) override;
+	void renderDepth(GLSLProgram& depthProg) override;
 
+	void calculate_light_space_matrix() override;
+	void render_light(const glm::mat4& view, const glm::mat4& projectiong) override;
 	void upload(GlobalSettingsUBO& globalUbo) override;
+
 private:
 	spotlight spotlight_;
 	float t_prev_;
 	float angle_;
 	float radius_;
 	float rotationSpeed_;
+	glm::vec3 lightDir_;
 	glm::vec4 lightPos_;
 	glm::vec3 rotatePoint_;
 };

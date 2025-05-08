@@ -141,6 +141,12 @@
     <ClCompile Include="src\objects\decos\particle_point.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\objects\light_object.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\debug\gs_to_rgba_converter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shader\basic_uniform.frag">
@@ -157,6 +163,10 @@
     <None Include="shader\skybox\skybox.frag" />
     <None Include="shader\tileable\tileable.vert" />
     <None Include="shader\includes\global_data.frag" />
+    <None Include="shader\depth\depth.vert" />
+    <None Include="shader\depth\depth.frag" />
+    <None Include="shader\converter\converter.frag" />
+    <None Include="shader\converter\converter.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="helper\scene.h">
@@ -310,6 +320,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\objects\light_object.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\debug\gs_to_rgba_converter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

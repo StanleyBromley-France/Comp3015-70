@@ -43,3 +43,9 @@ void Floor::render(const glm::mat4& view, const glm::mat4& projection, GLSLProgr
 
 	plane_.render();
 }
+
+void Floor::renderDepth(GLSLProgram& depthProg)
+{
+	depthProg.setUniform("model", modelMatrix_);
+	plane_.render();
+}

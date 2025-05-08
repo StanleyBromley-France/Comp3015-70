@@ -157,6 +157,7 @@
     <ClCompile Include="helper\trianglemesh.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="scenebasic_uniform.cpp" />
+    <ClCompile Include="src\debug\gs_to_rgba_converter.cpp" />
     <ClCompile Include="src\global_settings\global_settings_ubo\global_settings_ubo.cpp" />
     <ClCompile Include="src\global_settings\lights\particle_spawner\particle_spawner.cpp" />
     <ClCompile Include="src\global_settings\lights\spotlight\spotlight.cpp" />
@@ -165,6 +166,7 @@
     <ClCompile Include="src\objects\decos\particle_point.cpp" />
     <ClCompile Include="src\objects\decos\spotlight_point.cpp" />
     <ClCompile Include="src\objects\floor\floor.cpp" />
+    <ClCompile Include="src\objects\light_object.cpp" />
     <ClCompile Include="src\objects\scene_object.cpp" />
     <ClCompile Include="src\objects\skybox\scene_skybox.cpp" />
     <ClCompile Include="src\rendering\post_processing\post_process_manager.cpp" />
@@ -189,6 +191,10 @@
     <None Include="shader\basic_uniform.vert" />
     <None Include="shader\complex\complex.frag" />
     <None Include="shader\complex\complex.vert" />
+    <None Include="shader\converter\converter.frag" />
+    <None Include="shader\converter\converter.vert" />
+    <None Include="shader\depth\depth.frag" />
+    <None Include="shader\depth\depth.vert" />
     <None Include="shader\includes\global_data.frag" />
     <None Include="shader\includes\blinnPhong_lighting.frag" />
     <None Include="shader\post_processing\post_process.frag" />
@@ -216,6 +222,7 @@
     <ClInclude Include="helper\trianglemesh.h" />
     <ClInclude Include="helper\utils.h" />
     <ClInclude Include="scenebasic_uniform.h" />
+    <ClInclude Include="src\debug\gs_to_rgba_converter.h" />
     <ClInclude Include="src\global_settings\global_settings_ubo\global_settings_ubo.h" />
     <ClInclude Include="src\objects\light_object.h" />
     <ClInclude Include="src\objects\uploader_object.h" />
