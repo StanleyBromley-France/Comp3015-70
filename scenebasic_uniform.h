@@ -11,6 +11,8 @@
 #include "src/objects/skybox/scene_skybox.h"
 #include "src/global_settings/lights/particle_spawner/particle_spawner.h"
 #include "src/objects/scene_object.h"
+#include "src/objects/light_object.h"
+
 #include "src/objects/uploader_object.h"
 #include "src/ui/ui_element.h"
 #include <memory>
@@ -21,7 +23,9 @@ class SceneBasic_Uniform : public Scene
 {
     std::vector<std::shared_ptr<SceneObject>> complexObjs_;
     std::vector<std::shared_ptr<ParticleObject>> particleObjs_;
-    std::vector<std::shared_ptr<UploaderObject>> uploaders_;
+    std::vector<std::shared_ptr<LightObject>> lightObjs_;
+
+    std::vector<std::shared_ptr<UploaderObject>> uploaderObjs_;
 
     std::vector<std::unique_ptr<UIElement>> uiElements_;
 

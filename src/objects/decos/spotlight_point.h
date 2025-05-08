@@ -2,9 +2,12 @@
 
 #include "../scene_object.h"
 #include "../uploader_object.h"
+
+#include "../light_object.h"
+
 #include "../../global_settings/lights/spotlight/spotlight.h"
 
-class SpotlightPoint : public SceneObject, public UploaderObject 
+class SpotlightPoint : public SceneObject, public UploaderObject, public LightObject
 {
 public:
 	SpotlightPoint();
@@ -13,6 +16,8 @@ public:
 	void init() override;
 	void update(float t) override;
 	void render(const glm::mat4& view, const glm::mat4& projection, GLSLProgram& prog) override;
+	void renderLight(const glm::mat4& view, const glm::mat4& projectiong) override;
+
 	void upload(GlobalSettingsUBO& globalUbo) override;
 private:
 	spotlight spotlight_;

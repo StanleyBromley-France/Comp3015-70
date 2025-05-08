@@ -217,6 +217,7 @@
     <ClInclude Include="helper\utils.h" />
     <ClInclude Include="scenebasic_uniform.h" />
     <ClInclude Include="src\global_settings\global_settings_ubo\global_settings_ubo.h" />
+    <ClInclude Include="src\objects\light_object.h" />
     <ClInclude Include="src\objects\uploader_object.h" />
     <ClInclude Include="src\global_settings\lights\particle_spawner\particle_spawner.h" />
     <ClInclude Include="src\global_settings\lights\spotlight\spotlight.h" />

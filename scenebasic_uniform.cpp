@@ -67,11 +67,14 @@ void SceneBasic_Uniform::initScene()
 
 	// uploader setup --------------
 
-	uploaders_.push_back(spotlight);
+	uploaderObjs_.push_back(spotlight);
 
 	// particle setup ---------
 
 	particleObjs_.push_back(particlePoint);
+
+	// light setup -------
+	lightObjs_.push_back(spotlight);
 }
 
 
@@ -115,7 +118,7 @@ void SceneBasic_Uniform::update(float t)
 	for (auto& obj : complexObjs_)
 		obj->update(t);
 
-	for (auto& upl : uploaders_)
+	for (auto& upl : uploaderObjs_)
 		upl->upload(globalSettings);
 	
 	globalSettings.updateGPU();
@@ -142,6 +145,10 @@ void SceneBasic_Uniform::render()
 }
 
 void SceneBasic_Uniform::draw_scene() {
+
+	//render lights
+	for (auto& obj : lightObjs_)
+		obj->renderLight(view, projection);
 
 	// render skybox
 	skyboxProg_.use();

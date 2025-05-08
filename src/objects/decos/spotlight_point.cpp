@@ -27,6 +27,10 @@ void SpotlightPoint::update(float t)
 
 void SpotlightPoint::render(const glm::mat4& view, const glm::mat4& projection, GLSLProgram& prog) 
 {
+}
+
+void SpotlightPoint::renderLight(const glm::mat4& view, const glm::mat4& projectiong)
+{
 	// calculates light direction: Point from light position to origin (0, 0, 0)
 	const auto light_dir = normalize(rotatePoint_ - vec3(lightPos_)); // Direction toward origin
 	const auto normal_matrix = mat3(vec3(view[0]), vec3(view[1]), vec3(view[2]));
