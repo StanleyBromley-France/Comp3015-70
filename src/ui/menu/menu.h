@@ -2,7 +2,7 @@
 #include "../ui_element.h"
 #include "../imgui_wrapper/imgui/imgui.h"
 
-class Menu : UIElement {
+class Menu : public UIElement {
 public:
     void init() override;
     void update() override;

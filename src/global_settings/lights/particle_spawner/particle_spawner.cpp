@@ -16,7 +16,6 @@ ParticleSpawner::ParticleSpawner()
     , emitterDir_(0.0f)
     , particleSize_(0.0f)
     , gravity_(0.0f)
-    , prog_(nullptr)
     , time_(0.0f)
     , armed_(false)
     , triggerTime_(0.0f)
@@ -29,15 +28,13 @@ ParticleSpawner::~ParticleSpawner()
     if (vao_)           glDeleteVertexArrays(1, &vao_);
 }
 
-void ParticleSpawner::init(GLSLProgram& prog,
-    GLuint texID,
+void ParticleSpawner::init( GLuint texID,
     unsigned count,
     float lifetime,
     const glm::vec3& emitterPos,
     const glm::vec3& emitterDir,
     float size)
 {
-    prog_ = &prog;
     textureID_ = texID;
     nParticles_ = count;
     particleLifetime_ = lifetime;
@@ -54,13 +51,6 @@ void ParticleSpawner::init(GLSLProgram& prog,
     glGenVertexArrays(1, &vao_);
 
     initBuffers();
-
-    prog_->use();
-    prog_->setUniform("ParticleTex", 0);
-    prog_->setUniform("ParticleLifetime", particleLifetime_);
-    prog_->setUniform("ParticleSize", particleSize_);
-    prog_->setUniform("Gravity", gravity_);
-    prog_->setUniform("EmitterPos", emitterPos_);
 }
 
 void ParticleSpawner::initBuffers()
@@ -127,16 +117,21 @@ void ParticleSpawner::update(float currentTime)
     }
 }
 
-void ParticleSpawner::render(const glm::mat4& view,
-    const glm::mat4& projection)
+void ParticleSpawner::render(const glm::mat4& view, const glm::mat4& projection, GLSLProgram& prog)
 {
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textureID_);
     glBindVertexArray(vao_);
 
-    prog_->setUniform("Time", time_);
-    prog_->setUniform("MV", view * glm::mat4(1.0f));
-    prog_->setUniform("Proj", projection);
+    prog.setUniform("ParticleTex", 0);
+    prog.setUniform("ParticleLifetime", particleLifetime_);
+    prog.setUniform("ParticleSize", particleSize_);
+    prog.setUniform("Gravity", gravity_);
+    prog.setUniform("EmitterPos", emitterPos_);
+
+    prog.setUniform("Time", time_);
+    prog.setUniform("MV", view * glm::mat4(1.0f));
+    prog.setUniform("Proj", projection);
 
     // disables depth writes so blended particles composite properly
     glDepthMask(GL_FALSE);

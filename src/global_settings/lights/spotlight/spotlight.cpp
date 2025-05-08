@@ -12,10 +12,6 @@ spotlight::spotlight()
 
 }
 
-void spotlight::upload(GlobalSettingsUBO& globalUbo) const {
-    globalUbo.setSpotlight(data_);
-}
-
 void spotlight::set_ambient(const glm::vec3& a) {
     data_.La = a;
 }

@@ -5,41 +5,36 @@
 
 #include "helper/glslprogram.h"
 
-#include "src/objects/cars/showcase_car/showcase_car.h"
-#include "src/objects/floor/floor.h"
 
-#include "src/global_settings/lights/spotlight/spotlight.h"
 #include "src/global_settings/global_settings_ubo/global_settings_ubo.h"
 
-#include "src/ui/menu/menu.h"
 #include "src/objects/skybox/scene_skybox.h"
 #include "src/global_settings/lights/particle_spawner/particle_spawner.h"
 #include "src/objects/scene_object.h"
+#include "src/objects/uploader_object.h"
+#include "src/ui/ui_element.h"
+#include <memory>
+#include <vector>
+#include "src/objects/particle_object.h"
 
 class SceneBasic_Uniform : public Scene
 {
-    std::vector<std::unique_ptr<SceneObject>> objects_;
+    std::vector<std::shared_ptr<SceneObject>> complexObjs_;
+    std::vector<std::shared_ptr<ParticleObject>> particleObjs_;
+    std::vector<std::shared_ptr<UploaderObject>> uploaders_;
 
-    GLSLProgram prog_, prog2_, skyboxProg_, spawnerProg_;
+    std::vector<std::unique_ptr<UIElement>> uiElements_;
+
+    GLSLProgram complexProg_, skyboxProg_, particleProg_;
     SceneSkybox skybox_;
 
-    GLuint particleTex_;
-    ParticleSpawner spawner_;
-
     GlobalSettingsUBO globalSettings;
-    spotlight spotlight_;
-    
-    float t_prev_;
-    float angle_;
 
     void set_matrices(GLSLProgram& prog);
     void compile_shaders();
     void init_ui();
     void draw_scene();
-
-
-    // ui
-    Menu menu;
+    void draw_ui();
 
 public:
     SceneBasic_Uniform();

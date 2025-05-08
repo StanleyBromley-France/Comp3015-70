@@ -132,6 +132,15 @@
     <ClCompile Include="src\global_settings\lights\particle_spawner\particle_spawner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\objects\scene_object.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\objects\decos\spotlight_point.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\objects\decos\particle_point.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shader\basic_uniform.frag">
@@ -219,9 +228,6 @@
     <ClInclude Include="src\objects\skybox\scene_skybox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\objects\object.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\CarGame\_core\ui_system\ui_element.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -286,6 +292,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="helper\particleutils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\objects\scene_object.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\objects\uploader_object.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\objects\decos\spotlight_point.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\objects\decos\particle_point.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\objects\particle_object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,5 +1,6 @@
 #include "scene_object.h"
 #include "../../helper/glslprogram.h"
+#include <string>
 
 const int SceneObject::MAX_TEXTURES = 5;
 const int SceneObject::ALBEDO_START = 0;

@@ -8,8 +8,7 @@ public:
     ParticleSpawner();
     ~ParticleSpawner();
 
-    void init(GLSLProgram& prog,
-        GLuint texture,
+    void init( GLuint texture,
         unsigned count,
         float lifetime,
         const glm::vec3& emitterPos,
@@ -18,8 +17,7 @@ public:
 
     void update(float currentTime);
 
-    void render(const glm::mat4& view,
-        const glm::mat4& projection);
+    void render(const glm::mat4& view, const glm::mat4& projection, GLSLProgram& prog);
 
     void fire(float currentTime);
 private:
@@ -31,14 +29,12 @@ private:
     GLuint vao_;
     GLuint textureID_;
 
-    unsigned   nParticles_;
-    float      particleLifetime_;
-    glm::vec3  emitterPos_;
-    glm::vec3  emitterDir_;
-    float      particleSize_;
-    glm::vec3  gravity_;
-
-    GLSLProgram* prog_;
+    unsigned nParticles_;
+    float particleLifetime_;
+    glm::vec3 emitterPos_;
+    glm::vec3 emitterDir_;
+    float particleSize_;
+    glm::vec3 gravity_;
 
     float time_;
     bool armed_;
