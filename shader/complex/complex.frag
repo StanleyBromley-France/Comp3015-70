@@ -8,16 +8,14 @@ in vec2 TexCoord;
 
 #include "shader/includes/blinnPhong_lighting.frag"
 
+#include "shader/includes/shadows.frag"
+
 #define MAX_TEXTURES 5
 uniform sampler2D albedoArray[MAX_TEXTURES];
 uniform int numTextures;
 
 uniform sampler2D NormalTex;
 
-#define MAX_SHADOWS 4
-uniform sampler2DShadow ShadowMaps[MAX_SHADOWS];
-flat in int NumShadows;
-in vec4 ShadowCoord[MAX_SHADOWS];
 
 layout (location = 0) out vec4 FragColor;
 
@@ -91,12 +89,7 @@ void main() {
     vec3 ambient = calculateAmbient(texColor);
     vec3 lit = applyLighting(Position, viewNormal, texColor);
 
-    float shadow = 1.0;
-    for(int i = 0; i < NumShadows; ++i) {
-        if (ShadowCoord[i].z >= 0.0) {
-            float s = textureProj(ShadowMaps[i], ShadowCoord[i]);
-            shadow = min(shadow, s);
-        }
-    }
+    float shadow = calculateShadowPCF();
+
     FragColor = vec4(lit * shadow + ambient, 1.0);
 }

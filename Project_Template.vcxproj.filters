@@ -167,6 +167,7 @@
     <None Include="shader\depth\depth.frag" />
     <None Include="shader\converter\converter.frag" />
     <None Include="shader\converter\converter.vert" />
+    <None Include="shader\includes\shadows.frag" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="helper\scene.h">

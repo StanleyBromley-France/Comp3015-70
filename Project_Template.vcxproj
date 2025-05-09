@@ -197,6 +197,7 @@
     <None Include="shader\depth\depth.vert" />
     <None Include="shader\includes\global_data.frag" />
     <None Include="shader\includes\blinnPhong_lighting.frag" />
+    <None Include="shader\includes\shadows.frag" />
     <None Include="shader\post_processing\post_process.frag" />
     <None Include="shader\post_processing\post_process.vert" />
     <None Include="shader\skybox\skybox.frag" />
