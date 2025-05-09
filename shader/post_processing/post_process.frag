@@ -51,7 +51,7 @@ float luminance(vec3 colour) {
 
 vec4 ComputeLogLuminance() {
     vec3 hdrColor = texture(HdrTex, TexCoord).rgb;
-    float lum = 1.0; //dot(hdrColor, vec3(0.2126, 0.7152, 0.0722));
+    float lum = dot(hdrColor, vec3(0.2126, 0.7152, 0.0722));
     return vec4(log(lum + 0.00001), 0.0, 0.0, 1.0);
 }
 
@@ -97,7 +97,8 @@ vec4 ApplyToneMapping() {
     vec3 xyY = vec3(xyz.x / sum, xyz.y / sum, xyz.y);
 
     // tone mapping luminance
-    float L = (Exposure * xyY.z) / AveLum;
+    float avgLinLum = exp(AveLum);  
+    float L = (Exposure * xyY.z) / avgLinLum;
     L = (L * (1.0 + L / (White * White))) / (1.0 + L);
 
     // rebuilds XYZ from tone-mapped luminance
