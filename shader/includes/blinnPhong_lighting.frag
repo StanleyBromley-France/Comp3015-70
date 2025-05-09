@@ -40,8 +40,8 @@ vec3 calculateSpecular(vec3 pos, vec3 s, vec3 n) {
     return Material.Ks * pow(max(hDotN, 0.0), Material.Shininess);
 }
 
-vec3 computeFinalColor(vec3 ambient, float spotScale, vec3 diffuse, vec3 spec) {
-    return ambient + spotScale * (diffuse + spec) * globalSettings.Spotlight.L;
+vec3 computeFinalColor(float spotScale, vec3 diffuse, vec3 spec) {
+    return spotScale * (diffuse + spec) * globalSettings.Spotlight.L;
 }
 
 //------------ MAIN METHODS ------------//
@@ -50,30 +50,26 @@ vec3 computeFinalColor(vec3 ambient, float spotScale, vec3 diffuse, vec3 spec) {
 vec3 BlinnPhong_LightingNormal(
     vec3 pos, 
     vec3 n, 
-    vec3 ambientBase, 
     vec3 diffuseBase 
 ) {
-    vec3 ambient = calculateAmbient(ambientBase);
     SpotlightParams params = computeSpotlightParams(pos);
 
     if (params.spotScale > 0.0) {
         float sDotN = max(dot(params.s, n), 0.0);
         vec3 diffuse = diffuseBase * sDotN;
         vec3 spec = (useSpecular && sDotN > 0.0) ? calculateSpecular(pos, params.s, n) : vec3(0.0);
-        return computeFinalColor(ambient, params.spotScale, diffuse, spec);
+        return computeFinalColor(params.spotScale, diffuse, spec);
     }
     
-    return ambient;
+    return vec3(0);
 }
 
 // toon lighting
 vec3 BlinnPhong_LightingToon(
     vec3 pos, 
     vec3 n, 
-    vec3 ambientBase, 
     vec3 diffuseBase
 ) {
-    vec3 ambient = calculateAmbient(ambientBase);
     SpotlightParams params = computeSpotlightParams(pos);
 
     if (params.spotScale > 0.0) {
@@ -81,8 +77,8 @@ vec3 BlinnPhong_LightingToon(
         float band = floor(sDotN * levels);
         vec3 diffuse = diffuseBase * band * scaleFactor;
         vec3 spec = (sDotN > 0.0) ? calculateSpecular(pos, params.s, n) : vec3(0.0);
-        return computeFinalColor(ambient, params.spotScale, diffuse, spec);
+        return computeFinalColor(params.spotScale, diffuse, spec);
     }
     
-    return ambient;
+    return vec3(0);
 }

@@ -22,6 +22,8 @@ void SceneObject::apply_model_matrix(GLSLProgram& prog, const glm::mat4& view, c
     prog.setUniform("ModelViewMatrix", mv);
     prog.setUniform("NormalMatrix", glm::mat3(glm::vec3(mv[0]), glm::vec3(mv[1]), glm::vec3(mv[2])));
     prog.setUniform("MVP", projection * mv);
+    prog.setUniform("Model", modelMatrix_);
+
 }
 
 void SceneObject::apply_textures(GLSLProgram& prog)

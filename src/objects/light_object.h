@@ -15,6 +15,9 @@ public:
 
     virtual void calculate_light_space_matrix() = 0;
 	virtual void render_light(const glm::mat4& view, const glm::mat4& projection) = 0;
+
+    const static glm::mat4 SHADOW_BIAS;
+
 protected:
     GLuint shadowFBO_;
     GLuint shadowTex_;

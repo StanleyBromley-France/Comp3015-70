@@ -14,7 +14,10 @@ uniform int numTextures;
 
 uniform sampler2D NormalTex;
 
-
+#define MAX_SHADOWS 4
+uniform sampler2DShadow ShadowMaps[MAX_SHADOWS];
+flat in int NumShadows;
+in vec4 ShadowCoord[MAX_SHADOWS];
 
 layout (location = 0) out vec4 FragColor;
 
@@ -37,6 +40,7 @@ vec3 calculateColour()
     
     return result.rgb;
 }
+
 
 mat3 CalculateTBN()
 {
@@ -61,16 +65,17 @@ mat3 CalculateTBN()
 
 
 // applies lighting based on global var
-vec3 applyLighting(vec3 pos, vec3 n, vec3 ambientBase, vec3 diffuseBase) 
+vec3 applyLighting(vec3 pos, vec3 n, vec3 diffuseBase) 
 {
     if (globalSettings.lightingMode == 0) {
-        return BlinnPhong_LightingNormal(pos, n, ambientBase, diffuseBase);
+        return BlinnPhong_LightingNormal(pos, n, diffuseBase);
     } else {
-        return BlinnPhong_LightingToon(pos, n, ambientBase, diffuseBase);
+        return BlinnPhong_LightingToon(pos, n, diffuseBase);
     }
 }
 
 void main() {
+
     // calculates TBN matrix
     mat3 TBN = CalculateTBN();
     
@@ -81,8 +86,17 @@ void main() {
     // converts normal from tangent space to VIEW space
     vec3 viewNormal = normalize(TBN * tangentNormal);
     
-    vec3 finalTexColor = calculateColour();
-    vec3 color = applyLighting(Position, viewNormal, finalTexColor, finalTexColor);
-    
-    FragColor = vec4(color, 1.0);
+    vec3 texColor = calculateColour();
+
+    vec3 ambient = calculateAmbient(texColor);
+    vec3 lit = applyLighting(Position, viewNormal, texColor);
+
+    float shadow = 1.0;
+    for(int i = 0; i < NumShadows; ++i) {
+        if (ShadowCoord[i].z >= 0.0) {
+            float s = textureProj(ShadowMaps[i], ShadowCoord[i]);
+            shadow = min(shadow, s);
+        }
+    }
+    FragColor = vec4(lit * shadow + ambient, 1.0);
 }

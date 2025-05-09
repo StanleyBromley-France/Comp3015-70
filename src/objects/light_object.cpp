@@ -1,10 +1,20 @@
 #include "light_object.h"
 
+using glm::vec4;
+
+const glm::mat4 LightObject::SHADOW_BIAS = glm::mat4(
+    vec4(0.5f, 0.0f, 0.0f, 0.0f),
+    vec4(0.0f, 0.5f, 0.0f, 0.0f),
+    vec4(0.0f, 0.0f, 0.5f, 0.0f),
+    vec4(0.5f, 0.5f, 0.5f, 1.0f)
+);
+
+
 void LightObject::initShadowMap(int res)
 {
     shadowRes_ = res;
 
-    GLfloat border[] = { 1.0f, 0.0f,0.0f,0.0f };
+    GLfloat border[] = { 1.0f, 0.0f, 0.0f, 0.0f };
 
     glGenTextures(1, &shadowTex_);
     glBindTexture(GL_TEXTURE_2D, shadowTex_);
@@ -24,8 +34,8 @@ void LightObject::initShadowMap(int res)
     glBindFramebuffer(GL_FRAMEBUFFER, shadowFBO_);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, shadowTex_, 0);
 
-    GLenum drawBuffers[] = { GL_NONE };
-    glDrawBuffers(1, drawBuffers);
+    glDrawBuffer(GL_NONE);
+    glReadBuffer(GL_NONE);
 
     GLenum result = glCheckFramebufferStatus(GL_FRAMEBUFFER);
     if (result == GL_FRAMEBUFFER_COMPLETE) {

@@ -75,8 +75,8 @@ vec3 calculateSpecular(vec3 pos, vec3 s, vec3 n) {
     return Material.Ks * pow(max(hDotN, 0.0), Material.Shininess);
 }
 
-vec3 computeFinalColor(vec3 ambient, float spotScale, vec3 diffuse, vec3 spec) {
-    return ambient + spotScale * (diffuse + spec) * globalSettings.Spotlight.L;
+vec3 computeFinalColor(float spotScale, vec3 diffuse, vec3 spec) {
+    return spotScale * (diffuse + spec) * globalSettings.Spotlight.L;
 }
 
 //------------ MAIN METHODS ------------//
@@ -85,30 +85,26 @@ vec3 computeFinalColor(vec3 ambient, float spotScale, vec3 diffuse, vec3 spec) {
 vec3 BlinnPhong_LightingNormal(
     vec3 pos, 
     vec3 n, 
-    vec3 ambientBase, 
     vec3 diffuseBase 
 ) {
-    vec3 ambient = calculateAmbient(ambientBase);
     SpotlightParams params = computeSpotlightParams(pos);
 
     if (params.spotScale > 0.0) {
         float sDotN = max(dot(params.s, n), 0.0);
         vec3 diffuse = diffuseBase * sDotN;
         vec3 spec = (useSpecular && sDotN > 0.0) ? calculateSpecular(pos, params.s, n) : vec3(0.0);
-        return computeFinalColor(ambient, params.spotScale, diffuse, spec);
+        return computeFinalColor(params.spotScale, diffuse, spec);
     }
     
-    return ambient;
+    return vec3(0);
 }
 
 // toon lighting
 vec3 BlinnPhong_LightingToon(
     vec3 pos, 
     vec3 n, 
-    vec3 ambientBase, 
     vec3 diffuseBase
 ) {
-    vec3 ambient = calculateAmbient(ambientBase);
     SpotlightParams params = computeSpotlightParams(pos);
 
     if (params.spotScale > 0.0) {
@@ -116,10 +112,10 @@ vec3 BlinnPhong_LightingToon(
         float band = floor(sDotN * levels);
         vec3 diffuse = diffuseBase * band * scaleFactor;
         vec3 spec = (sDotN > 0.0) ? calculateSpecular(pos, params.s, n) : vec3(0.0);
-        return computeFinalColor(ambient, params.spotScale, diffuse, spec);
+        return computeFinalColor(params.spotScale, diffuse, spec);
     }
     
-    return ambient;
+    return vec3(0);
 }
 
 #define MAX_TEXTURES 5
@@ -128,7 +124,10 @@ uniform int numTextures;
 
 uniform sampler2D NormalTex;
 
-
+#define MAX_SHADOWS 4
+uniform sampler2DShadow ShadowMaps[MAX_SHADOWS];
+flat in int NumShadows;
+in vec4 ShadowCoord[MAX_SHADOWS];
 
 layout (location = 0) out vec4 FragColor;
 
@@ -151,6 +150,7 @@ vec3 calculateColour()
     
     return result.rgb;
 }
+
 
 mat3 CalculateTBN()
 {
@@ -175,16 +175,17 @@ mat3 CalculateTBN()
 
 
 // applies lighting based on global var
-vec3 applyLighting(vec3 pos, vec3 n, vec3 ambientBase, vec3 diffuseBase) 
+vec3 applyLighting(vec3 pos, vec3 n, vec3 diffuseBase) 
 {
     if (globalSettings.lightingMode == 0) {
-        return BlinnPhong_LightingNormal(pos, n, ambientBase, diffuseBase);
+        return BlinnPhong_LightingNormal(pos, n, diffuseBase);
     } else {
-        return BlinnPhong_LightingToon(pos, n, ambientBase, diffuseBase);
+        return BlinnPhong_LightingToon(pos, n, diffuseBase);
     }
 }
 
 void main() {
+
     // calculates TBN matrix
     mat3 TBN = CalculateTBN();
     
@@ -195,8 +196,17 @@ void main() {
     // converts normal from tangent space to VIEW space
     vec3 viewNormal = normalize(TBN * tangentNormal);
     
-    vec3 finalTexColor = calculateColour();
-    vec3 color = applyLighting(Position, viewNormal, finalTexColor, finalTexColor);
-    
-    FragColor = vec4(color, 1.0);
+    vec3 texColor = calculateColour();
+
+    vec3 ambient = calculateAmbient(texColor);
+    vec3 lit = applyLighting(Position, viewNormal, texColor);
+
+    float shadow = 1.0;
+    for(int i = 0; i < NumShadows; ++i) {
+        if (ShadowCoord[i].z >= 0.0) {
+            float s = textureProj(ShadowMaps[i], ShadowCoord[i]);
+            shadow = min(shadow, s);
+        }
+    }
+    FragColor = vec4(lit * shadow + ambient, 1.0);
 }

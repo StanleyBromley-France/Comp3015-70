@@ -35,11 +35,12 @@ void SpotlightPoint::renderDepth(GLSLProgram& depthProg) {}
 
 void SpotlightPoint::calculate_light_space_matrix()
 { 
+
 	auto& data = spotlight_.data_;
 	float fov = data.Cutoff * 2;
 
 	glm::mat4 V = glm::lookAt(vec3(lightPos_), vec3(lightPos_) + lightDir_, glm::vec3(0, 1, 0));
-	glm::mat4 P = glm::perspective(fov, 1.0f, 0.1f, 1000.0f );
+	glm::mat4 P = glm::perspective(fov, 1.0f, 0.3f, 100.0f );
 	lightSpaceMatrix_ = P * V;
 }
 

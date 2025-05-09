@@ -124,12 +124,15 @@ void SceneBasic_Uniform::draw_shadow_maps()
 	for (auto& light : lightObjs_) {
 		light->calculate_light_space_matrix();
 
-		glEnable(GL_DEPTH_TEST);
-		glDisable(GL_CULL_FACE);
-		glDepthMask(GL_TRUE);
-		glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 		glBindFramebuffer(GL_FRAMEBUFFER, light->get_shadow_fbo());
 		glViewport(0, 0, light->get_shadow_res(), light->get_shadow_res());
+		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_BACK);
+		glEnable(GL_POLYGON_OFFSET_FILL);
+		glPolygonOffset(2.5f, 10.0f);
+		glDepthMask(GL_TRUE);
+
 
 		glDrawBuffer(GL_NONE);
 		glReadBuffer(GL_NONE);
@@ -142,12 +145,13 @@ void SceneBasic_Uniform::draw_shadow_maps()
 		}
 
 		glFlush();
-		glFinish();
 	}
 
+	glCullFace(GL_BACK);
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_POLYGON_OFFSET_FILL);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glViewport(0, 0, width, height);
-	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 }
 
 void SceneBasic_Uniform::update(float t)
@@ -196,8 +200,26 @@ void SceneBasic_Uniform::draw_scene() {
 	// render complex
 	complexProg_.use();
 
+	int N = static_cast<int>(lightObjs_.size());
+	for (int i = 0; i < N; i++) {
+		auto& light = lightObjs_[i];
+
+		light->calculate_light_space_matrix();
+		glActiveTexture(GL_TEXTURE0 + SceneObject::LIGHT_UNIT + i);
+		glBindTexture(GL_TEXTURE_2D, light->get_shadow_tex());
+
+		std::string shadowsName = std::string("ShadowMaps[") + std::to_string(i) + "]";
+		std::string matrixName = std::string("ShadowMatrices[") + std::to_string(i) + "]";
+
+		complexProg_.setUniform("numShadows", i + 1);
+		complexProg_.setUniform(shadowsName.c_str(), SceneObject::LIGHT_UNIT + 0);
+		complexProg_.setUniform(matrixName.c_str(), LightObject::SHADOW_BIAS * light->get_light_space_matrix());
+	}
+
 	for (auto& obj : complexObjs_)
 		obj->render(view, projection, complexProg_);
+
+	draw_ui();
 
 	// render particle
 	particleProg_.use();
