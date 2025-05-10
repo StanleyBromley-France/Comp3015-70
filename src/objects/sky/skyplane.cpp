@@ -43,14 +43,12 @@ void SkyPlane::init() {
 
     glBindVertexArray(0);
 
-    noiseTex = NoiseTex::generate2DTex(2.0f, 0.5f, 1024, 1024, false);
+    noiseTex = NoiseTex::generate2DTex(20.0f, .7f, 1024, 1024, true);
 
     modelMatrix_ = mat4(1.0f);
     modelMatrix_ = glm::translate(modelMatrix_, vec3(0.0f, 35.f, 0.0f));
-    modelMatrix_ = glm::scale(modelMatrix_, vec3(30.f));
+    modelMatrix_ = glm::scale(modelMatrix_, vec3(150));
     modelMatrix_ = glm::rotate(modelMatrix_, glm::radians(90.f), vec3(1.0f, 0.0f, 0.0f));
-
-
 }
 
 void SkyPlane::update(float t)
@@ -68,6 +66,7 @@ void SkyPlane::render(const glm::mat4& view, const glm::mat4& projection, GLSLPr
     glBindTexture(GL_TEXTURE_2D, noiseTex);
 
     glm::mat4 mv = view * modelMatrix_;
+
     prog.setUniform("MVP", projection * mv);
 
     glBindVertexArray(quad);

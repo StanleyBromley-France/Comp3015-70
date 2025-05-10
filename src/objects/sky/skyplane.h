@@ -14,5 +14,4 @@ private:
     GLuint handle[2];
     GLuint quad;
     GLuint noiseTex;
-    GLSLProgram prog;
 };
