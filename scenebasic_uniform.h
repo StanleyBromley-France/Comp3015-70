@@ -18,7 +18,7 @@
 #include <memory>
 #include <vector>
 #include "src/objects/particle_object.h"
-#include "src/debug/gs_to_rgba_converter.h"
+#include "src/debug_stuff/gs_to_rgba_converter.h"
 #include "src/objects/sky/skyplane.h"
 
 class SceneBasic_Uniform : public Scene
