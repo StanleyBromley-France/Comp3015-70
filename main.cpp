@@ -6,6 +6,7 @@
 
 #include "camControls.h"
 #include "src/window/window.h"
+#include "src/save_management/save_data_manager.h"
 
 
 int main(int argc, char* argv[])
@@ -15,6 +16,8 @@ int main(int argc, char* argv[])
 	std::unique_ptr<Scene> scene;
 
 	scene = std::unique_ptr<Scene>(new StartScene());
+
+	SaveDataManager::Instance().Load();
 
 	Input::createInstance();
 	CamControls::initialise(glfwGetCurrentContext());

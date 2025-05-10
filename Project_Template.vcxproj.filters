@@ -144,7 +144,7 @@
     <ClCompile Include="src\objects\light_object.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\debug\gs_to_rgba_converter.cpp">
+    <ClCompile Include="src\debug_stuff\gs_to_rgba_converter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="helper\noisetex.cpp">
@@ -157,6 +157,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="start_scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\save_management\save_data_manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -334,7 +337,7 @@
     <ClInclude Include="src\objects\light_object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\debug\gs_to_rgba_converter.h">
+    <ClInclude Include="src\debug_stuff\gs_to_rgba_converter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="helper\noisetex.h">
@@ -347,6 +350,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="start_scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\objects\cars\car_colours.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\save_management\save_data_manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

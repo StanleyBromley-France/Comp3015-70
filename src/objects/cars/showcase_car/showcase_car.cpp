@@ -4,21 +4,47 @@
 
 #include "../../../../helper/texture.h"
 #include "../../../window/window.h"
+#include "../../../save_management/save_data_manager.h"
 
 using glm::vec3;
 using glm::vec4;
 using glm::mat3;
 using glm::mat4;
 
+using CarColours::Orange;
+using CarColours::Black;
+using CarColours::Blue;
+using CarColours::DarkBlue;
+using CarColours::DarkGrey;
+using CarColours::Grey;
+using CarColours::Red; 
+using CarColours::COUNT;
+
+
+ShowcaseCar::ShowcaseCar() : selectedColours_{ Orange, Orange }
+{
+}
 
 ShowcaseCar::~ShowcaseCar()
 {
+    // saves user colours
+    auto& settings = SaveDataManager::Instance().Data();
+
+    settings.carColour1 = selectedColours_.first;
+    settings.carColour2 = selectedColours_.second;
+
+    SaveDataManager::Instance().Save();
+
     defualt_cleanup();
     cleanup();
 }
 
 void ShowcaseCar::init()
 {
+    // gets and stores save data for car colours
+    auto& settings = SaveDataManager::Instance().Data();
+    selectedColours_ = { settings.carColour1, settings.carColour2 };
+
     // load mesh
     car_ = ObjMesh::load("media/model/car.obj", true);
     albedoTextures_.resize(2);
@@ -33,8 +59,8 @@ void ShowcaseCar::init()
 
     normalTexture_ = Texture::loadTexture("media/texture/normal.png");
 
-    albedoTextures_[0] = carColours[Orange];
-    albedoTextures_[1] = carColours[Orange];
+    albedoTextures_[0] = carColours[selectedColours_.first];
+    albedoTextures_[1] = carColours[selectedColours_.second];
 
     modelMatrix_ = mat4(1.0f);
     modelMatrix_ = glm::scale(modelMatrix_, vec3(5.f));
@@ -104,12 +130,13 @@ void ShowcaseCar::handle_texture_selection()
             if (textureIndex < 0 || textureIndex >= COUNT)
                 return;  // out-of-range guard
 
-            if (shiftHeld) {
-                albedoTextures_[0] = carColours[textureIndex];
-            }
-            else {
-                albedoTextures_[1] = carColours[textureIndex];
-            }
+            if (shiftHeld)
+                selectedColours_.first = CarColours::Index(textureIndex);
+            else
+                selectedColours_.second = CarColours::Index(textureIndex);
+
+            // Swap in the new texture
+            albedoTextures_[shiftHeld ? 0 : 1] = carColours[textureIndex];
             return;  // only handle one key press per frame
         }
     }

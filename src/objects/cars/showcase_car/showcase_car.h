@@ -2,9 +2,12 @@
 #include "../../../../helper/objmesh.h"
 #include "../../../../helper/glslprogram.h"
 #include "../../scene_object.h"
+
+#include "../car_colours.h"
 class ShowcaseCar : public SceneObject
 {
 public:
+    ShowcaseCar();
     ~ShowcaseCar();
     void init() override;
     void update(float t) override;
@@ -26,9 +29,6 @@ private:
     double lastFrameTime_; 
     float lastRot_ = 0;
 
-    enum ColourIndex {
-        Orange, Black, Blue, DarkBlue, DarkGrey, Grey, Red, COUNT
-    };
-
-    GLuint carColours[COUNT];
+    std::pair<CarColours::Index, CarColours::Index> selectedColours_;
+    GLuint carColours[CarColours::COUNT];
 };
