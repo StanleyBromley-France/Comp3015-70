@@ -19,6 +19,7 @@
 #include <vector>
 #include "src/objects/particle_object.h"
 #include "src/debug/gs_to_rgba_converter.h"
+#include "src/objects/sky/skyplane.h"
 
 class SceneBasic_Uniform : public Scene
 {
@@ -30,8 +31,10 @@ class SceneBasic_Uniform : public Scene
 
     std::vector<std::unique_ptr<UIElement>> uiElements_;
 
-    GLSLProgram complexProg_, skyboxProg_, particleProg_, depthProg_;
+    GLSLProgram complexProg_, skyboxProg_, particleProg_, depthProg_, cloudProg_;
     SceneSkybox skybox_;
+
+    SkyPlane clouds;
 
     GlobalSettingsUBO globalSettings;
 

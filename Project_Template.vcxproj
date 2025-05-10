@@ -149,6 +149,7 @@
     <ClCompile Include="glad.c" />
     <ClCompile Include="helper\glslprogram.cpp" />
     <ClCompile Include="helper\glutils.cpp" />
+    <ClCompile Include="helper\noisetex.cpp" />
     <ClCompile Include="helper\objmesh.cpp" />
     <ClCompile Include="helper\plane.cpp" />
     <ClCompile Include="helper\skybox.cpp" />
@@ -169,6 +170,7 @@
     <ClCompile Include="src\objects\light_object.cpp" />
     <ClCompile Include="src\objects\scene_object.cpp" />
     <ClCompile Include="src\objects\skybox\scene_skybox.cpp" />
+    <ClCompile Include="src\objects\sky\skyplane.cpp" />
     <ClCompile Include="src\rendering\post_processing\post_process_manager.cpp" />
     <ClCompile Include="src\scene_management\scene_switcher.cpp" />
     <ClCompile Include="src\shader_management\shader_include\shader_include.cpp" />
@@ -201,6 +203,8 @@
     <None Include="shader\post_processing\post_process.frag" />
     <None Include="shader\post_processing\post_process.vert" />
     <None Include="shader\skybox\skybox.frag" />
+    <None Include="shader\sky\sky.frag" />
+    <None Include="shader\sky\sky.vert" />
     <None Include="shader\tileable\tileable.vert" />
   </ItemGroup>
   <ItemGroup>
@@ -210,6 +214,7 @@
     <ClInclude Include="helper\drawable.h" />
     <ClInclude Include="helper\glslprogram.h" />
     <ClInclude Include="helper\glutils.h" />
+    <ClInclude Include="helper\noisetex.h" />
     <ClInclude Include="helper\objmesh.h" />
     <ClInclude Include="helper\particleutils.h" />
     <ClInclude Include="helper\plane.h" />
@@ -226,6 +231,7 @@
     <ClInclude Include="src\debug\gs_to_rgba_converter.h" />
     <ClInclude Include="src\global_settings\global_settings_ubo\global_settings_ubo.h" />
     <ClInclude Include="src\objects\light_object.h" />
+    <ClInclude Include="src\objects\sky\skyplane.h" />
     <ClInclude Include="src\objects\uploader_object.h" />
     <ClInclude Include="src\global_settings\lights\particle_spawner\particle_spawner.h" />
     <ClInclude Include="src\global_settings\lights\spotlight\spotlight.h" />

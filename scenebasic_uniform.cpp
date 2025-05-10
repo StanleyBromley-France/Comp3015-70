@@ -75,6 +75,8 @@ void SceneBasic_Uniform::initScene()
 
 	for (auto& obj : lightObjs_)
 		obj->initShadowMap();
+
+	clouds.init();
 }
 
 
@@ -100,6 +102,12 @@ void SceneBasic_Uniform::compile_shaders()
 		depthProg_.compileShader("shader/depth/depth.vert");
 		depthProg_.compileShader("shader/depth/depth.frag");
 		depthProg_.link();
+
+		cloudProg_.compileShader("shader/sky/sky.vert");
+		cloudProg_.compileShader("shader/sky/sky.frag");
+		cloudProg_.link();
+
+
 	}
 	catch (GLSLProgramException& e) {
 		cerr << e.what() << '\n';
@@ -176,6 +184,8 @@ void SceneBasic_Uniform::update(float t)
 
 void SceneBasic_Uniform::render()
 {
+
+
 	draw_shadow_maps();
 
 	post_processor::get_instance().begin_scene_capture();
@@ -183,6 +193,7 @@ void SceneBasic_Uniform::render()
 	draw_scene();
 
 	post_processor::get_instance().apply_post_render();
+
 
 	draw_ui();
 }
@@ -219,12 +230,14 @@ void SceneBasic_Uniform::draw_scene() {
 	for (auto& obj : complexObjs_)
 		obj->render(view, projection, complexProg_);
 
-	draw_ui();
-
 	// render particle
 	particleProg_.use();
 	for (auto& obj : particleObjs_)
 		obj->renderParticles(view, projection, particleProg_);
+
+	// render clouds
+	cloudProg_.use();
+	clouds.render(view, projection, cloudProg_);
 }
 
 void SceneBasic_Uniform::draw_ui()
