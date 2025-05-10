@@ -27,7 +27,7 @@ protected:
     const static int ALBEDO_START;
     const static int NORMAL_START;
 
-
+    void defualt_cleanup();
     void applyMat(GLSLProgram& prog);
     void apply_model_matrix(GLSLProgram& prog, const glm::mat4& view, const glm::mat4& projection);
     void apply_textures(GLSLProgram& prog);

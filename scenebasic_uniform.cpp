@@ -12,7 +12,7 @@
 
 #include "src/window/window.h"
 #include "src/objects/decos/spotlight_point.h"
-#include "src/ui/menu/menu.h"
+#include "src/ui/menu/pause_menu.h"
 #include "src/objects/floor/floor.h"
 #include "src/objects/cars/showcase_car/showcase_car.h"
 #include <memory>
@@ -33,6 +33,16 @@ SceneBasic_Uniform::SceneBasic_Uniform()
 	model = mat4(1.0f);
 	view = CamControls::getViewMatrix();
 	projection = mat4(1.0f);
+}
+
+SceneBasic_Uniform::~SceneBasic_Uniform()
+{
+	complexObjs_.clear();
+	lightObjs_.clear();
+	uploaderObjs_.clear();
+	particleObjs_.clear();
+
+	uiElements_.clear();
 }
 
 void SceneBasic_Uniform::initScene()
@@ -117,8 +127,7 @@ void SceneBasic_Uniform::compile_shaders()
 
 void SceneBasic_Uniform::init_ui()
 {
-	uiElements_.emplace_back(new Menu());
-	ImGuiCore::Init(glfwGetCurrentContext());
+	uiElements_.emplace_back(new PauseMenu());
 	ImGuiCore::BeginFrame();
 	for (auto& ui : uiElements_)
 		ui->init();
@@ -179,7 +188,7 @@ void SceneBasic_Uniform::update(float t)
 	view = CamControls::getViewMatrix();
 	projection = glm::perspective(glm::radians(80.0f), static_cast<float>(width) / height, 0.3f, 200.0f);
 
-	Window::updateKeyState();
+	Input::updateKeyState();
 }
 
 void SceneBasic_Uniform::render()

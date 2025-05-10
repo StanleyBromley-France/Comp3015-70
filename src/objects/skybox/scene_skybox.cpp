@@ -9,6 +9,16 @@ using glm::mat4;
 
 SceneSkybox::SceneSkybox() : skybox_(100.0f){}
 
+SceneSkybox::~SceneSkybox()
+{
+	defualt_cleanup();
+
+	if (tex_ != 0) {
+		glDeleteTextures(1, &tex_);
+		tex_ = 0;
+	}
+}
+
 void SceneSkybox::init()
 {
 	tex_ = Texture::loadCubeMap("media/texture/yokohama/yokohama", ".jpg");

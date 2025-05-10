@@ -10,6 +10,12 @@ using glm::mat4;
 
 Floor::Floor() : plane_(100.0f, 1, 5.0f) {}
 
+Floor::~Floor()
+{
+	defualt_cleanup();
+
+}
+
 void Floor::init()
 {
 	albedoTextures_.resize(1);

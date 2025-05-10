@@ -37,14 +37,23 @@ post_processor::post_processor() : fs_quad_(0), hdr_fbo_(0), blur_fbo_(0), log_l
 }
 
 post_processor::~post_processor() {
-    glDeleteFramebuffers(1, &hdr_fbo_);
-    glDeleteFramebuffers(1, &blur_fbo_);
-    glDeleteTextures(1, &hdr_tex_);
-    glDeleteTextures(1, &tex1_);
-    glDeleteTextures(1, &tex2_);
-    glDeleteVertexArrays(1, &fs_quad_);
+	glDeleteFramebuffers(1, &hdr_fbo_);
+	glDeleteFramebuffers(1, &blur_fbo_);
 	glDeleteFramebuffers(1, &log_lum_fbo_);
+
+	glDeleteTextures(1, &hdr_tex_);
+	glDeleteTextures(1, &tex1_);
+	glDeleteTextures(1, &tex2_);
 	glDeleteTextures(1, &log_lum_tex_);
+
+	glDeleteVertexArrays(1, &fs_quad_);
+
+	glDeleteSamplers(1, &linear_sampler_);
+	glDeleteSamplers(1, &nearest_sampler_);
+
+	glDeleteRenderbuffers(1, &depthBuf);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void post_processor::resize(int screen_width, int screen_height) {
@@ -81,7 +90,6 @@ void post_processor::setup_fbo() {
 	// Bind the texture to the FBO
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, hdr_tex_, 0);
 	// Create the depth buffer
-	GLuint depthBuf;
 	glGenRenderbuffers(1, &depthBuf);
 	glBindRenderbuffer(GL_RENDERBUFFER, depthBuf);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width_, height_);

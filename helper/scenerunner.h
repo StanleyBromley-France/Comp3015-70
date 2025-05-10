@@ -72,13 +72,13 @@ public:
 #endif
     }
 
-    int run(Scene & scene) {
-        scene.setDimensions(fbw, fbh);
-        scene.initScene();
-        scene.resize(fbw, fbh);
+    int run(std::unique_ptr<Scene> scene) {
+        scene->setDimensions(fbw, fbh);
+        scene->initScene();
+        scene->resize(fbw, fbh);
 
         // Enter the main loop
-        mainLoop(window, scene);
+        mainLoop(window, std::move(scene));
 
 #ifndef __APPLE__
 		if( debug )
@@ -119,29 +119,32 @@ private:
         }
     }
 
-    void mainLoop(GLFWwindow * window, Scene & scene) {
-        Scene& currentScene = scene;
+    void mainLoop(GLFWwindow * window, std::unique_ptr<Scene> scene) {
         
-        SceneSwitcher::Instance().SwitchScene(scene);
+        SceneSwitcher::Instance().QueueSceneSwitch(std::move(scene));
+        SceneSwitcher::Instance().ApplyPendingSwitch();
         SceneSwitcher::Instance().MarkSceneInitialised();
 
-        //ImGuiCore::Init(window);
+        Scene* currentScene = SceneSwitcher::Instance().GetCurrentScene();
+
 
         while( ! glfwWindowShouldClose(window) && !glfwGetKey(window, GLFW_KEY_ESCAPE) ) {
             GLUtils::checkForOpenGLError(__FILE__,__LINE__);
 			
-            currentScene.update(float(glfwGetTime()));
-            currentScene.render();
+            currentScene->update(float(glfwGetTime()));
+            currentScene->render();
             glfwSwapBuffers(window);
 
             glfwPollEvents();
 			int state = glfwGetKey(window, GLFW_KEY_SPACE);
 			if (state == GLFW_PRESS)
-                currentScene.animate(!currentScene.animating());
+                currentScene->animate(!currentScene->animating());
 
+            SceneSwitcher::Instance().ApplyPendingSwitch();
             if (!SceneSwitcher::Instance().IsCurrentSceneInitialised()) {
                 currentScene = SceneSwitcher::Instance().GetCurrentScene();
-                currentScene.initScene();
+                currentScene->initScene();
+                currentScene->resize(fbw, fbh);
                 SceneSwitcher::Instance().MarkSceneInitialised();
             }
         }

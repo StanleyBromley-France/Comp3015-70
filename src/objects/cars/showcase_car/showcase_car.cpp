@@ -11,11 +11,16 @@ using glm::mat3;
 using glm::mat4;
 
 
+ShowcaseCar::~ShowcaseCar()
+{
+    defualt_cleanup();
+    cleanup();
+}
+
 void ShowcaseCar::init()
 {
     // load mesh
     car_ = ObjMesh::load("media/model/car.obj", true);
-
     albedoTextures_.resize(2);
     // load textures
     carColours[Orange] = Texture::loadTexture("media/texture/diffuse-orange.png");
@@ -61,7 +66,7 @@ void ShowcaseCar::set_rotation(float t)
     lastFrameTime_ = t;
 
     // space key toggles animation
-    if (Window::isKeyPressedOnce(GLFW_KEY_SPACE))
+    if (Input::isKeyPressedOnce(GLFW_KEY_SPACE))
         doRotation_ = !doRotation_;
 
     // automatic rotation
@@ -88,12 +93,12 @@ void ShowcaseCar::handle_texture_selection()
 {
     GLFWwindow* window = glfwGetCurrentContext();
 
-    bool shiftHeld = (Window::isKeyPressed(GLFW_KEY_LEFT_SHIFT));
+    bool shiftHeld = (Input::isKeyPressed(GLFW_KEY_LEFT_SHIFT));
 
     // Now look for a freshly pressed number key
     for (int key = GLFW_KEY_1; key <= GLFW_KEY_7; ++key)
     {
-        if (Window::isKeyPressedOnce(key))
+        if (Input::isKeyPressedOnce(key))
         {
             int textureIndex = key - GLFW_KEY_1;
             if (textureIndex < 0 || textureIndex >= COUNT)
@@ -127,5 +132,33 @@ void ShowcaseCar::renderDepth(GLSLProgram& depthProg)
 {
     depthProg.setUniform("model", modelMatrix_);
     car_->render();
+}
+
+void ShowcaseCar::cleanup()
+{
+    for (int i = 0; i < COUNT; ++i)
+    {
+        if (carColours[i] != 0)
+        {
+            glDeleteTextures(1, &carColours[i]);
+            carColours[i] = 0;
+        }
+    }
+
+    for (GLuint tex : albedoTextures_)
+    {
+        if (tex != 0)
+            glDeleteTextures(1, &tex);
+    }
+
+    if (normalTexture_ != 0)
+    {
+        glDeleteTextures(1, &normalTexture_);
+        normalTexture_ = 0;
+    }
+
+    albedoTextures_.clear();
+
+    car_.reset();
 }
 

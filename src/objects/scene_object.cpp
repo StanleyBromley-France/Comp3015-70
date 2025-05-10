@@ -7,6 +7,23 @@ const int SceneObject::ALBEDO_START = 0;
 const int SceneObject::NORMAL_START = ALBEDO_START + MAX_TEXTURES;
 const int SceneObject::LIGHT_UNIT = NORMAL_START + 1;
 
+void SceneObject::defualt_cleanup()
+{
+    for (GLuint tex : albedoTextures_) {
+        if (tex != 0) {
+            glDeleteTextures(1, &tex);
+        }
+    }
+    albedoTextures_.clear();
+
+    if (normalTexture_ != 0) {
+        glDeleteTextures(1, &normalTexture_);
+        normalTexture_ = 0;
+    }
+
+    mesh_.reset();
+}
+
 void SceneObject::applyMat(GLSLProgram& prog)
 {
     prog.setUniform("Material.Kd", mat.Kd);

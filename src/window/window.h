@@ -3,13 +3,13 @@
 #include <GLFW/glfw3.h>
 #include <vector>
 
-class Window {
+class Input {
 public:
     static void createInstance();
 
     // removes copy constructor and assignment operator
-    Window(const Window&) = delete;
-    Window& operator=(const Window&) = delete;
+    Input(const Input&) = delete;
+    Input& operator=(const Input&) = delete;
 
 
 
@@ -18,9 +18,9 @@ public:
     static void updateKeyState();
 
 private:
-    Window() = default;
+    Input() = default;
 
-    static Window* instance_;
+    static Input* instance_;
 
     static std::vector<bool> previousKeyStates; // tracks previous key states
 };

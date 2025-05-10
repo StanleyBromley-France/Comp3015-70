@@ -7,17 +7,23 @@ SceneSwitcher& SceneSwitcher::Instance() {
     return instance;
 }
 
-void SceneSwitcher::SwitchScene(const Scene& scene) {
-    currentScene = &scene;
-    isCurrentSceneInitialised = false;
+void SceneSwitcher::QueueSceneSwitch(std::unique_ptr<Scene> newScene) {
+    pendingScene = std::move(newScene);
 }
 
-const Scene& SceneSwitcher::GetCurrentScene() const {
+void SceneSwitcher::ApplyPendingSwitch() {
+    if (pendingScene) {
+        currentScene = std::move(pendingScene);
+        isCurrentSceneInitialised = false;
+    }
+}
+
+Scene* SceneSwitcher::GetCurrentScene() {
     assert(currentScene != nullptr && "No current scene set!");
-    return *currentScene;
+    return currentScene.get();
 }
 
-bool SceneSwitcher::IsCurrentSceneInitialised() const {
+bool SceneSwitcher::IsCurrentSceneInitialised() {
     return isCurrentSceneInitialised;
 }
 

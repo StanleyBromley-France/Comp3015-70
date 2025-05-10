@@ -185,8 +185,10 @@
     <ClCompile Include="src\ui\imgui_wrapper\imgui_utils.cpp" />
     <ClCompile Include="src\ui\imgui_wrapper\imgui_custom_widgets.cpp" />
     <ClCompile Include="src\ui\imgui_wrapper\imgui_windows.cpp" />
-    <ClCompile Include="src\ui\menu\menu.cpp" />
+    <ClCompile Include="src\ui\menu\pause_menu.cpp" />
+    <ClCompile Include="src\ui\menu\start_menu.cpp" />
     <ClCompile Include="src\window\window.cpp" />
+    <ClCompile Include="start_scene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shader\basic_uniform.frag" />
@@ -208,7 +210,6 @@
     <None Include="shader\tileable\tileable.vert" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\CarGame\_core\ui_system\ui_element.h" />
     <ClInclude Include="camControls.h" />
     <ClInclude Include="helper\aabb.h" />
     <ClInclude Include="helper\drawable.h" />
@@ -259,9 +260,11 @@
     <ClInclude Include="src\ui\imgui_wrapper\imgui_utils.h" />
     <ClInclude Include="src\ui\imgui_wrapper\imgui_custom_widgets.h" />
     <ClInclude Include="src\ui\imgui_wrapper\imgui_windows.h" />
-    <ClInclude Include="src\ui\menu\menu.h" />
+    <ClInclude Include="src\ui\menu\pause_menu.h" />
+    <ClInclude Include="src\ui\menu\start_menu.h" />
     <ClInclude Include="src\ui\ui_element.h" />
     <ClInclude Include="src\window\window.h" />
+    <ClInclude Include="start_scene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

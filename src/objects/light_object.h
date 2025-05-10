@@ -23,4 +23,6 @@ protected:
     GLuint shadowTex_;
     int shadowRes_;
     glm::mat4 lightSpaceMatrix_;
+
+    void default_cleanup_light();
 };

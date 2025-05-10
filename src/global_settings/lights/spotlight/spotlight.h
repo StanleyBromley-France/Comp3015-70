@@ -5,7 +5,7 @@
 class spotlight {
 public:
     spotlight();
-    ~spotlight() = default;
+    ~spotlight();
 
     void set_ambient(const glm::vec3& a);
     void set_intensity(const glm::vec3& i);

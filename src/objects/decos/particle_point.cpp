@@ -12,6 +12,17 @@ ParticlePoint::ParticlePoint() : particleCount_(500), particleDir_(vec3(0.f, 1.0
 {
 }
 
+ParticlePoint::~ParticlePoint()
+{
+	defualt_cleanup();  // Call SceneObject's cleanup if it exists
+
+	if (particleTex_ != 0) {
+		glDeleteTextures(1, &particleTex_);
+		particleTex_ = 0;
+	}
+
+}
+
 void ParticlePoint::init()
 {
 	particleTex_ = Texture::loadTexture("media/texture/particles/spark.png");
@@ -21,7 +32,7 @@ void ParticlePoint::init()
 
 void ParticlePoint::update(float t)
 {
-	if (Window::isKeyPressedOnce(GLFW_KEY_W)) {
+	if (Input::isKeyPressedOnce(GLFW_KEY_W)) {
 		spawner_.fire(t);
 	}
 

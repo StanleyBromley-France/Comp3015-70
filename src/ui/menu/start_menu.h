@@ -2,7 +2,7 @@
 #include "../ui_element.h"
 #include "../imgui_wrapper/imgui/imgui.h"
 
-class Menu : public UIElement {
+class StartMenu : public UIElement {
 public:
     void init() override;
     void update() override;
@@ -10,5 +10,4 @@ public:
 private:
     ImVec2 windowSize;
     ImVec2 centerPos;
-    bool isOpen;
 };

@@ -9,6 +9,22 @@ const glm::mat4 LightObject::SHADOW_BIAS = glm::mat4(
     vec4(0.5f, 0.5f, 0.5f, 1.0f)
 );
 
+void LightObject::default_cleanup_light()
+{
+    if (shadowTex_ != 0) {
+        glDeleteTextures(1, &shadowTex_);
+        shadowTex_ = 0;
+    }
+
+    if (shadowFBO_ != 0) {
+        glDeleteFramebuffers(1, &shadowFBO_);
+        shadowFBO_ = 0;
+    }
+
+    shadowRes_ = 0;
+    lightSpaceMatrix_ = glm::mat4(1.0f); // Reset to identity
+}
+
 
 void LightObject::initShadowMap(int res)
 {

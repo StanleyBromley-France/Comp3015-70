@@ -1,4 +1,4 @@
-#include "menu.h"
+#include "pause_menu.h"
 #include "../imgui_wrapper/imgui_windows.h"
 #include "../imgui_wrapper/imgui_custom_widgets.h"
 #include "../imgui_wrapper/imgui_utils.h"
@@ -6,29 +6,29 @@
 #include "../imgui_wrapper/imgui/imgui.h"
 
 #include <GLFW/glfw3.h>
+#include "../../scene_management/scene_switcher.h"
+#include "../../../start_scene.h"
 
 using namespace ImGuiWindows;
 using namespace ImGuiWidgets;
 using namespace ImGuiUtils;
 
-void Menu::init() 
+void PauseMenu::init() 
 {
     windowSize.x = 400;
     windowSize.y = 200;
     centerPos = GetGUIScreenCenteredPos(windowSize);
     isOpen = false;
-
-    Window::createInstance();
 }
 
-void Menu::update() 
+void PauseMenu::update() 
 {
-    if (Window::isKeyPressedOnce(GLFW_KEY_P)) {
+    if (Input::isKeyPressedOnce(GLFW_KEY_P)) {
         isOpen = !isOpen;
     }
 };
 
-void Menu::render() 
+void PauseMenu::render() 
 {
     if (!isOpen)
         return;
@@ -39,13 +39,18 @@ void Menu::render()
             1000.0f / ImGui::GetIO().Framerate,
             ImGui::GetIO().Framerate
         );
+        ImVec2 buttonSize(150, 50);
+
+        SetWindowCenteredPos(buttonSize);
+        if (ImGui::Button("Go", buttonSize)) {
+            SceneSwitcher::Instance().QueueSceneSwitch(std::make_unique<StartScene>());
+        }
 
         static bool enableFeature = true;
         Checkbox("Enable Feature", &enableFeature);
 
         static float volume = 0.5f;
         SliderFloat("Volume", &volume, 0.0f, 1.0f);
-        ImVec2 buttonSize(150, 50);
         SetWindowCenteredPos(buttonSize);
         if (Button("Quit", buttonSize)) {
             glfwSetWindowShouldClose(glfwGetCurrentContext(), true);

@@ -5,11 +5,12 @@
 class ShowcaseCar : public SceneObject
 {
 public:
+    ~ShowcaseCar();
     void init() override;
     void update(float t) override;
     void render(const glm::mat4& view, const glm::mat4& projection, GLSLProgram& prog) override;
     void renderDepth(GLSLProgram& depthProg) override;
-
+    void cleanup();
 private:
     std::unique_ptr<ObjMesh> car_;
     float rot_ = 45.0f;

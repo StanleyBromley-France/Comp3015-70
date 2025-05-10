@@ -11,6 +11,10 @@ spotlight::spotlight()
     data_.Direction = glm::vec3(0.0f, -1.0f, 0.0f);
 }
 
+spotlight::~spotlight()
+{
+}
+
 void spotlight::set_ambient(const glm::vec3& a) {
     data_.La = a;
 }

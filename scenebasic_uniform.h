@@ -49,7 +49,7 @@ class SceneBasic_Uniform : public Scene
 
 public:
     SceneBasic_Uniform();
-
+    ~SceneBasic_Uniform();
     void initScene() override;
     void update( float t ) override;
     void render() override;

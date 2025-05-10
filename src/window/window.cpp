@@ -4,25 +4,25 @@
 #include <GLFW/glfw3.h>
 #include <vector>
 
-Window* Window::instance_ = nullptr;
-std::vector<bool> Window::previousKeyStates(GLFW_KEY_LAST + 1, false);
+Input* Input::instance_ = nullptr;
+std::vector<bool> Input::previousKeyStates(GLFW_KEY_LAST + 1, false);
 
-void Window::createInstance() {
+void Input::createInstance() {
     if (instance_) {
         throw std::runtime_error("Input instance already created");
     }
-    instance_ = new Window();
+    instance_ = new Input();
 }
 
 
-bool Window::isKeyPressed(int key) { 
+bool Input::isKeyPressed(int key) { 
     if (!instance_) {
         throw std::runtime_error("Window instance not created");
     }
     return glfwGetKey(glfwGetCurrentContext(), key) == GLFW_PRESS;
 }
 
-bool Window::isKeyPressedOnce(int key) {
+bool Input::isKeyPressedOnce(int key) {
     if (!instance_) {
         throw std::runtime_error("Window instance not created");
     }
@@ -33,7 +33,7 @@ bool Window::isKeyPressedOnce(int key) {
     return current && !previous; // makes sure that it only works if prevoius is false 
 }
 
-void Window::updateKeyState()
+void Input::updateKeyState()
 {
     if (!instance_) {
         throw std::runtime_error("Window instance not created");

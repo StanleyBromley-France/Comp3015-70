@@ -1,5 +1,6 @@
 #pragma once
 #include "../../helper/scene.h"
+#include <memory>
 
 
 class SceneSwitcher {
@@ -9,17 +10,19 @@ public:
     SceneSwitcher(const SceneSwitcher&) = delete;
     SceneSwitcher& operator=(const SceneSwitcher&) = delete;
 
-    void SwitchScene(const Scene& scene);
+    void QueueSceneSwitch(std::unique_ptr<Scene> newScene);
+    void ApplyPendingSwitch();
 
-    const Scene& GetCurrentScene() const;
+    Scene* GetCurrentScene();
 
-    bool IsCurrentSceneInitialised() const;
+    bool IsCurrentSceneInitialised();
     void MarkSceneInitialised();
 
 private:
     SceneSwitcher() = default;
     ~SceneSwitcher() = default;
 
-    const Scene* currentScene = nullptr;
+    std::unique_ptr<Scene> currentScene;
+    std::unique_ptr<Scene> pendingScene;
     bool isCurrentSceneInitialised = false;
 };

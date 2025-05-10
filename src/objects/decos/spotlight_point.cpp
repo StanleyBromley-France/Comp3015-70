@@ -8,6 +8,13 @@ using glm::mat3;
 
 SpotlightPoint::SpotlightPoint() : radius_(35.f), rotationSpeed_(.25f), rotatePoint_(vec3(0)), angle_(0), lightPos_(0), t_prev_(0) {}
 
+SpotlightPoint::~SpotlightPoint()
+{
+	defualt_cleanup();
+	default_cleanup_light();
+
+}
+
 void SpotlightPoint::init() 
 {
 }

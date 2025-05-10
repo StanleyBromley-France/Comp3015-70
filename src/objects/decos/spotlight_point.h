@@ -11,7 +11,7 @@ class SpotlightPoint : public SceneObject, public UploaderObject, public LightOb
 {
 public:
 	SpotlightPoint();
-	~SpotlightPoint() = default;
+	~SpotlightPoint();
 
 	void init() override;
 	void update(float t) override;

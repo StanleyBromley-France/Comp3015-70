@@ -8,7 +8,7 @@ class ParticlePoint : public SceneObject, public ParticleObject
 {
 public:
 	ParticlePoint();
-	~ParticlePoint() = default;
+	~ParticlePoint();
 
 	void init() override;
 	void update(float t) override;

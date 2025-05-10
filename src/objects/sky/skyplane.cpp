@@ -7,6 +7,22 @@ using glm::mat4;
 using glm::vec3;
 
 
+SkyPlane::~SkyPlane()
+{
+    defualt_cleanup();
+
+    if (handle[0] != 0) glDeleteBuffers(1, &handle[0]);
+    if (handle[1] != 0) glDeleteBuffers(1, &handle[1]);
+
+    if (quad != 0) glDeleteVertexArrays(1, &quad);
+
+    if (noiseTex != 0) glDeleteTextures(1, &noiseTex);
+
+    handle[0] = handle[1] = 0;
+    quad = 0;
+    noiseTex = 0;
+}
+
 void SkyPlane::init() {
 
     GLfloat verts[] = {
