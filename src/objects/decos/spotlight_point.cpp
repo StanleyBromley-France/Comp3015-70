@@ -30,9 +30,17 @@ void SpotlightPoint::update(float t)
 	angle_ += rotationSpeed_ * deltaT;
 	if (angle_ > glm::two_pi<float>()) angle_ -= glm::two_pi<float>();
 
-	// light position: Rotate diagonally around the origin
-	lightPos_ = vec4(radius_ * cos(angle_), radius_, radius_ * sin(angle_), 1.0f); // diagonal rotation
-	lightDir_ = rotatePoint_ - vec3(lightPos_); // Direction toward origin
+	// light position: rotates diagonally around (0,0,0)
+	vec3 localPos = vec3(
+		radius_ * cos(angle_),
+		radius_,
+		radius_ * sin(angle_)
+	);
+
+	// translates the orbit so its center is rotatePoint_
+	lightPos_ = vec4(rotatePoint_ + localPos, 1.0f);
+
+	lightDir_ = rotatePoint_ - vec3(lightPos_); // direction toward origin
 
 }
 
