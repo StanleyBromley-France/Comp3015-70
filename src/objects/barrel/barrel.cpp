@@ -22,6 +22,10 @@ void Barrel::init()
     modelMatrix_ = glm::translate(modelMatrix_, position_);
 
     modelMatrix_ = glm::scale(modelMatrix_, vec3(5.f));
+
+    update_collider_position(glm::vec2(position_.x, position_.z));
+    set_collider_size(glm::vec2(3.f,3.f));
+    update_collider_angle(0.f);
 }
 
 void Barrel::update(float t)
@@ -45,4 +49,12 @@ void Barrel::renderDepth(GLSLProgram& depthProg)
 {
     depthProg.setUniform("model", modelMatrix_);
     barrel_->render();
+}
+
+void Barrel::on_collision(CollisionObject& other)
+{
+}
+
+void Barrel::on_collision_once(CollisionObject& other)
+{
 }

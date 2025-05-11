@@ -3,7 +3,8 @@
 #include "../../scene_object.h"
 #include <memory>
 #include "../../../../helper/objmesh.h"
-class GameCar : public SceneObject 
+#include "../../../collision/collision_object/collision_object.h"
+class GameCar : public SceneObject, public CollisionObject 
 {
 public:
 	GameCar();
@@ -13,6 +14,9 @@ public:
 	void update(float t) override;
 	void render(const glm::mat4& view, const glm::mat4& projection, GLSLProgram& prog) override;
 	void renderDepth(GLSLProgram& depthProg) override;
+
+    void on_collision(CollisionObject& other) override;
+    void on_collision_once(CollisionObject& other) override;
 private:
 	std::unique_ptr<ObjMesh> car_;
 	float lastFrameTime_;

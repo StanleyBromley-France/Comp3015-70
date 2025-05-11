@@ -38,6 +38,7 @@ void GameScene::initScene()
 	barrel1->set_position(glm::vec3(0, 0, -20));
 	barrel2->set_position(glm::vec3(0, 0, 20));
 
+	auto car = std::make_shared<GameCar>();
 	// complex setup ---------------
 
 	complexObjs_.push_back(spotlight1);
@@ -45,12 +46,20 @@ void GameScene::initScene()
 	complexObjs_.push_back(barrel1);
 	complexObjs_.push_back(barrel2);
 	complexObjs_.push_back(std::make_shared<Floor>());
-	complexObjs_.push_back(std::make_shared<GameCar>());
-
-
+	complexObjs_.push_back(car);
 
 	for (auto& obj : complexObjs_)
 		obj->init();
+
+	// collision setup -------------
+
+	collisionObjs_.push_back(barrel1);
+	collisionObjs_.push_back(barrel2);
+	collisionObjs_.push_back(car);
+
+	collisionManager.addObject(car);
+	collisionManager.addObject(barrel1);
+	collisionManager.addObject(barrel2);
 
 	// uploader setup --------------
 
@@ -62,6 +71,7 @@ void GameScene::initScene()
 
 
 	// light setup -------
+
 	lightObjs_.push_back(spotlight1);
 	lightObjs_.push_back(spotlight2);
 
@@ -89,6 +99,9 @@ void GameScene::update(float t)
 	// update view
 	view = CamControls::getViewMatrix();
 	projection = glm::perspective(glm::radians(80.0f), static_cast<float>(width) / height, 0.3f, 200.0f);
+
+	collisionManager.detectAndNotify();
+	collisionManager.detectOnceAndNotify();
 
 	Input::updateKeyState();
 }
@@ -145,6 +158,14 @@ void GameScene::draw_scene()
 	//cloudProg_.use();
 	//clouds.render(view, projection, cloudProg_);
 	
+	glBindVertexArray(collisionDebugRenderer.getVAO());
+
+	collisionProg_.use();
+	for (auto& obj : collisionObjs_)
+		obj->draw_collision_bounds(collisionProg_, projection, view);
+
+	glBindVertexArray(0);
+
 }
 
 void GameScene::draw_shadow_maps()
@@ -210,6 +231,10 @@ void GameScene::compile_shaders()
 		cloudProg_.compileShader("shader/sky/sky.vert");
 		cloudProg_.compileShader("shader/sky/sky.frag");
 		cloudProg_.link();
+
+		collisionProg_.compileShader("shader/collision/collision_box.vert");
+		collisionProg_.compileShader("shader/collision/collision_box.frag");
+		collisionProg_.link();
 
 	}
 	catch (GLSLProgramException& e) {

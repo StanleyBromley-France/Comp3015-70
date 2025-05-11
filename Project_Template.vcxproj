@@ -161,6 +161,10 @@
     <ClCompile Include="helper\trianglemesh.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="scenebasic_uniform.cpp" />
+    <ClCompile Include="src\collision\collision_manager\collision_manager.cpp" />
+    <ClCompile Include="src\collision\collision_object\collision_object.cpp" />
+    <ClCompile Include="src\collision\helper\oriented_bounding_boxes.cpp" />
+    <ClCompile Include="src\collision\rendering\collision_debug_renderer.cpp" />
     <ClCompile Include="src\debug_stuff\gs_to_rgba_converter.cpp" />
     <ClCompile Include="src\global_settings\global_settings_ubo\global_settings_ubo.cpp" />
     <ClCompile Include="src\global_settings\lights\particle_spawner\particle_spawner.cpp" />
@@ -200,6 +204,8 @@
   <ItemGroup>
     <None Include="shader\basic_uniform.frag" />
     <None Include="shader\basic_uniform.vert" />
+    <None Include="shader\collision\collision_box.frag" />
+    <None Include="shader\collision\collision_box.vert" />
     <None Include="shader\complex\complex.frag" />
     <None Include="shader\complex\complex.vert" />
     <None Include="shader\converter\converter.frag" />
@@ -237,6 +243,10 @@
     <ClInclude Include="helper\trianglemesh.h" />
     <ClInclude Include="helper\utils.h" />
     <ClInclude Include="scenebasic_uniform.h" />
+    <ClInclude Include="src\collision\collision_manager\collision_manager.h" />
+    <ClInclude Include="src\collision\collision_object\collision_object.h" />
+    <ClInclude Include="src\collision\helper\oriented_bounding_boxes.h" />
+    <ClInclude Include="src\collision\rendering\collision_debug_renderer.h" />
     <ClInclude Include="src\debug_stuff\gs_to_rgba_converter.h" />
     <ClInclude Include="src\global_settings\global_settings_ubo\global_settings_ubo.h" />
     <ClInclude Include="src\objects\barrel\barrel.h" />

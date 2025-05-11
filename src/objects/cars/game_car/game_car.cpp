@@ -3,6 +3,7 @@
 #include "../car_colours.h"
 #include <glm/ext/matrix_transform.hpp>
 #include "../../../window/window.h"
+#include <iostream>
 
 
 using glm::vec3;
@@ -44,6 +45,9 @@ void GameCar::init()
 	yawAngle_ = 0.f;
 	velocity_ = 0.f;
 	lastFrameTime_ = glfwGetTime();
+
+    update_collider_position(glm::vec2(position_.x, position_.z));
+    set_collider_size(glm::vec2(10.f, 25.f));
 }
 
 void GameCar::update(float t)
@@ -86,6 +90,8 @@ void GameCar::update(float t)
     modelMatrix_ = glm::translate(mat4(1.f), position_);
     modelMatrix_ = glm::rotate(modelMatrix_, yawAngle_, vec3(0, 1, 0));
 
+    update_collider_angle(yawAngle_);
+
     // body roll, tilts into the turn
     float steerInput = (right ? 1.f : (left ? -1.f : 0.f));
     float rollAngle = glm::radians(5.f) * speedFrac * steerInput;
@@ -94,6 +100,8 @@ void GameCar::update(float t)
     // Uniform scale
     modelMatrix_ = glm::scale(modelMatrix_, vec3(5.f));
     modelMatrix_ = glm::translate(modelMatrix_, vec3(0.0f, 0.6f, 0.0f));
+
+    update_collider_position(glm::vec2(position_.x, position_.z));
 }
 
 void GameCar::render(const glm::mat4& view, const glm::mat4& projection, GLSLProgram& prog)
@@ -113,4 +121,14 @@ void GameCar::renderDepth(GLSLProgram& depthProg)
 {
 	depthProg.setUniform("model", modelMatrix_);
 	car_->render();
+}
+
+void GameCar::on_collision(CollisionObject& other)
+{
+   // std::cout << "hit barrel!" << "\n";
+}
+
+void GameCar::on_collision_once(CollisionObject& other)
+{
+    std::cout << "hit barrel!" << "\n";
 }

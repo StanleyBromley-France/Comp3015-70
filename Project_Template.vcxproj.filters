@@ -174,6 +174,18 @@
     <ClCompile Include="src\objects\cars\game_car\game_car.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\collision\collision_object\collision_object.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\collision\collision_manager\collision_manager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\collision\rendering\collision_debug_renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\collision\helper\oriented_bounding_boxes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shader\basic_uniform.frag">
@@ -197,6 +209,8 @@
     <None Include="shader\includes\shadows.frag" />
     <None Include="shader\sky\sky.frag" />
     <None Include="shader\sky\sky.vert" />
+    <None Include="shader\collision\collision_box.vert" />
+    <None Include="shader\collision\collision_box.frag" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="helper\scene.h">
@@ -377,6 +391,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\objects\cars\game_car\game_car.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\collision\collision_manager\collision_manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\collision\collision_object\collision_object.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\collision\rendering\collision_debug_renderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\collision\helper\oriented_bounding_boxes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
