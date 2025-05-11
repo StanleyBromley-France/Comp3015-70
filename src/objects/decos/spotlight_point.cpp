@@ -64,3 +64,8 @@ void SpotlightPoint::upload(GlobalSettingsUBO& globalUbo)
 {
 	globalUbo.setSpotlight(spotlight_.data_);
 }
+
+void SpotlightPoint::set_rotate_pos(glm::vec3 rotPos)
+{
+	rotatePoint_ = rotPos;
+}

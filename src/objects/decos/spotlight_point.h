@@ -22,6 +22,8 @@ public:
 	void render_light(const glm::mat4& view, const glm::mat4& projectiong) override;
 	void upload(GlobalSettingsUBO& globalUbo) override;
 
+	void set_rotate_pos(glm::vec3 rotPos);
+
 private:
 	spotlight spotlight_;
 	float t_prev_;
