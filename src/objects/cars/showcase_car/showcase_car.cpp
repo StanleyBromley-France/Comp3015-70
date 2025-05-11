@@ -48,14 +48,15 @@ void ShowcaseCar::init()
     // load mesh
     car_ = ObjMesh::load("media/model/car.obj", true);
     albedoTextures_.resize(2);
+
     // load textures
-    carColours[Orange] = Texture::loadTexture("media/texture/diffuse-orange.png");
-    carColours[Black] = Texture::loadTexture("media/texture/diffuse-black.png");
-    carColours[Blue] = Texture::loadTexture("media/texture/diffuse-blue.png");
-    carColours[DarkBlue] = Texture::loadTexture("media/texture/diffuse-darkblue.png");
-    carColours[DarkGrey] = Texture::loadTexture("media/texture/diffuse-darkgrey.png");
-    carColours[Grey] = Texture::loadTexture("media/texture/diffuse-grey.png");
-    carColours[Red] = Texture::loadTexture("media/texture/diffuse-red.png");
+    carColours[Orange] = CarColours::load(Orange);
+    carColours[Black] = CarColours::load(Black);
+    carColours[Blue] = CarColours::load(Blue);
+    carColours[DarkBlue] = CarColours::load(DarkBlue);
+    carColours[DarkGrey] = CarColours::load(DarkGrey);
+    carColours[Grey] = CarColours::load(Grey);
+    carColours[Red] = CarColours::load(Red);
 
     normalTexture_ = Texture::loadTexture("media/texture/normal.png");
 

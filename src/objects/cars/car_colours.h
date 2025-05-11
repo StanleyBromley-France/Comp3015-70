@@ -1,4 +1,5 @@
 #pragma once
+#include "../../../helper/texture.h"
 
 namespace CarColours
 {
@@ -12,4 +13,6 @@ namespace CarColours
         Red,
         COUNT
     };
+
+    GLuint load(Index idx);
 }

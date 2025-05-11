@@ -234,7 +234,7 @@ void SceneBasic_Uniform::draw_scene() {
 		std::string matrixName = std::string("ShadowMatrices[") + std::to_string(i) + "]";
 
 		complexProg_.setUniform("numShadows", i + 1);
-		complexProg_.setUniform(shadowsName.c_str(), SceneObject::LIGHT_UNIT + 0);
+		complexProg_.setUniform(shadowsName.c_str(), SceneObject::LIGHT_UNIT + i);
 		complexProg_.setUniform(matrixName.c_str(), LightObject::SHADOW_BIAS * light->get_light_space_matrix());
 	}
 

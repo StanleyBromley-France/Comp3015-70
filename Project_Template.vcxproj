@@ -167,6 +167,8 @@
     <ClCompile Include="src\global_settings\lights\spotlight\spotlight.cpp" />
     <ClCompile Include="src\mesh\tileable_plane.cpp" />
     <ClCompile Include="src\objects\barrel\barrel.cpp" />
+    <ClCompile Include="src\objects\cars\car_colours.cpp" />
+    <ClCompile Include="src\objects\cars\game_car\game_car.cpp" />
     <ClCompile Include="src\objects\cars\showcase_car\showcase_car.cpp" />
     <ClCompile Include="src\objects\decos\particle_point.cpp" />
     <ClCompile Include="src\objects\decos\spotlight_point.cpp" />
@@ -239,6 +241,7 @@
     <ClInclude Include="src\global_settings\global_settings_ubo\global_settings_ubo.h" />
     <ClInclude Include="src\objects\barrel\barrel.h" />
     <ClInclude Include="src\objects\cars\car_colours.h" />
+    <ClInclude Include="src\objects\cars\game_car\game_car.h" />
     <ClInclude Include="src\objects\light_object.h" />
     <ClInclude Include="src\objects\sky\skyplane.h" />
     <ClInclude Include="src\objects\uploader_object.h" />

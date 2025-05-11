@@ -168,6 +168,12 @@
     <ClCompile Include="src\objects\barrel\barrel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\objects\cars\car_colours.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\objects\cars\game_car\game_car.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shader\basic_uniform.frag">
@@ -368,6 +374,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\objects\barrel\barrel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\objects\cars\game_car\game_car.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

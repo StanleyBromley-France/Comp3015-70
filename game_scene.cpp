@@ -8,6 +8,7 @@
 #include "camControls.h"
 #include "src/window/window.h"
 #include "src/objects/barrel/barrel.h"
+#include "src/objects/cars/game_car/game_car.h"
 
 GameScene::GameScene()
 {
@@ -44,6 +45,8 @@ void GameScene::initScene()
 	complexObjs_.push_back(barrel1);
 	complexObjs_.push_back(barrel2);
 	complexObjs_.push_back(std::make_shared<Floor>());
+	complexObjs_.push_back(std::make_shared<GameCar>());
+
 
 
 	for (auto& obj : complexObjs_)
@@ -126,7 +129,7 @@ void GameScene::draw_scene()
 		std::string matrixName = std::string("ShadowMatrices[") + std::to_string(i) + "]";
 
 		complexProg_.setUniform("numShadows", i + 1);
-		complexProg_.setUniform(shadowsName.c_str(), SceneObject::LIGHT_UNIT + 0);
+		complexProg_.setUniform(shadowsName.c_str(), SceneObject::LIGHT_UNIT + i);
 		complexProg_.setUniform(matrixName.c_str(), LightObject::SHADOW_BIAS * light->get_light_space_matrix());
 	}
 
