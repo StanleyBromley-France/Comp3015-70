@@ -7,6 +7,11 @@ const int SceneObject::ALBEDO_START = 0;
 const int SceneObject::NORMAL_START = ALBEDO_START + MAX_TEXTURES;
 const int SceneObject::LIGHT_UNIT = NORMAL_START + 1;
 
+void SceneObject::set_position(glm::vec3 position)
+{
+    position_ = position;
+}
+
 void SceneObject::defualt_cleanup()
 {
     for (GLuint tex : albedoTextures_) {

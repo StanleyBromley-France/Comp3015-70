@@ -7,6 +7,7 @@
 #include "src/objects/floor/floor.h"
 #include "camControls.h"
 #include "src/window/window.h"
+#include "src/objects/barrel/barrel.h"
 
 GameScene::GameScene()
 {
@@ -30,10 +31,18 @@ void GameScene::initScene()
 	spotlight1->set_rotate_pos(glm::vec3(0,0,-20));
 	spotlight2->set_rotate_pos(glm::vec3(0, 0, 20));
 
+	auto barrel1 = std::make_shared<Barrel>();
+	auto barrel2 = std::make_shared<Barrel>();
+
+	barrel1->set_position(glm::vec3(0, 0, -20));
+	barrel2->set_position(glm::vec3(0, 0, 20));
+
 	// complex setup ---------------
 
 	complexObjs_.push_back(spotlight1);
 	complexObjs_.push_back(spotlight2);
+	complexObjs_.push_back(barrel1);
+	complexObjs_.push_back(barrel2);
 	complexObjs_.push_back(std::make_shared<Floor>());
 
 

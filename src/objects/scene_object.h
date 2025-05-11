@@ -14,6 +14,7 @@ public:
 
     const static int LIGHT_UNIT;
 
+    void set_position(glm::vec3 position);
 protected:
     std::unique_ptr<ObjMesh> mesh_;
     glm::mat4 modelMatrix_;
@@ -26,6 +27,8 @@ protected:
     const static int MAX_TEXTURES;
     const static int ALBEDO_START;
     const static int NORMAL_START;
+
+    glm::vec3 position_;
 
     void defualt_cleanup();
     void applyMat(GLSLProgram& prog);
