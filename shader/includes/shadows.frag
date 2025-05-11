@@ -1,4 +1,4 @@
-#define MAX_SHADOWS 4
+#define MAX_SHADOWS 8
 
 uniform sampler2DShadow ShadowMaps[MAX_SHADOWS];
 

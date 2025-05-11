@@ -176,6 +176,8 @@ void SceneBasic_Uniform::update(float t)
 	for (auto& obj : complexObjs_)
 		obj->update(t);
 
+	globalSettings.clearSpotlights();
+
 	for (auto& upl : uploaderObjs_)
 		upl->upload(globalSettings);
 	

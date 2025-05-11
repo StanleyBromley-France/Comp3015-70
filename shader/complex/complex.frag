@@ -65,11 +65,20 @@ mat3 CalculateTBN()
 // applies lighting based on global var
 vec3 applyLighting(vec3 pos, vec3 n, vec3 diffuseBase) 
 {
-    if (globalSettings.lightingMode == 0) {
-        return BlinnPhong_LightingNormal(pos, n, diffuseBase);
-    } else {
-        return BlinnPhong_LightingToon(pos, n, diffuseBase);
+    vec3 result = vec3(0.0);
+
+    // loop over all active spotlights
+    for (int i = 0; i < globalSettings.numSpotlights; ++i) {
+        SpotLightInfo sp = globalSettings.Spotlights[i];
+
+        if (globalSettings.lightingMode == 0) {
+            result += BlinnPhong_LightingNormal(sp, pos, n, diffuseBase);
+        } else {
+            result += BlinnPhong_LightingToon(sp, pos, n, diffuseBase);
+        }
     }
+
+    return result;
 }
 
 void main() {
@@ -86,7 +95,12 @@ void main() {
     
     vec3 texColor = calculateColour();
 
-    vec3 ambient = calculateAmbient(texColor);
+    vec3 ambient = vec3(0.0);
+
+    if (globalSettings.numSpotlights > 0) {
+        SpotLightInfo firstSp = globalSettings.Spotlights[0];
+        ambient = calculateAmbient(firstSp, texColor);
+    }    
     vec3 lit = applyLighting(Position, viewNormal, texColor);
 
     float shadow = calculateShadowPCF();

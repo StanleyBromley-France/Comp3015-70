@@ -26,11 +26,13 @@ struct MaterialInfo {
 
 uniform MaterialInfo Material;
 
-layout(std140, binding = 0) uniform GlobalSettings {
-    SpotLightInfo Spotlight;
+#define MAX_SPOTLIGHTS 8
 
-    int   lightingMode;
-    vec3  pad6;
+layout(std140, binding = 0) uniform GlobalSettings {
+    SpotLightInfo Spotlights[MAX_SPOTLIGHTS];
+    int numSpotlights;
+    int lightingMode;
+    vec2 pad2;
 } globalSettings;
 
 //------------ DATA ------------//
@@ -48,19 +50,19 @@ const float scaleFactor = 1.0 / levels;
 
 //------------ HELPER METHODS ------------//
 
-vec3 calculateAmbient(vec3 ambientBase)
+vec3 calculateAmbient(SpotLightInfo sp, vec3 ambientBase)
 {
-    return globalSettings.Spotlight.La * ambientBase;
+    return sp.La * ambientBase;
 }
 
-SpotlightParams computeSpotlightParams(vec3 pos) {
+SpotlightParams computeSpotlightParams(SpotLightInfo sp, vec3 pos) {
     SpotlightParams params;
-    params.s = normalize(globalSettings.Spotlight.Position - pos);
-    params.cosAng = dot(-params.s, normalize(globalSettings.Spotlight.Direction));
+    params.s = normalize(sp.Position - pos);
+    params.cosAng = dot(-params.s, normalize(sp.Direction));
     params.spotScale = 0.0;
     
-    if (params.cosAng > 0.0 && acos(params.cosAng) < globalSettings.Spotlight.Cutoff) {
-        params.spotScale = pow(params.cosAng, globalSettings.Spotlight.Exponent);
+    if (params.cosAng > 0.0 && acos(params.cosAng) < sp.Cutoff) {
+        params.spotScale = pow(params.cosAng, sp.Exponent);
     }
     
     return params;
@@ -75,25 +77,28 @@ vec3 calculateSpecular(vec3 pos, vec3 s, vec3 n) {
     return Material.Ks * pow(max(hDotN, 0.0), Material.Shininess);
 }
 
-vec3 computeFinalColor(float spotScale, vec3 diffuse, vec3 spec) {
-    return spotScale * (diffuse + spec) * globalSettings.Spotlight.L;
+vec3 computeFinalColor(SpotlightParams params, vec3 diffuse, vec3 spec, SpotLightInfo sp) {
+    return params.spotScale * (diffuse + spec) * sp.L;
 }
 
 //------------ MAIN METHODS ------------//
 
 // normal lighting
 vec3 BlinnPhong_LightingNormal(
+    SpotLightInfo sp,
     vec3 pos, 
     vec3 n, 
     vec3 diffuseBase 
 ) {
-    SpotlightParams params = computeSpotlightParams(pos);
+    SpotlightParams params = computeSpotlightParams(sp, pos);
 
     if (params.spotScale > 0.0) {
         float sDotN = max(dot(params.s, n), 0.0);
         vec3 diffuse = diffuseBase * sDotN;
-        vec3 spec = (useSpecular && sDotN > 0.0) ? calculateSpecular(pos, params.s, n) : vec3(0.0);
-        return computeFinalColor(params.spotScale, diffuse, spec);
+        vec3 spec = (useSpecular && sDotN > 0.0)
+                   ? calculateSpecular(pos, params.s, n)
+                   : vec3(0.0);
+        return computeFinalColor(params, diffuse, spec, sp);
     }
     
     return vec3(0);
@@ -101,24 +106,27 @@ vec3 BlinnPhong_LightingNormal(
 
 // toon lighting
 vec3 BlinnPhong_LightingToon(
+    SpotLightInfo sp,
     vec3 pos, 
     vec3 n, 
     vec3 diffuseBase
 ) {
-    SpotlightParams params = computeSpotlightParams(pos);
+    SpotlightParams params = computeSpotlightParams(sp, pos);
 
     if (params.spotScale > 0.0) {
         float sDotN = max(dot(params.s, n), 0.0);
-        float band = floor(sDotN * levels);
+        float band = floor(sDotN * float(levels));
         vec3 diffuse = diffuseBase * band * scaleFactor;
-        vec3 spec = (sDotN > 0.0) ? calculateSpecular(pos, params.s, n) : vec3(0.0);
-        return computeFinalColor(params.spotScale, diffuse, spec);
+        vec3 spec = (sDotN > 0.0)
+                   ? calculateSpecular(pos, params.s, n)
+                   : vec3(0.0);
+        return computeFinalColor(params, diffuse, spec, sp);
     }
     
     return vec3(0);
 }
 
-#define MAX_SHADOWS 4
+#define MAX_SHADOWS 8
 
 uniform sampler2DShadow ShadowMaps[MAX_SHADOWS];
 
@@ -211,11 +219,20 @@ mat3 CalculateTBN()
 // applies lighting based on global var
 vec3 applyLighting(vec3 pos, vec3 n, vec3 diffuseBase) 
 {
-    if (globalSettings.lightingMode == 0) {
-        return BlinnPhong_LightingNormal(pos, n, diffuseBase);
-    } else {
-        return BlinnPhong_LightingToon(pos, n, diffuseBase);
+    vec3 result = vec3(0.0);
+
+    // loop over all active spotlights
+    for (int i = 0; i < globalSettings.numSpotlights; ++i) {
+        SpotLightInfo sp = globalSettings.Spotlights[i];
+
+        if (globalSettings.lightingMode == 0) {
+            result += BlinnPhong_LightingNormal(sp, pos, n, diffuseBase);
+        } else {
+            result += BlinnPhong_LightingToon(sp, pos, n, diffuseBase);
+        }
     }
+
+    return result;
 }
 
 void main() {
@@ -232,7 +249,12 @@ void main() {
     
     vec3 texColor = calculateColour();
 
-    vec3 ambient = calculateAmbient(texColor);
+    vec3 ambient = vec3(0.0);
+
+    if (globalSettings.numSpotlights > 0) {
+        SpotLightInfo firstSp = globalSettings.Spotlights[0];
+        ambient = calculateAmbient(firstSp, texColor);
+    }    
     vec3 lit = applyLighting(Position, viewNormal, texColor);
 
     float shadow = calculateShadowPCF();

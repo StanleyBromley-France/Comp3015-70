@@ -3,7 +3,7 @@
 #include "scenebasic_uniform.h"
 
 #include "start_scene.h"
-
+#include "game_scene.h"
 #include "camControls.h"
 #include "src/window/window.h"
 #include "src/save_management/save_data_manager.h"
@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
 
 	std::unique_ptr<Scene> scene;
 
-	scene = std::unique_ptr<Scene>(new StartScene());
+	scene = std::unique_ptr<Scene>(new GameScene());
 
 	SaveDataManager::Instance().Load();
 

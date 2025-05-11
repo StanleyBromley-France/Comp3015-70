@@ -62,7 +62,7 @@ void SpotlightPoint::render_light(const glm::mat4& view, const glm::mat4& projec
 
 void SpotlightPoint::upload(GlobalSettingsUBO& globalUbo)
 {
-	globalUbo.setSpotlight(spotlight_.data_);
+	globalUbo.addSpotlight(spotlight_.data_);
 }
 
 void SpotlightPoint::set_rotate_pos(glm::vec3 rotPos)

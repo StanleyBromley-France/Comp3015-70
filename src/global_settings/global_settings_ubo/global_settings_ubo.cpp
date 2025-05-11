@@ -1,4 +1,5 @@
 #include "global_settings_ubo.h"
+#include <iostream>
 
 GlobalSettingsUBO::GlobalSettingsUBO()
     : ubo_(0), dirty_(false)
@@ -10,14 +11,29 @@ GlobalSettingsUBO::GlobalSettingsUBO()
     glBufferData(GL_UNIFORM_BUFFER, sizeof(Data), nullptr, GL_DYNAMIC_DRAW);
     glBindBufferBase(GL_UNIFORM_BUFFER, 0, ubo_);
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+    data.numSpotlights = 0;
+    data.lightingMode = 0;
 }
 
 GlobalSettingsUBO::~GlobalSettingsUBO() {
     if (ubo_) glDeleteBuffers(1, &ubo_);
 }
 
-void GlobalSettingsUBO::setSpotlight(const SpotLightInfo& spot) {
-    data.Spotlight = spot;
+
+void GlobalSettingsUBO::addSpotlight(const SpotLightInfo& spot) {
+    if (data.numSpotlights < MAX_SPOTS) {
+        data.Spotlights[data.numSpotlights++] = spot;
+        dirty_ = true;
+    }
+    else 
+    {
+        std::cout << "more than the allowed number of spotlights are trying to be added" << "\n";
+    }
+}
+
+void GlobalSettingsUBO::clearSpotlights() {
+    data.numSpotlights = 0;
     dirty_ = true;
 }
 

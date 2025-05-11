@@ -20,9 +20,11 @@ struct MaterialInfo {
 
 uniform MaterialInfo Material;
 
-layout(std140, binding = 0) uniform GlobalSettings {
-    SpotLightInfo Spotlight;
+#define MAX_SPOTLIGHTS 8
 
-    int   lightingMode;
-    vec3  pad6;
+layout(std140, binding = 0) uniform GlobalSettings {
+    SpotLightInfo Spotlights[MAX_SPOTLIGHTS];
+    int numSpotlights;
+    int lightingMode;
+    vec2 pad2;
 } globalSettings;

@@ -148,6 +148,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="camControls.cpp" />
+    <ClCompile Include="game_scene.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="helper\glslprogram.cpp" />
     <ClCompile Include="helper\glutils.cpp" />
@@ -214,6 +215,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camControls.h" />
+    <ClInclude Include="game_scene.h" />
     <ClInclude Include="helper\aabb.h" />
     <ClInclude Include="helper\drawable.h" />
     <ClInclude Include="helper\glslprogram.h" />

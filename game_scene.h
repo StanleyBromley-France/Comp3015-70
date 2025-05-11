@@ -8,7 +8,7 @@
 #include "src/objects/light_object.h"
 #include "src/objects/uploader_object.h"
 #include "src/ui/ui_element.h"
-class GameScene : Scene 
+class GameScene : public Scene 
 {
 public:
     GameScene();
@@ -19,6 +19,8 @@ public:
     void resize(int, int) override;
 
     void draw_scene();
+    void draw_shadow_maps();
+
     void compile_shaders();
 
 private:

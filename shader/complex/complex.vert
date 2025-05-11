@@ -12,7 +12,7 @@ uniform mat4 ModelViewMatrix;
 uniform mat3 NormalMatrix;
 uniform mat4 MVP;
 
-#define MAX_SHADOWS 4
+#define MAX_SHADOWS 8
 uniform mat4 ShadowMatrices[MAX_SHADOWS];
 uniform int numShadows;
 out int NumShadows;
