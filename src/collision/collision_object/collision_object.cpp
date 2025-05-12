@@ -6,7 +6,7 @@
 using OrientedBoundingBoxes::OBB;
 using OrientedBoundingBoxes::makeOBB;
 
-CollisionObject::CollisionObject() : isActive_(true) {}
+CollisionObject::CollisionObject() : isActive_(true), data_{ false, glm::vec2(0.0f), 0.0f } {}
 
 int CollisionObject::id() const {
     return colliderId_;
@@ -44,10 +44,10 @@ void CollisionObject::set_collider_active(bool a) {
     isActive_ = a;
 }
 
-bool CollisionObject::intersects(const CollisionObject& other) const {
+OrientedBoundingBoxes::CollisionData CollisionObject::intersects(const CollisionObject& other) const {
     OBB A = makeOBB(colliderPos_, colliderSize_, colliderAngle_);
     OBB B = makeOBB(other.colliderPos_, other.colliderSize_, other.colliderAngle_);
-    return obbIntersect(A, B);
+    return OrientedBoundingBoxes::obbIntersect(A, B);
 }
 
 void CollisionObject::draw_collision_bounds(GLSLProgram& prog, glm::mat4& proj, glm::mat4& view)

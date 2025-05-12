@@ -25,9 +25,16 @@ void CollisionManager::detectAndNotify() {
             auto& b = objects_[j];
             if (!b->collider_active()) continue;
 
-            if (a->intersects(*b)) {
+            auto collision = a->intersects(*b);
+            if (collision.hasCollided) {
                 a->on_collision(*b);
                 b->on_collision(*a);
+
+                a->set_collision_data(collision);
+
+                // inverts normal and sets data for obj b
+                collision.normal = -collision.normal;
+                b->set_collision_data(collision);
             }
         }
     }
@@ -45,8 +52,8 @@ void CollisionManager::detectOnceAndNotify() {
         for (int j = i + 1; j < n; ++j) {
             auto& b = objects_[j];
             if (!b->collider_active()) continue;
-
-            if (a->intersects(*b)) {
+            auto collision = a->intersects(*b);
+            if (collision.hasCollided) {
                 // creates an id pair (smallID, largeID)
                 int id1 = a->id(), id2 = b->id();
                 auto pairId = std::minmax(id1, id2);
@@ -59,6 +66,12 @@ void CollisionManager::detectOnceAndNotify() {
                 if (activeCollisions_.insert(pairId).second) {
                     a->on_collision_once(*b);
                     b->on_collision_once(*a);
+
+                    a->set_collision_data(collision);
+
+                    // inverts normal and sets data for obj b
+                    collision.normal = -collision.normal;
+                    b->set_collision_data(collision);
                 }
             }
         }

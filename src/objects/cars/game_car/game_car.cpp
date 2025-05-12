@@ -46,12 +46,19 @@ void GameCar::init()
 	velocity_ = 0.f;
 	lastFrameTime_ = glfwGetTime();
 
+    previousPosition_ = position_;
+    previousYawAngle_ = yawAngle_;
+
+
     update_collider_position(glm::vec2(position_.x, position_.z));
     set_collider_size(glm::vec2(10.f, 25.f));
 }
 
 void GameCar::update(float t)
 {
+    previousPosition_ = position_;
+    previousYawAngle_ = yawAngle_;
+
 	float dt = t - lastFrameTime_;
 	lastFrameTime_ = t;
 	Input::updateKeyState();
@@ -79,29 +86,17 @@ void GameCar::update(float t)
     if (right) yawAngle_ -= appliedTurn;
 
     // computes forward right vectors
-    glm::vec3 forwardDir = glm::vec3(sin(yawAngle_), 0.f, cos(yawAngle_));
-    glm::vec3 rightDir = glm::cross(forwardDir, vec3(0, 1, 0));
+    forwardDir_ = glm::vec3(sin(yawAngle_), 0.f, cos(yawAngle_));
+    glm::vec3 rightDir = glm::cross(forwardDir_, vec3(0, 1, 0));
 
     // updates position + slip
-    position_ += forwardDir * velocity_ * dt;
+    position_ += forwardDir_ * velocity_ * dt;
     position_ += rightDir * driftScale_ * appliedTurn * glm::sign(velocity_);
 
-    // re-builds  model matrix
-    modelMatrix_ = glm::translate(mat4(1.f), position_);
-    modelMatrix_ = glm::rotate(modelMatrix_, yawAngle_, vec3(0, 1, 0));
-
     update_collider_angle(yawAngle_);
-
-    // body roll, tilts into the turn
-    float steerInput = (right ? 1.f : (left ? -1.f : 0.f));
-    float rollAngle = glm::radians(5.f) * speedFrac * steerInput;
-    modelMatrix_ = glm::rotate(modelMatrix_, rollAngle, vec3(0, 0, 1));
-
-    // Uniform scale
-    modelMatrix_ = glm::scale(modelMatrix_, vec3(5.f));
-    modelMatrix_ = glm::translate(modelMatrix_, vec3(0.0f, 0.6f, 0.0f));
-
     update_collider_position(glm::vec2(position_.x, position_.z));
+
+    rebuild_model_matrix();
 }
 
 void GameCar::render(const glm::mat4& view, const glm::mat4& projection, GLSLProgram& prog)
@@ -123,12 +118,56 @@ void GameCar::renderDepth(GLSLProgram& depthProg)
 	car_->render();
 }
 
-void GameCar::on_collision(CollisionObject& other)
-{
-   // std::cout << "hit barrel!" << "\n";
+void GameCar::on_collision(CollisionObject& other) {
+
+    const auto& data = collision_data();
+    glm::vec2 collisionNormal = data.normal; 
+    float depth = data.depth;
+
+    // pushes car past the surface
+    // adds a tiny epsilon so itll be outside rather than sitting exactly on the boundary
+    // this avoids on_collision_once being called more than once
+    const float epsilon = 0.01f;
+    glm::vec2 correction = collisionNormal * (depth * pushbackFactor_ + epsilon);
+    position_.x -= correction.x;
+    position_.z -= correction.y;
+
+    glm::vec3 velVec = forwardDir_ * velocity_;
+    glm::vec3 normal3 = glm::vec3(collisionNormal.x, 0.f, collisionNormal.y);
+
+    // if any of the cars speed is driving into the wall, strip it out so it will only slide along the surface
+    float vn = glm::dot(velVec, normal3);
+    if (vn < 0.f) {
+        velVec -= vn * normal3;
+        velocity_ = glm::dot(velVec, forwardDir_);
+    }
+
+    // damps speed
+    velocity_ *= 1.0f - (glm::abs(glm::dot(forwardDir_, normal3)) * velocityDamping_);
+
+    rebuild_model_matrix();
+    update_collider_position(glm::vec2(position_.x, position_.z));
 }
 
 void GameCar::on_collision_once(CollisionObject& other)
 {
     std::cout << "hit barrel!" << "\n";
+}
+
+void GameCar::rebuild_model_matrix()
+{
+    modelMatrix_ = glm::translate(mat4(1.f), position_);
+    modelMatrix_ = glm::rotate(modelMatrix_, yawAngle_, vec3(0, 1, 0));
+
+    // body roll calculations
+    bool left = Input::isKeyPressed(GLFW_KEY_A);
+    bool right = Input::isKeyPressed(GLFW_KEY_D);
+    float steerInput = (right ? 1.f : (left ? -1.f : 0.f));
+    float speedFrac = glm::clamp(glm::abs(velocity_) / maxForwardSpeed_, 0.f, 1.f);
+    float rollAngle = glm::radians(5.f) * speedFrac * steerInput;
+    modelMatrix_ = glm::rotate(modelMatrix_, rollAngle, vec3(0, 0, 1));
+
+    // scales and adjust position
+    modelMatrix_ = glm::scale(modelMatrix_, vec3(5.f));
+    modelMatrix_ = glm::translate(modelMatrix_, vec3(0.0f, 0.6f, 0.0f));
 }

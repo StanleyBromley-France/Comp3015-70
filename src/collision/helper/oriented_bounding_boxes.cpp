@@ -1,4 +1,5 @@
 #include "oriented_bounding_boxes.h"
+#include <utility>
 
 using OrientedBoundingBoxes::OBB;
 
@@ -28,7 +29,7 @@ OBB OrientedBoundingBoxes::makeOBB(const glm::vec2& center, const glm::vec2& hal
     return box;
 }
 
-// Separating Axis Theorem (SAT) core function
+// separating axis theorem (SAT) core function
 void OrientedBoundingBoxes::projectOntoAxis(const OBB& box, const glm::vec2& axis, float& outMin, float& outMax)
 {
     // projects center onto axis. used as a midpoint of the OBBs point on the axis
@@ -41,26 +42,60 @@ void OrientedBoundingBoxes::projectOntoAxis(const OBB& box, const glm::vec2& axi
     outMax = centerProj + extentProj; // the end of OBBs point on axis
 }
 
-bool OrientedBoundingBoxes::obbIntersect(const OBB& A, const OBB& B)
+OrientedBoundingBoxes::CollisionData OrientedBoundingBoxes::obbIntersect(const OBB& A, const OBB& B)
 {
-    float minA, maxA, minB, maxB;
 
+    CollisionData result;
+    result.hasCollided = false;
+    result.normal = glm::vec2(0.0f);
+    result.depth = 0.0f;
+
+    float minOverlap = FLT_MAX;
+    glm::vec2 smallestAxis;
     for (int i = 0; i < 2; ++i) {
+
+        float minA, maxA, minB, maxB;
+
         // tests against OBB As current axis
         projectOntoAxis(A, A.axes[i], minA, maxA); // projects A onto its own axis
         projectOntoAxis(B, A.axes[i], minB, maxB); // projects B onto As axis
 
-        // returns if they dont overlap
-        if (maxA < minB || maxB < minA) return false;
+        float overlap = std::min(maxA - minB, maxB - minA);
+        if (overlap <= 0) return result; // no collision
+
+        if (overlap < minOverlap) {
+            minOverlap = overlap;
+            smallestAxis = A.axes[i];
+        }
+
+    }
+
+    for (int i = 0; i < 2; ++i) {
+
+        float minA, maxA, minB, maxB;
 
         // tests against OBB Bs current axis
         projectOntoAxis(B, B.axes[i], minB, maxB); // projects B onto its own axis
         projectOntoAxis(A, B.axes[i], minA, maxA); // projects A onto Bs axis
 
-        // returns if they dont overlap
-        if (maxA < minB || maxB < minA) return false;
+        float overlap = std::min(maxA - minB, maxB - minA);
+        if (overlap <= 0) return result; // no collision
+
+        if (overlap < minOverlap) {
+            minOverlap = overlap;
+            smallestAxis = B.axes[i];
+        }
     }
 
-    // returns true because both axis overlap
-    return true;
+    // ensures normal points from A to B
+    glm::vec2 centerDiff = B.center - A.center;
+    if (glm::dot(centerDiff, smallestAxis) < 0) {
+        smallestAxis = -smallestAxis;
+    }
+
+    result.hasCollided = true;
+    result.normal = smallestAxis;
+    result.depth = minOverlap;
+
+    return result;
 }

@@ -4,6 +4,12 @@
 
 namespace OrientedBoundingBoxes
 {
+    struct CollisionData {
+        bool hasCollided;
+        glm::vec2 normal;
+        float depth;
+    };
+
     struct OBB {
         glm::vec2 center;
         glm::vec2 halfExtents;
@@ -13,5 +19,5 @@ namespace OrientedBoundingBoxes
 
     OBB makeOBB(const glm::vec2& center, const glm::vec2& halfExtents, float angleRadians);
     void projectOntoAxis(const OBB& box, const glm::vec2& axis, float& outMin, float& outMax);
-    bool obbIntersect(const OBB& A, const OBB& B);
+    CollisionData obbIntersect(const OBB& A, const OBB& B);
 }

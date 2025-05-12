@@ -2,6 +2,9 @@
 #include <cstdint>
 #include <glm/glm.hpp>
 #include "../../../helper/glslprogram.h"
+#include "../helper/oriented_bounding_boxes.h"
+
+using OrientedBoundingBoxes::CollisionData;
 
 class CollisionObject {
     friend class CollisionManager; // allows collision manager to assign ids
@@ -15,8 +18,11 @@ public:
     bool collider_active() const;
 
     void set_collider_active(bool a);
-    bool intersects(const CollisionObject& other) const;
+    CollisionData intersects(const CollisionObject& other) const;
     void draw_collision_bounds(GLSLProgram& prog, glm::mat4& proj, glm::mat4& view);
+
+    const CollisionData& collision_data() const { return data_; }
+    void set_collision_data(const CollisionData& manifold) { data_ = manifold; }
 
 protected:
     void update_collider_position(const glm::vec2& p);
@@ -27,6 +33,9 @@ protected:
 
     void set_collider_size(const glm::vec2& s);
     bool isActive_;
+
+    CollisionData data_;
+
 private:
     int colliderId_;
     glm::vec2 colliderPos_;
