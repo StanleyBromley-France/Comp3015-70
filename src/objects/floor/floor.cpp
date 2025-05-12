@@ -8,7 +8,7 @@ using glm::vec4;
 using glm::mat3;
 using glm::mat4;
 
-Floor::Floor() : plane_(100.0f, 1, 5.0f) {}
+Floor::Floor() : plane_(1000.0f, 1, 50.0f) {}
 
 Floor::~Floor()
 {

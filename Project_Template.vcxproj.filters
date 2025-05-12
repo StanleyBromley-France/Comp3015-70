@@ -189,6 +189,9 @@
     <ClCompile Include="src\cameras\game_cam\game_cam.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\map_managment\map_loader\map_loader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shader\basic_uniform.frag">
@@ -409,6 +412,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\cameras\game_cam\game_cam.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\map_managment\map_loader\map_loader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

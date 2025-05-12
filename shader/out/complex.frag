@@ -151,6 +151,16 @@ float calculateShadowPCF()
     float shadow = 1.0;
     for(int i = 0; i < NumShadows; ++i) {
         if (ShadowCoord[i].z >= 0.0) {
+            
+            vec4 sc = ShadowCoord[i];
+            bool insideXY = sc.x >= 0.0 && sc.x <= sc.w
+                            && sc.y >= 0.0 && sc.y <= sc.w;
+            bool insideZ  = sc.z >= 0.0 && sc.z <= sc.w;
+            if (!insideXY || !insideZ) {
+                // fragment is outside light-i’s view: skip its test
+                continue;
+            }
+
             // PCF: sample 4 neighbouring texels
             float sum = 0.0;
             sum += textureProjOffset(ShadowMaps[i], ShadowCoord[i], ivec2(-1, -1));

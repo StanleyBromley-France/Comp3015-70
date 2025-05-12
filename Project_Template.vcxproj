@@ -170,6 +170,7 @@
     <ClCompile Include="src\global_settings\global_settings_ubo\global_settings_ubo.cpp" />
     <ClCompile Include="src\global_settings\lights\particle_spawner\particle_spawner.cpp" />
     <ClCompile Include="src\global_settings\lights\spotlight\spotlight.cpp" />
+    <ClCompile Include="src\map_managment\map_loader\map_loader.cpp" />
     <ClCompile Include="src\mesh\tileable_plane.cpp" />
     <ClCompile Include="src\objects\barrel\barrel.cpp" />
     <ClCompile Include="src\objects\cars\car_colours.cpp" />
@@ -251,6 +252,7 @@
     <ClInclude Include="src\collision\rendering\collision_debug_renderer.h" />
     <ClInclude Include="src\debug_stuff\gs_to_rgba_converter.h" />
     <ClInclude Include="src\global_settings\global_settings_ubo\global_settings_ubo.h" />
+    <ClInclude Include="src\map_managment\map_loader\map_loader.h" />
     <ClInclude Include="src\objects\barrel\barrel.h" />
     <ClInclude Include="src\objects\cars\car_colours.h" />
     <ClInclude Include="src\objects\cars\game_car\game_car.h" />

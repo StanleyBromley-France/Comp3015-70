@@ -1,4 +1,5 @@
 #include "light_object.h"
+#include <iostream>
 
 using glm::vec4;
 
@@ -34,6 +35,7 @@ void LightObject::initShadowMap(int res)
 
     glGenTextures(1, &shadowTex_);
     glBindTexture(GL_TEXTURE_2D, shadowTex_);
+
     glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH_COMPONENT24, shadowRes_, shadowRes_);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -42,9 +44,6 @@ void LightObject::initShadowMap(int res)
     glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, border);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LESS);
-
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, shadowTex_);
 
     glGenFramebuffers(1, &shadowFBO_);
     glBindFramebuffer(GL_FRAMEBUFFER, shadowFBO_);
@@ -60,6 +59,9 @@ void LightObject::initShadowMap(int res)
     else {
         printf("Framebuffer is not complete.\n");
     }
+
+    std::cout << "[Spotlight " << this << "] FBO="
+        << shadowFBO_ << " Tex=" << shadowTex_ << "\n";
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }

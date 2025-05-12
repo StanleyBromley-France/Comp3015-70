@@ -8,6 +8,7 @@
 #include "src/window/window.h"
 #include "src/objects/barrel/barrel.h"
 #include "src/objects/cars/game_car/game_car.h"
+#include "src/map_managment/map_loader/map_loader.h"
 
 GameScene::GameScene()
 {
@@ -26,57 +27,22 @@ void GameScene::initScene()
 	compile_shaders();
 
 	car_ = std::make_shared<GameCar>();
-	auto spotlight1 = std::make_shared<SpotlightPoint>();
-	auto spotlight2 = std::make_shared<SpotlightPoint>();
-
-	spotlight1->set_rotate_pos(glm::vec3(0,0,-20));
-	spotlight2->set_rotate_pos(glm::vec3(0, 0, 20));
-
-	auto barrel1 = std::make_shared<Barrel>();
-	auto barrel2 = std::make_shared<Barrel>();
-
-	barrel1->set_position(glm::vec3(0, 0, -20));
-	barrel2->set_position(glm::vec3(0, 0, 20));
-
-	// complex setup ---------------
-
-	complexObjs_.push_back(spotlight1);
-	complexObjs_.push_back(spotlight2);
-	complexObjs_.push_back(barrel1);
-	complexObjs_.push_back(barrel2);
-	complexObjs_.push_back(std::make_shared<Floor>());
 	complexObjs_.push_back(car_);
-
-	for (auto& obj : complexObjs_)
-		obj->init();
-
-	// collision setup -------------
-
-	collisionObjs_.push_back(barrel1);
-	collisionObjs_.push_back(barrel2);
 	collisionObjs_.push_back(car_);
-
 	collisionManager.addObject(car_);
-	collisionManager.addObject(barrel1);
-	collisionManager.addObject(barrel2);
+	car_->init();
 
-	// uploader setup --------------
+	auto floor = std::make_shared<Floor>();
+	complexObjs_.push_back(floor);
+	floor->init();
 
-	uploaderObjs_.push_back(spotlight1);
-	uploaderObjs_.push_back(spotlight2);
+	MapLoader loader(
+		complexObjs_, particleObjs_,
+		collisionObjs_, lightObjs_,
+		uploaderObjs_, collisionManager
+	);
 
-
-	// particle setup ---------
-
-
-	// light setup -------
-
-	lightObjs_.push_back(spotlight1);
-	lightObjs_.push_back(spotlight2);
-
-
-	for (auto& obj : lightObjs_)
-		obj->initShadowMap();
+	loader.loadFromFile("game_map.json");
 }
 
 void GameScene::update(float t)
@@ -179,9 +145,9 @@ void GameScene::draw_shadow_maps()
 		glViewport(0, 0, light->get_shadow_res(), light->get_shadow_res());
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_CULL_FACE);
-		glCullFace(GL_FRONT);
+		glCullFace(GL_BACK);
 		glEnable(GL_POLYGON_OFFSET_FILL);
-		glPolygonOffset(2.5f, 10.0f);
+		glPolygonOffset(2.5f, 4.0f);
 		glDepthMask(GL_TRUE);
 
 
@@ -249,7 +215,7 @@ void GameScene::resize(int w, int h)
 	width = w;
 	height = h;
 	glViewport(0, 0, w, h);
-	projection = glm::perspective(glm::radians(90.0f), static_cast<float>(w) / h, 0.3f, 100.0f);
+	projection = glm::perspective(glm::radians(90.0f), static_cast<float>(w) / h, 0.3f, 3000.0f);
 
 	post_processor::get_instance().resize(w, h);
 }
