@@ -59,11 +59,11 @@ void SkyPlane::init() {
 
     glBindVertexArray(0);
 
-    noiseTex = NoiseTex::generate2DTex(20.0f, .7f, 1024, 1024, true);
+    noiseTex = NoiseTex::generate2DTex(40.0f, .9f, 1024, 1024, true);
 
     modelMatrix_ = mat4(1.0f);
-    modelMatrix_ = glm::translate(modelMatrix_, vec3(0.0f, 35.f, 0.0f));
-    modelMatrix_ = glm::scale(modelMatrix_, vec3(150));
+    modelMatrix_ = glm::translate(modelMatrix_, vec3(0.0f, 300.f, 0.0f));
+    modelMatrix_ = glm::scale(modelMatrix_, vec3(1000));
     modelMatrix_ = glm::rotate(modelMatrix_, glm::radians(90.f), vec3(1.0f, 0.0f, 0.0f));
 }
 

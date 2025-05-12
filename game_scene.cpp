@@ -32,6 +32,7 @@ void GameScene::initScene()
 	skyboxProg_.use();
 	complexProg_.setUniform("SkyBoxTex", 0);
 	skybox_.init();
+	clouds.init();
 
 
 	GameManager::instance().reset();
@@ -136,8 +137,8 @@ void GameScene::draw_scene()
 		obj->renderParticles(view, projection, particleProg_);
 
 	// render clouds
-	//cloudProg_.use();
-	//clouds.render(view, projection, cloudProg_);
+	cloudProg_.use();
+	clouds.render(view, projection, cloudProg_);
 	
 	glBindVertexArray(collisionDebugRenderer.getVAO());
 
