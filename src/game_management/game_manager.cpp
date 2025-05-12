@@ -43,6 +43,7 @@ void GameManager::arrive_at_checkpoint(int checkpointId) {
         }
         else {
             std::cout << "Race complete!\n";
+            hasRaceEnded = true;
             std::cout << get_elapsed_time() << "\n";
         }
     }
@@ -53,6 +54,11 @@ float GameManager::get_elapsed_time() const {
     auto now = std::chrono::steady_clock::now();
     std::chrono::duration<float> elapsed = now - raceStartTime_;
     return elapsed.count();
+}
+
+bool GameManager::has_race_ended()
+{
+    return hasRaceEnded;
 }
 
 void GameManager::reset() {

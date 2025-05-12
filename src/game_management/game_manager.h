@@ -1,4 +1,3 @@
-// game_manager.h
 #pragma once
 
 #include <vector>
@@ -25,7 +24,7 @@ public:
     void arrive_at_checkpoint(int checkpointId);
 
     float get_elapsed_time() const;
-
+    bool has_race_ended();
     void reset();
 
 private:
@@ -36,4 +35,5 @@ private:
     size_t currentCheckpointIndex_ = 0;
     std::chrono::steady_clock::time_point raceStartTime_;
     bool hasRaceStarted_ = false;
+    bool hasRaceEnded = false;
 };

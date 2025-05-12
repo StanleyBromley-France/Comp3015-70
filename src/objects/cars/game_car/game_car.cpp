@@ -61,7 +61,7 @@ void GameCar::update(float t)
 
 	float dt = t - lastFrameTime_;
 	lastFrameTime_ = t;
-	Input::updateKeyState();
+	//Input::updateKeyState();
 
     bool fwd = Input::isKeyPressed(GLFW_KEY_W);
     bool rev = Input::isKeyPressed(GLFW_KEY_S);

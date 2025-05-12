@@ -8,7 +8,9 @@
 #include <GLFW/glfw3.h>
 #include "../../scene_management/scene_switcher.h"
 #include "../../../start_scene.h"
+#include "../../../sceneBasic_uniform.h"
 
+#include <string>
 using namespace ImGuiWindows;
 using namespace ImGuiWidgets;
 using namespace ImGuiUtils;
@@ -30,27 +32,25 @@ void PauseMenu::update()
 
 void PauseMenu::render() 
 {
-    if (!isOpen)
+    if (!isOpen && !forceOpen)
         return;
 
     if (BeginCustomGUIWindow("Settings", windowSize, centerPos)) {
         
-        Text("Application average %.3f ms/frame (%.1f FPS)",
+        Text("FPS: %.3f ms/frame (%.1f FPS)",
             1000.0f / ImGui::GetIO().Framerate,
             ImGui::GetIO().Framerate
         );
+
+        ImGui::Text("current time = %.3f", currentTime_);
+
         ImVec2 buttonSize(150, 50);
 
         SetWindowCenteredPos(buttonSize);
-        if (ImGui::Button("Go", buttonSize)) {
-            SceneSwitcher::Instance().QueueSceneSwitch(std::make_unique<StartScene>());
+        if (ImGui::Button("Go to car select", buttonSize)) {
+            SceneSwitcher::Instance().QueueSceneSwitch(std::make_unique<SceneBasic_Uniform>());
         }
 
-        static bool enableFeature = true;
-        Checkbox("Enable Feature", &enableFeature);
-
-        static float volume = 0.5f;
-        SliderFloat("Volume", &volume, 0.0f, 1.0f);
         SetWindowCenteredPos(buttonSize);
         if (Button("Quit", buttonSize)) {
             glfwSetWindowShouldClose(glfwGetCurrentContext(), true);

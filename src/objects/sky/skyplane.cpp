@@ -69,6 +69,7 @@ void SkyPlane::init() {
 
 void SkyPlane::update(float t)
 {
+
 }
 
 void SkyPlane::render(const glm::mat4& view, const glm::mat4& projection, GLSLProgram& prog)

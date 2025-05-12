@@ -18,6 +18,7 @@
 #include <vector>
 #include "src/objects/decos/particle_point.h"
 
+#include "src/ui/menu/start_menu.h"
 
 using glm::vec3;
 using glm::vec4;
@@ -128,7 +129,7 @@ void SceneBasic_Uniform::init_ui()
 {
 	//ImGuiCore::ReInit(glfwGetCurrentContext());
 
-	uiElements_.emplace_back(new PauseMenu());
+	uiElements_.emplace_back(new StartMenu());
 	ImGuiCore::BeginFrame();
 	for (auto& ui : uiElements_)
 		ui->init();
@@ -189,7 +190,7 @@ void SceneBasic_Uniform::update(float t)
 
 	// update view
 	view = camera.getViewMatrix();
-	projection = glm::perspective(glm::radians(80.0f), static_cast<float>(width) / height, 0.3f, 200.0f);
+	projection = glm::perspective(glm::radians(80.0f), static_cast<float>(width) / height, 0.3f, 1000.0f);
 
 	Input::updateKeyState();
 }

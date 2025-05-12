@@ -17,6 +17,7 @@
 #include "src/objects/interactable/game_checkpoint.h"
 #include "src/objects/skybox/scene_skybox.h"
 #include "src/objects/sky/skyplane.h"
+#include "src/ui/menu/pause_menu.h"
 
 class GameScene : public Scene 
 {
@@ -50,7 +51,7 @@ private:
     SkyPlane clouds;
 
 
-    std::vector<std::unique_ptr<UIElement>> uiElements_;
+    PauseMenu menu;
 
     GlobalSettingsUBO globalSettings;
 

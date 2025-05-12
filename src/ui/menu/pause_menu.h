@@ -7,8 +7,12 @@ public:
     void init() override;
     void update() override;
     void render() override;
+    bool forceOpen = false;
+    float currentTime_;
+
 private:
+    bool isOpen;
+
     ImVec2 windowSize;
     ImVec2 centerPos;
-    bool isOpen;
 };

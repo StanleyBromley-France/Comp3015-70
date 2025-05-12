@@ -7,6 +7,8 @@
 #include "../../scene_management/scene_switcher.h"
 
 #include "../../../scenebasic_uniform.h"
+#include "../../../game_scene.h"
+
 #include <memory>
 
 using namespace ImGui;
@@ -15,9 +17,10 @@ using namespace ImGuiUtils;
 
 void StartMenu::init()
 {
-    windowSize.x = 400;
-    windowSize.y = 600;
+    windowSize.x = 250;
+    windowSize.y = 350;
     centerPos = GetGUIScreenCenteredPos(windowSize);
+    centerPos.x += 400;
 }
 
 void StartMenu::update()
@@ -26,10 +29,9 @@ void StartMenu::update()
 
 void StartMenu::render()
 {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    if (BeginCustomGUIWindow("Start SC", windowSize, centerPos)) {
+    if (BeginCustomGUIWindow("Menu", windowSize, centerPos)) {
 
-        Text("Application average %.3f ms/frame (%.1f FPS)",
+        Text("FPS: %.3f ms/frame (%.1f FPS)",
             1000.0f / ImGui::GetIO().Framerate,
             ImGui::GetIO().Framerate
         );
@@ -37,15 +39,9 @@ void StartMenu::render()
 
 
         SetWindowCenteredPos(buttonSize);
-        if (ImGui::Button("Go", buttonSize)) {
-            SceneSwitcher::Instance().QueueSceneSwitch(std::make_unique<SceneBasic_Uniform>());
+        if (ImGui::Button("Play", buttonSize)) {
+            SceneSwitcher::Instance().QueueSceneSwitch(std::make_unique<GameScene>());
         }
-
-        static bool enableFeature = true;
-        ImGui::Checkbox("Enable Feature", &enableFeature);
-
-        static float volume = 0.5f;
-        ImGui::SliderFloat("Volume", &volume, 0.0f, 1.0f);
         SetWindowCenteredPos(buttonSize);
         if (ImGui::Button("Quit", buttonSize)) {
             glfwSetWindowShouldClose(glfwGetCurrentContext(), true);

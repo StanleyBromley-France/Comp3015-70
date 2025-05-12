@@ -11,6 +11,9 @@
 #include "src/map_managment/map_loader/map_loader.h"
 #include "src/game_management/game_manager.h"
 #include "src/objects/interactable/game_checkpoint.h"
+#include "src/ui/imgui_wrapper/imgui_core.h"
+
+#include "src/ui/menu/pause_menu.h"
 
 GameScene::GameScene()
 {
@@ -27,6 +30,16 @@ GameScene::~GameScene()
 void GameScene::initScene()
 {
 	compile_shaders();
+
+	// ui setup
+
+
+
+	ImGuiCore::BeginFrame();
+	menu.init();
+
+	ImGuiCore::EndFrame();
+
 
 	// skybox setup -------
 	skyboxProg_.use();
@@ -69,8 +82,12 @@ void GameScene::update(float t)
 
 	globalSettings.updateGPU();
 
-	for (auto& ui : uiElements_)
-		ui->update();
+	if (!GameManager::instance().has_race_ended())
+		menu.currentTime_ = GameManager::instance().get_elapsed_time();
+	else
+		menu.forceOpen = true;
+
+	menu.update();
 
 	// update view
 	view = camera.GetViewMatrix();
@@ -91,6 +108,10 @@ void GameScene::render()
 	draw_scene();
 
 	post_processor::get_instance().apply_post_render();
+
+	ImGuiCore::BeginFrame();
+	menu.render();
+	ImGuiCore::EndFrame();
 }
 
 void GameScene::draw_scene()
@@ -188,6 +209,8 @@ void GameScene::draw_shadow_maps()
 	glCullFace(GL_BACK);
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_POLYGON_OFFSET_FILL);
+	glDisable(GL_DEPTH_TEST);
+
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glViewport(0, 0, width, height);
 }
