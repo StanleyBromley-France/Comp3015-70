@@ -113,6 +113,9 @@ void MapLoader::load_from_file(const std::string& filename) {
                     uploadObjs_.push_back(uo);
 
                 if (auto co = std::dynamic_pointer_cast<Checkpoint>(so)) {
+                    if (auto sp = std::dynamic_pointer_cast<GameCheckpoint>(so)) {
+                        sp->set_rotate_pos({ worldX, 0.0f, worldZ });
+                    }
                     GameManager::instance().add_checkpoint(co);
                     checkpointObjs_.push_back(co);
                     if (props->contains("id")) {

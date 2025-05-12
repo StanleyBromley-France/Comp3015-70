@@ -10,6 +10,7 @@
 #include "src/objects/cars/game_car/game_car.h"
 #include "src/map_managment/map_loader/map_loader.h"
 #include "src/game_management/game_manager.h"
+#include "src/objects/interactable/game_checkpoint.h"
 
 GameScene::GameScene()
 {
@@ -98,20 +99,26 @@ void GameScene::draw_scene()
 	// render complex
 	complexProg_.use();
 
+	int actualI = 0;
 	int N = static_cast<int>(lightObjs_.size());
 	for (int i = 0; i < N; i++) {
 		auto& light = lightObjs_[i];
-
+		if (auto sp = std::dynamic_pointer_cast<GameCheckpoint>(light)) {
+			if (!sp->is_checkpoint_active()) {
+				continue;
+			}
+		}
 		light->calculate_light_space_matrix();
-		glActiveTexture(GL_TEXTURE0 + SceneObject::LIGHT_UNIT + i);
+		glActiveTexture(GL_TEXTURE0 + SceneObject::LIGHT_UNIT + actualI);
 		glBindTexture(GL_TEXTURE_2D, light->get_shadow_tex());
 
-		std::string shadowsName = std::string("ShadowMaps[") + std::to_string(i) + "]";
-		std::string matrixName = std::string("ShadowMatrices[") + std::to_string(i) + "]";
+		std::string shadowsName = std::string("ShadowMaps[") + std::to_string(actualI) + "]";
+		std::string matrixName = std::string("ShadowMatrices[") + std::to_string(actualI) + "]";
 
-		complexProg_.setUniform("numShadows", i + 1);
-		complexProg_.setUniform(shadowsName.c_str(), SceneObject::LIGHT_UNIT + i);
+		complexProg_.setUniform("numShadows", actualI + 1);
+		complexProg_.setUniform(shadowsName.c_str(), SceneObject::LIGHT_UNIT + actualI);
 		complexProg_.setUniform(matrixName.c_str(), LightObject::SHADOW_BIAS * light->get_light_space_matrix());
+		actualI++;
 	}
 
 	for (auto& obj : complexObjs_)
@@ -141,6 +148,11 @@ void GameScene::draw_shadow_maps()
 	depthProg_.use();
 
 	for (auto& light : lightObjs_) {
+
+		if (auto sp = std::dynamic_pointer_cast<GameCheckpoint>(light)) {
+			if (!sp->is_checkpoint_active())
+				continue;
+		}
 		light->calculate_light_space_matrix();
 
 		glBindFramebuffer(GL_FRAMEBUFFER, light->get_shadow_fbo());
