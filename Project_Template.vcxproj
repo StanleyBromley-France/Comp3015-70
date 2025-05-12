@@ -167,6 +167,8 @@
     <ClCompile Include="src\collision\helper\oriented_bounding_boxes.cpp" />
     <ClCompile Include="src\collision\rendering\collision_debug_renderer.cpp" />
     <ClCompile Include="src\debug_stuff\gs_to_rgba_converter.cpp" />
+    <ClCompile Include="src\game_management\checkpoint.cpp" />
+    <ClCompile Include="src\game_management\game_manager.cpp" />
     <ClCompile Include="src\global_settings\global_settings_ubo\global_settings_ubo.cpp" />
     <ClCompile Include="src\global_settings\lights\particle_spawner\particle_spawner.cpp" />
     <ClCompile Include="src\global_settings\lights\spotlight\spotlight.cpp" />
@@ -179,6 +181,7 @@
     <ClCompile Include="src\objects\decos\particle_point.cpp" />
     <ClCompile Include="src\objects\decos\spotlight_point.cpp" />
     <ClCompile Include="src\objects\floor\floor.cpp" />
+    <ClCompile Include="src\objects\interactable\game_checkpoint.cpp" />
     <ClCompile Include="src\objects\light_object.cpp" />
     <ClCompile Include="src\objects\scene_object.cpp" />
     <ClCompile Include="src\objects\skybox\scene_skybox.cpp" />
@@ -251,11 +254,14 @@
     <ClInclude Include="src\collision\helper\oriented_bounding_boxes.h" />
     <ClInclude Include="src\collision\rendering\collision_debug_renderer.h" />
     <ClInclude Include="src\debug_stuff\gs_to_rgba_converter.h" />
+    <ClInclude Include="src\game_management\checkpoint.h" />
+    <ClInclude Include="src\game_management\game_manager.h" />
     <ClInclude Include="src\global_settings\global_settings_ubo\global_settings_ubo.h" />
     <ClInclude Include="src\map_managment\map_loader\map_loader.h" />
     <ClInclude Include="src\objects\barrel\barrel.h" />
     <ClInclude Include="src\objects\cars\car_colours.h" />
     <ClInclude Include="src\objects\cars\game_car\game_car.h" />
+    <ClInclude Include="src\objects\interactable\game_checkpoint.h" />
     <ClInclude Include="src\objects\light_object.h" />
     <ClInclude Include="src\objects\sky\skyplane.h" />
     <ClInclude Include="src\objects\uploader_object.h" />

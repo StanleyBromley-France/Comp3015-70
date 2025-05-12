@@ -12,6 +12,11 @@ void SceneObject::set_position(glm::vec3 position)
     position_ = position;
 }
 
+void SceneObject::set_rotation(float rotation)
+{
+    rotation_ = rotation;
+}
+
 void SceneObject::defualt_cleanup()
 {
     for (GLuint tex : albedoTextures_) {

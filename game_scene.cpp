@@ -9,6 +9,7 @@
 #include "src/objects/barrel/barrel.h"
 #include "src/objects/cars/game_car/game_car.h"
 #include "src/map_managment/map_loader/map_loader.h"
+#include "src/game_management/game_manager.h"
 
 GameScene::GameScene()
 {
@@ -24,9 +25,12 @@ GameScene::~GameScene()
 
 void GameScene::initScene()
 {
+	GameManager::instance().reset();
+
 	compile_shaders();
 
 	car_ = std::make_shared<GameCar>();
+	car_->set_position({ -20, 0, -20 });
 	complexObjs_.push_back(car_);
 	collisionObjs_.push_back(car_);
 	collisionManager.addObject(car_);
@@ -39,10 +43,13 @@ void GameScene::initScene()
 	MapLoader loader(
 		complexObjs_, particleObjs_,
 		collisionObjs_, lightObjs_,
-		uploaderObjs_, collisionManager
+		uploaderObjs_, checkpointObjs_,
+		collisionManager
 	);
 
-	loader.loadFromFile("game_map.json");
+	loader.load_from_file("game_map.json");
+
+	GameManager::instance().start_race();
 }
 
 void GameScene::update(float t)

@@ -14,6 +14,7 @@
 
 #include "src/cameras/game_cam/game_cam.h"
 #include "src/objects/cars/game_car/game_car.h"
+#include "src/objects/interactable/game_checkpoint.h"
 
 class GameScene : public Scene 
 {
@@ -41,6 +42,7 @@ private:
     std::vector<std::shared_ptr<UploaderObject>> uploaderObjs_;
 
     std::vector<std::shared_ptr<CollisionObject>> collisionObjs_;
+    std::vector<std::shared_ptr<Checkpoint>> checkpointObjs_;
 
 
     std::vector<std::unique_ptr<UIElement>> uiElements_;

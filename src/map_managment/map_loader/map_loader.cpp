@@ -8,6 +8,8 @@
 #include <iostream>
 #include "../../../nlohmann/json.hpp"
 #include "../../objects/floor/floor.h"
+#include "../../objects/interactable/game_checkpoint.h"
+#include "../../game_management/game_manager.h"
 
 
 MapLoader::MapLoader(
@@ -16,6 +18,7 @@ MapLoader::MapLoader(
     std::vector<std::shared_ptr<CollisionObject>>& collVec,
     std::vector<std::shared_ptr<LightObject>>& lightVec,
     std::vector<std::shared_ptr<UploaderObject>>& uploadVec,
+    std::vector<std::shared_ptr<Checkpoint>>& checkpointVec,
     CollisionManager& collMgr
 )
     : sceneObjs_(sceneVec)
@@ -24,10 +27,12 @@ MapLoader::MapLoader(
     , lightObjs_(lightVec)
     , uploadObjs_(uploadVec)
     , collMgr_(collMgr)
+    , checkpointObjs_(checkpointVec)
 {
     registerType<Barrel>("Barrel");
     registerType<SpotlightPoint>("SpotlightPoint");
     registerType <Floor> ("Floor");
+    registerType<GameCheckpoint>("Checkpoint");
 
 }
 
@@ -54,16 +59,25 @@ void MapLoader::loadFromFile(const std::string& filename) {
             if (code == "__" || !maps.contains(code))
                 continue;
 
-            for (const auto& typeNameJson : maps.at(code)) {
-                auto typeName = typeNameJson.get<std::string>();
+            for (const auto& entry : maps.at(code)) {
+                auto props = &entry;
+                auto typeName = (*props).at("type").get<std::string>();
+
                 auto it = factories_.find(typeName);
                 if (it == factories_.end())
                     continue;
+
 
                 auto so = it->second();
 
                 float worldX = x * tileSize - halfWidth + tileSize * 0.5f;
                 float worldZ = y * tileSize - halfHeight + tileSize * 0.5f;
+
+
+                if (props->contains("rotation")) {
+                    float r = props->at("rotation");
+                    so->set_rotation(glm::radians(r));
+                }
 
                 so->set_position({ worldX, 0.0f, worldZ });
 
@@ -90,6 +104,15 @@ void MapLoader::loadFromFile(const std::string& filename) {
 
                 if (auto uo = std::dynamic_pointer_cast<UploaderObject>(so))
                     uploadObjs_.push_back(uo);
+
+                if (auto co = std::dynamic_pointer_cast<Checkpoint>(so)) {
+                    GameManager::instance().add_checkpoint(co);
+                    checkpointObjs_.push_back(co);
+                    if (props->contains("id")) {
+                        auto id = props->at("id").get<int>();
+                        co->set_checkpoint_id(id);
+                    }
+                }
             }
         }
     }

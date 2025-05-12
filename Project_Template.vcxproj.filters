@@ -192,6 +192,15 @@
     <ClCompile Include="src\map_managment\map_loader\map_loader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\game_management\checkpoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game_management\game_manager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\objects\interactable\game_checkpoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shader\basic_uniform.frag">
@@ -415,6 +424,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\map_managment\map_loader\map_loader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game_management\game_manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game_management\checkpoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\objects\interactable\game_checkpoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

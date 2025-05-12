@@ -15,6 +15,8 @@ public:
     const static int LIGHT_UNIT;
 
     void set_position(glm::vec3 position);
+    void set_rotation(float rotation);
+
 protected:
     std::unique_ptr<ObjMesh> mesh_;
     glm::mat4 modelMatrix_;
@@ -29,6 +31,8 @@ protected:
     const static int NORMAL_START;
 
     glm::vec3 position_;
+    float rotation_;
+
 
     void defualt_cleanup();
     void applyMat(GLSLProgram& prog);

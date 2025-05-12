@@ -13,6 +13,7 @@
 #include "../../objects/light_object.h"
 #include "../../objects/uploader_object.h"
 #include "../../collision/collision_manager/collision_manager.h"
+#include "../../game_management/checkpoint.h"
 
 class MapLoader {
 public:
@@ -22,17 +23,18 @@ public:
         std::vector<std::shared_ptr<CollisionObject>>& collVec,
         std::vector<std::shared_ptr<LightObject>>& lightVec,
         std::vector<std::shared_ptr<UploaderObject>>& uploadVec,
+        std::vector<std::shared_ptr<Checkpoint>>& checkpointVec,
         CollisionManager& collMgr
     );
 
     template<typename T>
-    void registerType(const std::string& typeName) {
+    void register_type(const std::string& typeName) {
         factories_[typeName] = []() {
             return std::static_pointer_cast<SceneObject>(std::make_shared<T>());
             };
     }
 
-    void loadFromFile(const std::string& filename);
+    void load_from_file(const std::string& filename);
 
 private:
     std::string mapFolder_ = "maps/";
@@ -44,5 +46,7 @@ private:
     std::vector<std::shared_ptr<CollisionObject>>& collObjs_;
     std::vector<std::shared_ptr<LightObject>>& lightObjs_;
     std::vector<std::shared_ptr<UploaderObject>>& uploadObjs_;
+    std::vector<std::shared_ptr<Checkpoint>>& checkpointObjs_;
+
     CollisionManager& collMgr_;
 };
