@@ -1,4 +1,3 @@
-// MapLoader.hpp
 #pragma once
 
 #include <string>
@@ -14,10 +13,12 @@
 #include "../../objects/uploader_object.h"
 #include "../../collision/collision_manager/collision_manager.h"
 #include "../../game_management/checkpoint.h"
+#include "../../objects/cars/game_car/game_car.h"
 
 class MapLoader {
 public:
     MapLoader(
+        std::shared_ptr<GameCar>& gameCar,
         std::vector<std::shared_ptr<SceneObject>>& sceneVec,
         std::vector<std::shared_ptr<ParticleObject>>& partVec,
         std::vector<std::shared_ptr<CollisionObject>>& collVec,
@@ -40,7 +41,8 @@ private:
     std::string mapFolder_ = "maps/";
 
     std::unordered_map<std::string, std::function<std::shared_ptr<SceneObject>()>> factories_;
-
+    
+    std::shared_ptr<GameCar>& gameCar_;
     std::vector<std::shared_ptr<SceneObject>>& sceneObjs_;
     std::vector<std::shared_ptr<ParticleObject>>& partObjs_;
     std::vector<std::shared_ptr<CollisionObject>>& collObjs_;

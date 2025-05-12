@@ -29,18 +29,13 @@ void GameScene::initScene()
 
 	compile_shaders();
 
-	car_ = std::make_shared<GameCar>();
-	car_->set_position({ -20, 0, -20 });
-	complexObjs_.push_back(car_);
-	collisionObjs_.push_back(car_);
-	collisionManager.addObject(car_);
-	car_->init();
 
 	auto floor = std::make_shared<Floor>();
 	complexObjs_.push_back(floor);
 	floor->init();
 
 	MapLoader loader(
+		car_,
 		complexObjs_, particleObjs_,
 		collisionObjs_, lightObjs_,
 		uploaderObjs_, checkpointObjs_,

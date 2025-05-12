@@ -41,8 +41,8 @@ void GameCar::init()
 	mat.Ka = vec3(0.2f, 0.2f, 0.2f);
 	mat.Shininess = 25.f;
 
-	position_ = vec3(0.f, 0.8f, 0.f);
-	yawAngle_ = 0.f;
+	position_ += vec3(0.f, 0.8f, 0.f);
+	yawAngle_ = rotation_;
 	velocity_ = 0.f;
 	lastFrameTime_ = glfwGetTime();
 

@@ -13,6 +13,7 @@
 
 
 MapLoader::MapLoader(
+    std::shared_ptr<GameCar>& gameCar,
     std::vector<std::shared_ptr<SceneObject>>& sceneVec,
     std::vector<std::shared_ptr<ParticleObject>>& partVec,
     std::vector<std::shared_ptr<CollisionObject>>& collVec,
@@ -21,14 +22,17 @@ MapLoader::MapLoader(
     std::vector<std::shared_ptr<Checkpoint>>& checkpointVec,
     CollisionManager& collMgr
 )
-    : sceneObjs_(sceneVec)
+    : gameCar_(gameCar)
+    , sceneObjs_(sceneVec)
     , partObjs_(partVec)
     , collObjs_(collVec)
     , lightObjs_(lightVec)
     , uploadObjs_(uploadVec)
-    , collMgr_(collMgr)
     , checkpointObjs_(checkpointVec)
+    , collMgr_(collMgr)
 {
+    register_type<GameCar>("GameCar");
+
     register_type<Barrel>("Barrel");
     register_type<SpotlightPoint>("SpotlightPoint");
     register_type <Floor> ("Floor");
@@ -84,6 +88,9 @@ void MapLoader::load_from_file(const std::string& filename) {
                 // every object is a SceneObject
                 sceneObjs_.push_back(so);
                 so->init();
+
+                if (auto gc = std::dynamic_pointer_cast<GameCar>(so))
+                    gameCar_ = gc;
 
                 // then try each interface
                 if (auto po = std::dynamic_pointer_cast<ParticleObject>(so))
