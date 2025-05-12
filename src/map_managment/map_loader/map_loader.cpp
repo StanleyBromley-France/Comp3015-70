@@ -29,14 +29,14 @@ MapLoader::MapLoader(
     , collMgr_(collMgr)
     , checkpointObjs_(checkpointVec)
 {
-    registerType<Barrel>("Barrel");
-    registerType<SpotlightPoint>("SpotlightPoint");
-    registerType <Floor> ("Floor");
-    registerType<GameCheckpoint>("Checkpoint");
+    register_type<Barrel>("Barrel");
+    register_type<SpotlightPoint>("SpotlightPoint");
+    register_type <Floor> ("Floor");
+    register_type<GameCheckpoint>("Checkpoint");
 
 }
 
-void MapLoader::loadFromFile(const std::string& filename) {
+void MapLoader::load_from_file(const std::string& filename) {
     const std::string fullPath = mapFolder_ + filename;
     nlohmann::json j;
     std::ifstream in{ fullPath };

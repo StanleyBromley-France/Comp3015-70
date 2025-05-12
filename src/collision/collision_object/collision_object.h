@@ -24,6 +24,7 @@ public:
     const CollisionData& collision_data() const { return data_; }
     void set_collision_data(const CollisionData& manifold) { data_ = manifold; }
 
+    bool is_solid();
 protected:
     void update_collider_position(const glm::vec2& p);
     void update_collider_angle(float r);
@@ -32,6 +33,7 @@ protected:
     virtual void on_collision_once(CollisionObject& other) = 0;
 
     void set_collider_size(const glm::vec2& s);
+    void set_is_solid(bool);
     bool isActive_;
 
     CollisionData data_;
@@ -41,4 +43,6 @@ private:
     glm::vec2 colliderPos_;
     glm::vec2 colliderSize_;
     float colliderAngle_ { 0.0f };
+
+    bool isSolid_;
 };

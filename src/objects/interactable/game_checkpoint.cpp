@@ -8,6 +8,7 @@ void GameCheckpoint::init()
     update_collider_position(glm::vec2(position_.x, position_.z));
     set_collider_size(glm::vec2(15.f, 3.f));
     update_collider_angle(rotation_);
+    set_is_solid(false);
 }
 
 void GameCheckpoint::update(float t)

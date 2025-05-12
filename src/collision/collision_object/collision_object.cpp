@@ -6,7 +6,7 @@
 using OrientedBoundingBoxes::OBB;
 using OrientedBoundingBoxes::makeOBB;
 
-CollisionObject::CollisionObject() : isActive_(true), data_{ false, glm::vec2(0.0f), 0.0f } {}
+CollisionObject::CollisionObject() : isActive_(true), data_{ false, glm::vec2(0.0f), 0.0f }, isSolid_(true) {}
 
 int CollisionObject::id() const {
     return colliderId_;
@@ -24,6 +24,11 @@ bool CollisionObject::collider_active() const {
     return isActive_;
 }
 
+bool CollisionObject::is_solid()
+{
+    return isSolid_;
+}
+
 void CollisionObject::update_collider_position(const glm::vec2& p) {
     colliderPos_ = p;
 }
@@ -38,6 +43,11 @@ void CollisionObject::set_collider_size(const glm::vec2& s) {
 
     // halving converts full size to half-extents for SAT calculations
     colliderSize_ = s * glm::vec2(0.5f);
+}
+
+void CollisionObject::set_is_solid(bool isSolid)
+{
+    isSolid_ = isSolid;
 }
 
 void CollisionObject::set_collider_active(bool a) {

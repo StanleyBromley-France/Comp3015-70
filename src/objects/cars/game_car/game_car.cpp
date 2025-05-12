@@ -120,6 +120,9 @@ void GameCar::renderDepth(GLSLProgram& depthProg)
 
 void GameCar::on_collision(CollisionObject& other) {
 
+    if (!other.is_solid())
+        return;
+
     const auto& data = collision_data();
     glm::vec2 collisionNormal = data.normal; 
     float depth = data.depth;
@@ -151,7 +154,7 @@ void GameCar::on_collision(CollisionObject& other) {
 
 void GameCar::on_collision_once(CollisionObject& other)
 {
-    std::cout << "hit barrel!" << "\n";
+    //std::cout << "hit barrel!" << "\n";
 }
 
 glm::vec3& GameCar::get_position()
