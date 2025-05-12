@@ -186,6 +186,9 @@
     <ClCompile Include="src\collision\helper\oriented_bounding_boxes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\cameras\game_cam\game_cam.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shader\basic_uniform.frag">
@@ -403,6 +406,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\collision\helper\oriented_bounding_boxes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cameras\game_cam\game_cam.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

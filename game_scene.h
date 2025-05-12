@@ -12,7 +12,8 @@
 #include "src/collision/collision_object/collision_object.h"
 #include "src/collision/collision_manager/collision_manager.h"
 
-#include "src/cameras/showcase_cam/showcase_cam.h"
+#include "src/cameras/game_cam/game_cam.h"
+#include "src/objects/cars/game_car/game_car.h"
 
 class GameScene : public Scene 
 {
@@ -31,8 +32,8 @@ public:
 
 private:
 
-    CamControls camera;
-
+    GameCam camera;
+    std::shared_ptr<GameCar> car_;
     std::vector<std::shared_ptr<SceneObject>> complexObjs_;
     std::vector<std::shared_ptr<ParticleObject>> particleObjs_;
     std::vector<std::shared_ptr<LightObject>> lightObjs_;

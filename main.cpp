@@ -16,7 +16,7 @@ int main(int argc, char* argv[])
 
 	ImGuiCore::Init(glfwGetCurrentContext());
 
-	scene = std::unique_ptr<Scene>(new StartScene());
+	scene = std::unique_ptr<Scene>(new GameScene());
 
 	SaveDataManager::Instance().Load();
 

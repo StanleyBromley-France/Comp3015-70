@@ -3,7 +3,7 @@
 #include "../../ui/imgui_wrapper/imgui/imgui_impl_glfw.h"
 #include "../../ui/imgui_wrapper/imgui_core.h"
 
-CamControls::CamControls(GLFWwindow* window)
+ShowcaseCam::ShowcaseCam(GLFWwindow* window)
     : cameraPosition(0.0f),
     center(0.0f, 3.75f, 0.0f),
     up(0.0f, 1.0f, 0.0f),
@@ -24,17 +24,17 @@ CamControls::CamControls(GLFWwindow* window)
     updateCameraVectors();
 }
 
-glm::mat4 CamControls::getViewMatrix() const {
+glm::mat4 ShowcaseCam::getViewMatrix() const {
     return glm::lookAt(cameraPosition, center, up);
 }
 
-void CamControls::scrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
+void ShowcaseCam::scrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
     ImGui_ImplGlfw_ScrollCallback(window, xoffset, yoffset);
     ImGuiIO& io = ImGui::GetIO();
     if (io.WantCaptureMouse)
         return;
     
-    auto* self = static_cast<CamControls*>(glfwGetWindowUserPointer(window));
+    auto* self = static_cast<ShowcaseCam*>(glfwGetWindowUserPointer(window));
 
 
     self->radius -= static_cast<float>(yoffset) * 0.5f;
@@ -42,12 +42,12 @@ void CamControls::scrollCallback(GLFWwindow* window, double xoffset, double yoff
     self->updateCameraVectors();
 }
 
-void CamControls::cursorCallback(GLFWwindow* window, double xpos, double ypos) {
+void ShowcaseCam::cursorCallback(GLFWwindow* window, double xpos, double ypos) {
     ImGui_ImplGlfw_CursorPosCallback(window, xpos, ypos);
 
     ImGuiIO& io = ImGui::GetIO();
     if (io.WantCaptureMouse) return;
-    auto* self = static_cast<CamControls*>(glfwGetWindowUserPointer(window));
+    auto* self = static_cast<ShowcaseCam*>(glfwGetWindowUserPointer(window));
 
     if (self->isDragging) {
         float dx = static_cast<float>(xpos - self->lastX) * 0.005f;
@@ -62,13 +62,13 @@ void CamControls::cursorCallback(GLFWwindow* window, double xpos, double ypos) {
     self->lastY = ypos;
 }
 
-void CamControls::mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
+void ShowcaseCam::mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
 
     ImGui_ImplGlfw_MouseButtonCallback(window, button, action, mods);
 
     if (ImGui::GetIO().WantCaptureMouse) return;
 
-    auto* self = static_cast<CamControls*>(glfwGetWindowUserPointer(window));
+    auto* self = static_cast<ShowcaseCam*>(glfwGetWindowUserPointer(window));
 
     if (button == GLFW_MOUSE_BUTTON_LEFT) {
         if (action == GLFW_PRESS) {
@@ -85,7 +85,7 @@ void CamControls::mouseButtonCallback(GLFWwindow* window, int button, int action
     }
 }
 
-void CamControls::updateCameraVectors() {
+void ShowcaseCam::updateCameraVectors() {
     cameraPosition.x = center.x + radius * sin(phi) * cos(theta);
     cameraPosition.y = center.y + radius * cos(phi);
     cameraPosition.z = center.z + radius * sin(phi) * sin(theta);

@@ -154,6 +154,16 @@ void GameCar::on_collision_once(CollisionObject& other)
     std::cout << "hit barrel!" << "\n";
 }
 
+glm::vec3& GameCar::get_position()
+{
+    return position_;
+}
+
+float& GameCar::get_rotation()
+{
+    return yawAngle_;
+}
+
 void GameCar::rebuild_model_matrix()
 {
     modelMatrix_ = glm::translate(mat4(1.f), position_);

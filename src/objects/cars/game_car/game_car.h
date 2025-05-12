@@ -17,6 +17,10 @@ public:
 
     void on_collision(CollisionObject& other) override;
     void on_collision_once(CollisionObject& other) override;
+
+    glm::vec3& get_position();
+    float& get_rotation();
+
 private:
 
     void rebuild_model_matrix();
@@ -35,8 +39,8 @@ private:
     glm::vec3 forwardDir_;
 
     // tuning parameters
-    const float maxForwardSpeed_ = 30.f;
-    const float maxReverseSpeed_ = -10.f;
+    const float maxForwardSpeed_ = 60.f;
+    const float maxReverseSpeed_ = -20.f;
     const float accel_ = 25.f;
     const float brakeAccel_ = 50.f; 
     const float drag_ = 5.f; // natural deceleration

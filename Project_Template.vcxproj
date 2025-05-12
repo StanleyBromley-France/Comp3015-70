@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\cameras\game_cam\game_cam.cpp" />
     <ClCompile Include="src\cameras\showcase_cam\showcase_cam.cpp" />
     <ClCompile Include="game_scene.cpp" />
     <ClCompile Include="glad.c" />
@@ -223,6 +224,7 @@
     <None Include="shader\tileable\tileable.vert" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\cameras\game_cam\game_cam.h" />
     <ClInclude Include="src\cameras\showcase_cam\showcase_cam.h" />
     <ClInclude Include="game_scene.h" />
     <ClInclude Include="helper\aabb.h" />

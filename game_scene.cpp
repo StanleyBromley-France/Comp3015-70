@@ -9,9 +9,9 @@
 #include "src/objects/barrel/barrel.h"
 #include "src/objects/cars/game_car/game_car.h"
 
-GameScene::GameScene() :  camera(glfwGetCurrentContext())
+GameScene::GameScene()
 {
-	view = camera.getViewMatrix();
+	view = camera.GetViewMatrix();
 	projection = glm::perspective(glm::radians(80.0f),
 		float(width) / height,
 		0.3f, 200.0f);
@@ -25,6 +25,7 @@ void GameScene::initScene()
 {
 	compile_shaders();
 
+	car_ = std::make_shared<GameCar>();
 	auto spotlight1 = std::make_shared<SpotlightPoint>();
 	auto spotlight2 = std::make_shared<SpotlightPoint>();
 
@@ -37,7 +38,6 @@ void GameScene::initScene()
 	barrel1->set_position(glm::vec3(0, 0, -20));
 	barrel2->set_position(glm::vec3(0, 0, 20));
 
-	auto car = std::make_shared<GameCar>();
 	// complex setup ---------------
 
 	complexObjs_.push_back(spotlight1);
@@ -45,7 +45,7 @@ void GameScene::initScene()
 	complexObjs_.push_back(barrel1);
 	complexObjs_.push_back(barrel2);
 	complexObjs_.push_back(std::make_shared<Floor>());
-	complexObjs_.push_back(car);
+	complexObjs_.push_back(car_);
 
 	for (auto& obj : complexObjs_)
 		obj->init();
@@ -54,9 +54,9 @@ void GameScene::initScene()
 
 	collisionObjs_.push_back(barrel1);
 	collisionObjs_.push_back(barrel2);
-	collisionObjs_.push_back(car);
+	collisionObjs_.push_back(car_);
 
-	collisionManager.addObject(car);
+	collisionManager.addObject(car_);
 	collisionManager.addObject(barrel1);
 	collisionManager.addObject(barrel2);
 
@@ -81,6 +81,7 @@ void GameScene::initScene()
 
 void GameScene::update(float t)
 {
+	camera.Update(t, car_->get_position(), car_->get_rotation());
 
 	for (auto& obj : complexObjs_)
 		obj->update(t);
@@ -96,7 +97,7 @@ void GameScene::update(float t)
 		ui->update();
 
 	// update view
-	view = camera.getViewMatrix();
+	view = camera.GetViewMatrix();
 	projection = glm::perspective(glm::radians(80.0f), static_cast<float>(width) / height, 0.3f, 200.0f);
 
 	collisionManager.detectAndNotify();

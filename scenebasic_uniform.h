@@ -26,7 +26,7 @@
 
 class SceneBasic_Uniform : public Scene
 {
-    CamControls camera;
+    ShowcaseCam camera;
 
     std::vector<std::shared_ptr<SceneObject>> complexObjs_;
     std::vector<std::shared_ptr<ParticleObject>> particleObjs_;
