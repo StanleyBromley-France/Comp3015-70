@@ -22,6 +22,12 @@ int main(int argc, char* argv[])
 
 	Input::createInstance();
 
-
+	glDebugMessageControl(
+		GL_DONT_CARE,
+		GL_DEBUG_TYPE_OTHER,
+		GL_DEBUG_SEVERITY_NOTIFICATION,
+		0, nullptr,
+		GL_FALSE
+	);
 	return runner.run(std::move(scene));
 }

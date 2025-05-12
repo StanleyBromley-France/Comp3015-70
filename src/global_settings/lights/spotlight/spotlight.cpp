@@ -3,7 +3,7 @@
 spotlight::spotlight()
 {
     // defaults
-    data_.La = glm::vec3(0.2f);
+    data_.La = glm::vec3(0.3f);
     data_.L = glm::vec3(0.6f);
     data_.Exponent = 20.0f;
     data_.Cutoff = glm::radians(10.0f);

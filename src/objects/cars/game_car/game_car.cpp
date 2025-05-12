@@ -52,6 +52,8 @@ void GameCar::init()
 
     update_collider_position(glm::vec2(position_.x, position_.z));
     set_collider_size(glm::vec2(10.f, 25.f));
+
+    isStatic = false;
 }
 
 void GameCar::update(float t)

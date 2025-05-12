@@ -24,6 +24,7 @@ void CollisionManager::detectAndNotify() {
         for (size_t j = i + 1; j < n; ++j) {
             auto& b = objects_[j];
             if (!b->collider_active()) continue;
+            if (a->isStatic && b->isStatic) continue;
 
             auto collision = a->intersects(*b);
             if (collision.hasCollided) {
@@ -52,6 +53,7 @@ void CollisionManager::detectOnceAndNotify() {
         for (int j = i + 1; j < n; ++j) {
             auto& b = objects_[j];
             if (!b->collider_active()) continue;
+            if (a->isStatic && b->isStatic) continue;
             auto collision = a->intersects(*b);
             if (collision.hasCollided) {
                 // creates an id pair (smallID, largeID)

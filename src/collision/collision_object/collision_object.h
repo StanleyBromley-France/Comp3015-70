@@ -38,6 +38,8 @@ protected:
 
     CollisionData data_;
 
+    bool isStatic = true;
+
 private:
     int colliderId_;
     glm::vec2 colliderPos_;

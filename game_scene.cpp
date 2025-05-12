@@ -168,13 +168,13 @@ void GameScene::draw_scene()
 	cloudProg_.use();
 	clouds.render(view, projection, cloudProg_);
 	
-	glBindVertexArray(collisionDebugRenderer.getVAO());
+	//glBindVertexArray(collisionDebugRenderer.getVAO());
 
-	collisionProg_.use();
-	for (auto& obj : collisionObjs_)
-		obj->draw_collision_bounds(collisionProg_, projection, view);
+	//collisionProg_.use();
+	//for (auto& obj : collisionObjs_)
+	//	obj->draw_collision_bounds(collisionProg_, projection, view);
 
-	glBindVertexArray(0);
+	//glBindVertexArray(0);
 
 }
 

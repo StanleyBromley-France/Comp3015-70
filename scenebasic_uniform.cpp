@@ -47,6 +47,7 @@ SceneBasic_Uniform::~SceneBasic_Uniform()
 
 void SceneBasic_Uniform::initScene()
 {
+	glDisable(GL_DEBUG_OUTPUT);
 	// shader setup -------
 	compile_shaders();
 
