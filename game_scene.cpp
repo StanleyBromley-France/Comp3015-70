@@ -26,9 +26,15 @@ GameScene::~GameScene()
 
 void GameScene::initScene()
 {
-	GameManager::instance().reset();
-
 	compile_shaders();
+
+	// skybox setup -------
+	skyboxProg_.use();
+	complexProg_.setUniform("SkyBoxTex", 0);
+	skybox_.init();
+
+
+	GameManager::instance().reset();
 
 
 	auto floor = std::make_shared<Floor>();
@@ -67,7 +73,7 @@ void GameScene::update(float t)
 
 	// update view
 	view = camera.GetViewMatrix();
-	projection = glm::perspective(glm::radians(80.0f), static_cast<float>(width) / height, 0.3f, 200.0f);
+	projection = glm::perspective(glm::radians(80.0f), static_cast<float>(width) / height, 0.3f, 1000.0f);
 
 	collisionManager.detectAndNotify();
 	collisionManager.detectOnceAndNotify();
@@ -93,8 +99,8 @@ void GameScene::draw_scene()
 		obj->render_light(view, projection);
 
 	// render skybox
-	//skyboxProg_.use();
-	//skybox_.render(view, projection, skyboxProg_);
+	skyboxProg_.use();
+	skybox_.render(view, projection, skyboxProg_);
 
 	// render complex
 	complexProg_.use();
@@ -229,7 +235,7 @@ void GameScene::resize(int w, int h)
 	width = w;
 	height = h;
 	glViewport(0, 0, w, h);
-	projection = glm::perspective(glm::radians(90.0f), static_cast<float>(w) / h, 0.3f, 3000.0f);
+	projection = glm::perspective(glm::radians(90.0f), static_cast<float>(w) / h, 0.3f, 10000.0f);
 
 	post_processor::get_instance().resize(w, h);
 }

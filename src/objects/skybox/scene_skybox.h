@@ -3,7 +3,7 @@
 #include "../scene_object.h"
 #include "../../../helper/skybox.h"
 
-class SceneSkybox : SceneObject 
+class SceneSkybox : public SceneObject 
 {
 public:
     SceneSkybox();

@@ -7,7 +7,7 @@ using glm::vec4;
 using glm::mat3;
 using glm::mat4;
 
-SceneSkybox::SceneSkybox() : skybox_(100.0f){}
+SceneSkybox::SceneSkybox() : skybox_(1000.0f){}
 
 SceneSkybox::~SceneSkybox()
 {
