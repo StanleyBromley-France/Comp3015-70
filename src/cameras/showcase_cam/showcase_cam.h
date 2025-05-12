@@ -2,9 +2,9 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
-class CamControls {
+class ShowcaseCam {
 public:
-    static void initialise(GLFWwindow* window);
+    ShowcaseCam(GLFWwindow* window);
 
     // Callback functions
     static void scrollCallback(GLFWwindow* window, double xoffset, double yoffset);
@@ -12,24 +12,23 @@ public:
     static void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 
     // Get the current view matrix
-    static glm::mat4 getViewMatrix();
+    glm::mat4 getViewMatrix() const;
 
 private:
-    static void updateCameraVectors();
+    void updateCameraVectors();
 
     // Camera parameters
-    static glm::vec3 cameraPosition;
-    static glm::vec3 center;
-    static glm::vec3 up;
+    glm::vec3 cameraPosition;
+    glm::vec3 center;
+    glm::vec3 up;
 
     // Control variables
-    static float radius;
-    static float theta;
-    static float phi;
-    static double lastX;
-    static double lastY;
-    static bool isDragging;
-    static float minY;
-    static float maxY;
-
+    float radius;
+    float theta;
+    float phi;
+    double lastX;
+    double lastY;
+    bool isDragging;
+    float minY;
+    float maxY;
 };

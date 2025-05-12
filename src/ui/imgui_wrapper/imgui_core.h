@@ -5,6 +5,7 @@ namespace ImGuiCore {
 
     // Core lifecycle
     void Init(GLFWwindow* window);
+    void ReInit(GLFWwindow* window);
     void BeginFrame();
     void EndFrame();
     void Shutdown();

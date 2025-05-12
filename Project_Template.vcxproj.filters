@@ -57,7 +57,7 @@
     <ClCompile Include="helper\stb\stb_image.cpp">
       <Filter>helper\stb</Filter>
     </ClCompile>
-    <ClCompile Include="camControls.cpp">
+    <ClCompile Include="src\cameras\showcase_cam\showcase_cam.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="helper\skybox.cpp">
@@ -255,7 +255,7 @@
     <ClInclude Include="helper\texture.h">
       <Filter>helper</Filter>
     </ClInclude>
-    <ClInclude Include="camControls.h">
+    <ClInclude Include="src\cameras\showcase_cam\showcase_cam.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="helper\skybox.h">

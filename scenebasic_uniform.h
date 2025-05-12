@@ -21,8 +21,13 @@
 #include "src/debug_stuff/gs_to_rgba_converter.h"
 #include "src/objects/sky/skyplane.h"
 
+#include "src/cameras/showcase_cam/showcase_cam.h"
+
+
 class SceneBasic_Uniform : public Scene
 {
+    CamControls camera;
+
     std::vector<std::shared_ptr<SceneObject>> complexObjs_;
     std::vector<std::shared_ptr<ParticleObject>> particleObjs_;
     std::vector<std::shared_ptr<LightObject>> lightObjs_;

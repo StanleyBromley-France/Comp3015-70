@@ -5,14 +5,13 @@
 #include <glm/ext/matrix_clip_space.hpp>
 #include "src/objects/decos/spotlight_point.h"
 #include "src/objects/floor/floor.h"
-#include "camControls.h"
 #include "src/window/window.h"
 #include "src/objects/barrel/barrel.h"
 #include "src/objects/cars/game_car/game_car.h"
 
-GameScene::GameScene()
+GameScene::GameScene() :  camera(glfwGetCurrentContext())
 {
-	view = CamControls::getViewMatrix();
+	view = camera.getViewMatrix();
 	projection = glm::perspective(glm::radians(80.0f),
 		float(width) / height,
 		0.3f, 200.0f);
@@ -97,7 +96,7 @@ void GameScene::update(float t)
 		ui->update();
 
 	// update view
-	view = CamControls::getViewMatrix();
+	view = camera.getViewMatrix();
 	projection = glm::perspective(glm::radians(80.0f), static_cast<float>(width) / height, 0.3f, 200.0f);
 
 	collisionManager.detectAndNotify();

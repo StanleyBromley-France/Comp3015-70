@@ -11,6 +11,9 @@
 #include "src/collision/rendering/collision_debug_renderer.h"
 #include "src/collision/collision_object/collision_object.h"
 #include "src/collision/collision_manager/collision_manager.h"
+
+#include "src/cameras/showcase_cam/showcase_cam.h"
+
 class GameScene : public Scene 
 {
 public:
@@ -27,6 +30,9 @@ public:
     void compile_shaders();
 
 private:
+
+    CamControls camera;
+
     std::vector<std::shared_ptr<SceneObject>> complexObjs_;
     std::vector<std::shared_ptr<ParticleObject>> particleObjs_;
     std::vector<std::shared_ptr<LightObject>> lightObjs_;

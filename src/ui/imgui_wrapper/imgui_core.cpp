@@ -15,6 +15,13 @@ void ImGuiCore::Init(GLFWwindow* window) {
     ImGui_ImplOpenGL3_Init("#version 410");
 }
 
+void ImGuiCore::ReInit(GLFWwindow* window) {
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
+    Init(window);
+}
 void ImGuiCore::BeginFrame() {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();

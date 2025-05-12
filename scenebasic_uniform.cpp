@@ -5,7 +5,6 @@
 #include <iostream>
 #include <GLFW/glfw3.h>
 #include "glm/gtc/matrix_transform.hpp"
-#include "camControls.h"
 #include "src/rendering/post_processing/post_process_manager.h"
 #include "src/shader_management/shader_include/shader_include.h"
 #include "src/ui/imgui_wrapper/imgui_core.h"
@@ -28,10 +27,10 @@ using glm::mat4;
 using std::string;
 using std::cerr;
 
-SceneBasic_Uniform::SceneBasic_Uniform()
+SceneBasic_Uniform::SceneBasic_Uniform() : camera(glfwGetCurrentContext())
 {
 	model = mat4(1.0f);
-	view = CamControls::getViewMatrix();
+	view = camera.getViewMatrix();
 	projection = mat4(1.0f);
 }
 
@@ -127,6 +126,8 @@ void SceneBasic_Uniform::compile_shaders()
 
 void SceneBasic_Uniform::init_ui()
 {
+	//ImGuiCore::ReInit(glfwGetCurrentContext());
+
 	uiElements_.emplace_back(new PauseMenu());
 	ImGuiCore::BeginFrame();
 	for (auto& ui : uiElements_)
@@ -187,7 +188,7 @@ void SceneBasic_Uniform::update(float t)
 		ui->update();
 
 	// update view
-	view = CamControls::getViewMatrix();
+	view = camera.getViewMatrix();
 	projection = glm::perspective(glm::radians(80.0f), static_cast<float>(width) / height, 0.3f, 200.0f);
 
 	Input::updateKeyState();
@@ -195,8 +196,6 @@ void SceneBasic_Uniform::update(float t)
 
 void SceneBasic_Uniform::render()
 {
-
-
 	draw_shadow_maps();
 
 	post_processor::get_instance().begin_scene_capture();
