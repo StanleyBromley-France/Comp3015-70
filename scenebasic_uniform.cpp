@@ -61,13 +61,18 @@ void SceneBasic_Uniform::initScene()
 	// common object setup
 	auto spotlight = std::make_shared<SpotlightPoint>();
 	auto particlePoint = std::make_shared<ParticlePoint>();
+	particlePoint->set_position({ -15, 0, 0 });
 
+	auto particlePoint2 = std::make_shared<ParticlePoint>();
+	particlePoint2->set_position({ 15, 0, 0 });
 	// complex setup ---------------
 
 	complexObjs_.push_back(std::make_shared<ShowcaseCar>());
 	complexObjs_.push_back(std::make_shared<Floor>());
 	complexObjs_.push_back(spotlight);
 	complexObjs_.push_back(particlePoint);
+	complexObjs_.push_back(particlePoint2);
+
 
 	for (auto& obj : complexObjs_)
 		obj->init();
@@ -79,6 +84,8 @@ void SceneBasic_Uniform::initScene()
 	// particle setup ---------
 
 	particleObjs_.push_back(particlePoint);
+	particleObjs_.push_back(particlePoint2);
+
 
 	// light setup -------
 	lightObjs_.push_back(spotlight);

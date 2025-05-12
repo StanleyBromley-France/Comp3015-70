@@ -89,7 +89,7 @@ void GameScene::update(float t)
 		menu.forceOpen = true;
 		auto& currentBest = SaveDataManager::Instance().Data().bestTime;
 		if (menu.currentTime_ < currentBest) {
-			currentBest = menu.currentTime_;
+			SaveDataManager::Instance().Data().bestTime = menu.currentTime_;
 			SaveDataManager::Instance().Save();
 		}
 	}

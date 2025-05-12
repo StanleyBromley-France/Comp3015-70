@@ -31,7 +31,8 @@ static void from_json(json const& j, SaveData& s) {
     // colours
     if (auto c1 = from_string(j.value("carColour1", ""))) s.carColour1 = *c1;
     if (auto c2 = from_string(j.value("carColour2", ""))) s.carColour2 = *c2;
-
+    
+    s.bestTime = j.value("bestTime", s.bestTime);
 }
 
 SaveDataManager& SaveDataManager::Instance() {

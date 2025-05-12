@@ -27,14 +27,13 @@ void ParticlePoint::init()
 {
 	particleTex_ = Texture::loadTexture("media/texture/particles/spark.png");
 
-	spawner_.init(particleTex_, particleCount_, particleLifetime_, particlePos_, particleDir_, particleSize_);
+	spawner_.init(particleTex_, particleCount_, particleLifetime_, position_, particleDir_, particleSize_);
+
+	spawner_.fire(glfwGetTime());
 }
 
 void ParticlePoint::update(float t)
 {
-	if (Input::isKeyPressedOnce(GLFW_KEY_W)) {
-		spawner_.fire(t);
-	}
 
 	// advances particle time
 	spawner_.update(t);
