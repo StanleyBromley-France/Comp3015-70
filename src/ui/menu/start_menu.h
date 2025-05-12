@@ -10,4 +10,5 @@ public:
 private:
     ImVec2 windowSize;
     ImVec2 centerPos;
+    float bestTime;
 };

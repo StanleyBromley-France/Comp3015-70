@@ -14,6 +14,7 @@
 #include "src/ui/imgui_wrapper/imgui_core.h"
 
 #include "src/ui/menu/pause_menu.h"
+#include "src/save_management/save_data_manager.h"
 
 GameScene::GameScene()
 {
@@ -84,8 +85,14 @@ void GameScene::update(float t)
 
 	if (!GameManager::instance().has_race_ended())
 		menu.currentTime_ = GameManager::instance().get_elapsed_time();
-	else
+	else {
 		menu.forceOpen = true;
+		auto& currentBest = SaveDataManager::Instance().Data().bestTime;
+		if (menu.currentTime_ < currentBest) {
+			currentBest = menu.currentTime_;
+			SaveDataManager::Instance().Save();
+		}
+	}
 
 	menu.update();
 

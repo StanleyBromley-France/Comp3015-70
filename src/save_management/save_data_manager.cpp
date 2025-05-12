@@ -23,6 +23,7 @@ static void to_json(json& j, SaveData const& s) {
     j = json{
       {"carColour1", to_string(s.carColour1)},
       {"carColour2", to_string(s.carColour2)},
+      {"bestTime", s.bestTime} 
     };
 }
 

@@ -7,6 +7,7 @@
 struct SaveData {
     CarColours::Index carColour1 = CarColours::Orange;
     CarColours::Index carColour2 = CarColours::Orange;
+    float bestTime = 999.0f;
 };
 
 class SaveDataManager {
@@ -30,6 +31,6 @@ private:
     SaveDataManager(SaveDataManager const&) = delete;
     SaveDataManager& operator=(SaveDataManager const&) = delete;
 
-    SaveData              data_;
+    SaveData  data_;
     const std::filesystem::path save_path_;
 };

@@ -10,6 +10,7 @@
 #include "../../../game_scene.h"
 
 #include <memory>
+#include "../../save_management/save_data_manager.h"
 
 using namespace ImGui;
 using namespace ImGuiWindows;
@@ -21,6 +22,7 @@ void StartMenu::init()
     windowSize.y = 350;
     centerPos = GetGUIScreenCenteredPos(windowSize);
     centerPos.x += 400;
+    bestTime = SaveDataManager::Instance().Data().bestTime;
 }
 
 void StartMenu::update()
@@ -37,6 +39,7 @@ void StartMenu::render()
         );
         ImVec2 buttonSize(150, 50);
 
+        ImGui::Text("current best time = %.3f", bestTime);
 
         SetWindowCenteredPos(buttonSize);
         if (ImGui::Button("Play", buttonSize)) {

@@ -9,6 +9,7 @@
 #include "../../scene_management/scene_switcher.h"
 #include "../../../start_scene.h"
 #include "../../../sceneBasic_uniform.h"
+#include "../../save_management/save_data_manager.h"
 
 #include <string>
 using namespace ImGuiWindows;

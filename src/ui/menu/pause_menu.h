@@ -12,7 +12,6 @@ public:
 
 private:
     bool isOpen;
-
     ImVec2 windowSize;
     ImVec2 centerPos;
 };
